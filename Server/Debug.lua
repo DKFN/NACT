@@ -1,0 +1,1 @@
+NACT_DEBUG_TRIGGERS = true

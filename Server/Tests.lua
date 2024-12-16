@@ -1,0 +1,23 @@
+-- This is the test file used in developpement of features of N.A.C.T. do not incldue it in production
+-- It is used with TestingMap from nanos-world
+
+
+Server.Subscribe("Start", function()
+    Console.Log("N.A.C.T. Debug tools enabled")
+
+    local sTestZoneName = "ShedByTheSea"
+
+    NACT_RegisterTerritory(sTestZoneName, {
+        coverPoints = {},
+        zoneBounds = {}
+    })
+
+
+    local wAk47 = AK47(Vector(1035, 154, 300), Rotator())
+    local cDebugNPC = Character(Vector(6552.520, -8691.16, 467), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+    cDebugNPC:PickUp(wAk47)
+
+    NACT_RegisterNpc(cDebugNPC, sTestZoneName)
+
+    Console.Log("Ok")
+end)
