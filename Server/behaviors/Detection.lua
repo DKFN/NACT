@@ -13,44 +13,48 @@ end
 
 -- If the player 
 function NACT_Detection:Main()
-    Console.Log("Detection main, heat".. self.heat .. " npc : ".. NanosTable.Dump(self.npc.cFocused))
+    Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID()) Detection main, heat".. self.heat .. " npc : ".. NanosTable.Dump(self.npc.cFocused))
 
     -- Tracing functions should be in NACT_NPC or NACT_Behavior
-    local fStopTracing = function()
-        if (self.tracingLaunched) then
-            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", Player.GetByIndex(1)) --, self.npc.character, self.npc.cFocused)
-            self.tracingLaunched = false
-        end
-    end
     if (self.heat >= 100) then
         self.npc:GoNextBehavior()
-        fStopTracing()
-    elseif (self.heat <= 0) then
+    elseif (self.heat <= 0 and self.npc.triggers.detection.enemyCount <= 0) then
         self.npc:GoPreviousBehavior()
-        fStopTracing()
+        self:DecrementLevel()
     else
-        if (self.npc.cFocused ~= nil) then
-            -- TODO Find best player to send the trace, nearest player in range
-            local delegatedPlayer = Player.GetByIndex(1) -- self.npc.cFocused:GetPlayer()
-            Console.Log("Calling remote event")
-            if (not self.tracingLaunched) then
-                Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", delegatedPlayer, self.npc.character, self.npc.cFocused, self:GetID())
-                self.tracingLaunched = true
-            end
-        else
-            self.heat = 0
-            fStopTracing()
-        end
         -- TODO: Check if player is in range and visible
+        self:StartTracing()
+        
+    end
+end
+
+-- Tracing functions should be in NACT_NPC or NACT_Behavior
+function NACT_Detection:StopTracing()
+    if (self.tracingLaunched) then
+        Console.Log("Calling stop event for traces")
+        Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", Player.GetByIndex(1)) --, self.npc.character, self.npc.cFocused)
+        self.tracingLaunched = false
+    end
+end
+
+function NACT_Detection:StartTracing()
+    if (self.npc.cFocused ~= nil) then
+        -- TODO Find best player to send the trace, nearest player in range
+        local delegatedPlayer = Player.GetByIndex(1) -- self.npc.cFocused:GetPlayer()
+        Console.Log("Calling remote event")
+        if (not self.tracingLaunched) then
+            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", delegatedPlayer, self.npc.character, self.npc.cFocused, self:GetID())
+            self.tracingLaunched = true
+        end
     end
 end
 
 function NACT_Detection:IncrementLevel()
-    self.heat = self.heat + PROVISORY_NACT_HEAT_INCREMENT
+    self.heat = math.min(self.heat + PROVISORY_NACT_HEAT_INCREMENT, 100)
 end
 
 function NACT_Detection:DecrementLevel()
-    self.heat = self.heat - PROVISORY_NACT_HEAT_INCREMENT
+    self.heat = math.max(0, self.heat - PROVISORY_NACT_HEAT_INCREMENT)
 end
 
 Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, behaviorID, entityResult)
@@ -68,6 +72,7 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, behav
 end)
 
 function NACT_Detection:Destroy()
+    self:StopTracing()
     Timer.ClearInterval(self.timerHandle)
 end
 

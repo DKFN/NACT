@@ -9,3 +9,4 @@ While NACT is primarly focused on simulating gunfights with millitary combat tac
 # Bails du turfu mais faut y penser
 
 -> Sync la position relative des bones face a l'actor qui les attachent pour pouvoir avoir une liste de bones interessantes (bras, tete, torse) puis ensuite faire un leger RNG sur la position pour pas hit tout le temps
+-> Test le changement de dimensions en cours de route

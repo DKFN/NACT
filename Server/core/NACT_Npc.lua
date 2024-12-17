@@ -72,7 +72,9 @@ function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
     local tTriggerData = {
         trigger = Trigger(Vector(self.character:GetLocation()), Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor),
         enemyCount = 0,
-        allyCount = 0
+        enemies = {},
+        allyCount = 0,
+        allies = {}
     }
     tTriggerData.trigger:AttachTo(self.character)
     tTriggerData.trigger:SetOverlapOnlyClasses({ "Character", "CharacterSimple" })
@@ -84,15 +86,12 @@ function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
         if (self == tTriggerData.trigger and _self.character:GetID() ~= entity:GetID()) then
             if (_self.character:GetTeam() == entity:GetTeam()) then
                 tTriggerData.allyCount = tTriggerData.allyCount + 1
+                table.insert(tTriggerData.allies, entity)
             else 
                 tTriggerData.enemyCount = tTriggerData.enemyCount + 1
-                -- TODO: This causes a bug when entering or exiting any triggers changes the focus wich sucks
-                -- TODO: We must keep an array of entities focused it would be much much better
-                if (_self.cFocused == nil) then
-                    --table.insert(entity)
-                    _self:SetFocusedEntity(entity)
-                end
+                table.insert(tTriggerData.enemies, entity)
             end
+            _self:Debug_PrintTriggerStates()
         end
     end)
 
@@ -100,17 +99,32 @@ function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
     tTriggerData.trigger:Subscribe("EndOverlap", function(self, entity)
         if (self == tTriggerData.trigger and _self.character:GetID() ~= entity:GetID()) then
             if (_self.character:GetTeam() == entity:GetTeam()) then
+                table.remove(tTriggerData.allies, entity)
                 tTriggerData.allyCount = tTriggerData.allyCount + 1
             else
                 tTriggerData.enemyCount = tTriggerData.enemyCount - 1
-                -- TODO: This causes a bug when entering or exiting any triggers changes the focus wich sucks
-                -- TODO: We must keep an array of entities focused it would be much much better
-                if (_self.cFocused ~= nil) then
-                    --table.remove(entity)
-                    _self:SetFocusedEntity(nil)
-                end
+                table_remove_by_value(tTriggerData.enemies, entity)
             end
         end
+        _self:Debug_PrintTriggerStates()
     end)
     return tTriggerData
+end
+
+function NACT_NPC:Debug_PrintTriggerStates()
+    Console.Log("N.A.C.T. Npc ".. self:GetID() .. " Trigger states : ".. NanosTable.Dump(self.triggers))
+end
+
+
+-- Extend native library of Lua or atleast pu in table utils file
+function table_findIndex_by_value(tCollection, entity)
+    for i,e in ipairs(tCollection) do
+        if (entity == e) then
+            return i
+        end
+    end
+end
+
+function table_remove_by_value(tCollection, entity)
+    table.remove(tCollection, table_findIndex_by_value(tCollection, entity))
 end
