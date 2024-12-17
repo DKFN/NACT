@@ -1,5 +1,5 @@
-Console.log("N.A.C.T. Nanos Advanced Combat Tactics")
-Console.log("N.A.C.T. https://github.com/DKFN/NACT")
+Console.Log("N.A.C.T. Nanos Advanced Combat Tactics")
+Console.Log("N.A.C.T. https://github.com/DKFN/NACT")
 
 Package.Require("./core/Index.lua")
 Package.Require("./behaviors/Index.lua")

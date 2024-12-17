@@ -1,5 +1,5 @@
 
-NACT_Idle = BaseClass.Inherit("NACT_Idle", true)
+NACT_Idle = BaseClass.Inherit("NACT_Idle", false)
 
 function NACT_Idle:Constructor(NpcInstance)
     self.npc = NpcInstance
@@ -11,7 +11,7 @@ end
 
 
 function NACT_Idle:Main()
-    Console.Log(NanosTable.Dump(self.npc.triggers))
+    -- Console.Log(NanosTable.Dump(self.npc.triggers))
     if (self.npc.triggers.detection.enemyCount > 0) then
         self.npc:GoNextBehavior()
     end

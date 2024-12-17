@@ -4,6 +4,7 @@ NACT_NPC = BaseClass.Inherit("NACT_NPC", false)
 function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName)
     self.character = cNpcToHandle
     self.territory = tTerritoryOfNpc
+    self.afInrangeEntities = {}
     self.cFocused = nil -- When someone gets noticed by the NPC and it takes actions against it
      -- IDLE | DETECT | COVER | PUSH | FLANK | ENGAGE | SUPRESS | HEAL etc... see Server/behaviors
     self.behaviorConfig = {NACT_Idle, NACT_Detection}
@@ -33,13 +34,13 @@ end
 
 function NACT_NPC:SetBehavior(iBehaviorIndex)
     Console.Log("Switching to Behavior index ".. iBehaviorIndex)
-    self.behavior:Destroy()
     local cBehaviorToSpawn = self.behaviorConfig[iBehaviorIndex]
 
     if (cBehaviorToSpawn == nil) then
         Console.Error("N.A.C.T. Behavior change was not possible, trying index ".. iBehaviorIndex)
         return
     end
+    self.behavior:Destroy()
     self.behavior = cBehaviorToSpawn(self)
     self.currentBehaviorIndex = iBehaviorIndex
 end
@@ -80,22 +81,34 @@ function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
 
     tTriggerData.trigger:Subscribe("BeginOverlap", function(self, entity)
         -- TODO add more checks (in the same team for example)
-        if (_self.character:GetID() ~= entity:GetID()) then
+        if (self == tTriggerData.trigger and _self.character:GetID() ~= entity:GetID()) then
             if (_self.character:GetTeam() == entity:GetTeam()) then
                 tTriggerData.allyCount = tTriggerData.allyCount + 1
             else 
                 tTriggerData.enemyCount = tTriggerData.enemyCount + 1
+                -- TODO: This causes a bug when entering or exiting any triggers changes the focus wich sucks
+                -- TODO: We must keep an array of entities focused it would be much much better
+                if (_self.cFocused == nil) then
+                    --table.insert(entity)
+                    _self:SetFocusedEntity(entity)
+                end
             end
         end
     end)
 
 
-    tTriggerData.trigger:Subscribe("EndOverlap", function()
-        if (_self.character:GetID() ~= entity:GetID()) then
+    tTriggerData.trigger:Subscribe("EndOverlap", function(self, entity)
+        if (self == tTriggerData.trigger and _self.character:GetID() ~= entity:GetID()) then
             if (_self.character:GetTeam() == entity:GetTeam()) then
                 tTriggerData.allyCount = tTriggerData.allyCount + 1
             else
                 tTriggerData.enemyCount = tTriggerData.enemyCount - 1
+                -- TODO: This causes a bug when entering or exiting any triggers changes the focus wich sucks
+                -- TODO: We must keep an array of entities focused it would be much much better
+                if (_self.cFocused ~= nil) then
+                    --table.remove(entity)
+                    _self:SetFocusedEntity(nil)
+                end
             end
         end
     end)
