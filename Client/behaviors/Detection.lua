@@ -1,3 +1,4 @@
+-- TODO: This would be better in it's own class with start bone and end bones
 -- TODO: Supports only one trace order at the time for the moment, make it compatible with multiple orders
 local iTracesRefresherInterval = nil
 
@@ -8,10 +9,19 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY:START", function(cNpc, cTarget,
 
     iTracesRefresherInterval = Timer.SetInterval(function ()
         local vNpcLocation = cNpc:GetLocation()
+        local vNpcHeadLocation = cNpc:GetBoneTransform("head")
+        Console.Log("Bone transform locator : ".. NanosTable.Dump(vNpcHeadLocation))
+        local sourceLocation
+        if (vNpcHeadLocation) then
+            sourceLocation = vNpcHeadLocation.Location
+        else
+            sourceLocation = vNpcLocation
+        end
+
         local vEntityLocation = cTarget:GetLocation()
 
         local tTraceResult = Trace.LineSingle(
-            vNpcLocation,
+            sourceLocation,
             vEntityLocation,
             CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
             TraceMode.DrawDebug | TraceMode.ReturnEntity,
