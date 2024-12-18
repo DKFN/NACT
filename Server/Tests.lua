@@ -19,6 +19,5 @@ Package.Subscribe("Load", function()
     cDebugNPC:PickUp(wAk47)
 
     NACT_RegisterNpc(cDebugNPC, sTestZoneName)
-
     Console.Log("Ok")
 end)

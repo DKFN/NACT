@@ -1,5 +1,7 @@
 -- This behavior aims to try to detect the player and then go to the next state on the behavior tree
 PROVISORY_NACT_HEAT_INCREMENT = 1
+PROVISORY_NACT_ANGLE_DETECTION = 90
+PROVISORY_NACT_HEAT_TURN_TO = 50 -- Heat necessary for the NPC to turn towards the player
 
 NACT_Detection = BaseClass.Inherit("NACT_Detection")
 function NACT_Detection:Constructor(NpcInstance)
@@ -13,7 +15,7 @@ end
 
 -- If the player 
 function NACT_Detection:Main()
-    Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID()) Detection main, heat".. self.heat .. " npc : ".. NanosTable.Dump(self.npc.cFocused))
+    Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() .." Detection heat".. self.heat)
 
     -- Tracing functions should be in NACT_NPC or NACT_Behavior
     if (self.heat >= 100) then
@@ -22,9 +24,20 @@ function NACT_Detection:Main()
         self.npc:GoPreviousBehavior()
         self:DecrementLevel()
     else
-        -- TODO: Check if player is in range and visible
-        self:StartTracing()
-        
+        if (self.npc.triggers.closeProximity.enemyCount >= 0 and self.heat >= PROVISORY_NACT_HEAT_TURN_TO) then
+            -- Ambigu, c'est un player ou un npc etc, closestChar
+            local closestPlayerInRange = self.npc.triggers.closeProximity.enemies[1]
+            self.npc.character:LookAt(closestPlayerInRange:GetLocation())
+            self.npc.character:RotateTo(Rotator(0, (closestPlayerInRange:GetLocation() - self.npc.character:GetLocation()):Rotation().Yaw, 0), 0.5)
+        end
+        local tAnglePlayerNpc = (self.npc.character:GetLocation() - self.npc.cFocused:GetLocation()):Rotation()
+        local angleVersion =  math.abs(self.npc.character:GetRotation().Yaw - tAnglePlayerNpc.Yaw)
+        Console.Log("Angle played npc : "..NanosTable.Dump(tAnglePlayerNpc) .. " yaw version " .. angleVersion)
+        if (angleVersion > PROVISORY_NACT_ANGLE_DETECTION) then 
+            self:StartTracing()
+        else
+            self:StopTracing()
+        end
     end
 end
 
@@ -32,7 +45,7 @@ end
 function NACT_Detection:StopTracing()
     if (self.tracingLaunched) then
         Console.Log("Calling stop event for traces")
-        Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", Player.GetByIndex(1)) --, self.npc.character, self.npc.cFocused)
+        Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", Player.GetByIndex(1), self:GetID()) --, self.npc.character, self.npc.cFocused)
         self.tracingLaunched = false
     end
 end
@@ -41,9 +54,13 @@ function NACT_Detection:StartTracing()
     if (self.npc.cFocused ~= nil) then
         -- TODO Find best player to send the trace, nearest player in range
         local delegatedPlayer = Player.GetByIndex(1) -- self.npc.cFocused:GetPlayer()
-        Console.Log("Calling remote event")
+        -- Console.Log("Calling remote event")
+        
+        
         if (not self.tracingLaunched) then
-            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", delegatedPlayer, self.npc.character, self.npc.cFocused, self:GetID())
+            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", delegatedPlayer, self.npc.character, self.npc.cFocused, self:GetID(), {
+                "head", "lowerarm_l", "lowerarm_r", "foot_l", "foot_r"
+            })
             self.tracingLaunched = true
         end
     end
