@@ -12,6 +12,8 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY:START", function(cNpc, cTarget,
         detected = false,
         handle = Timer.SetInterval(function ()
             local vNpcLocation = cNpc:GetLocation()
+
+            -- TODO: Must fallback and check if GetBoneTransform is defined for CharacterSimple
             local vNpcHeadLocation = cNpc:GetBoneTransform("head")
             -- Console.Log("Bone transform locator : ".. NanosTable.Dump(vNpcHeadLocation))
             local sourceLocation

@@ -5,6 +5,8 @@ Package.Require("./core/Index.lua")
 Package.Require("./behaviors/Index.lua")
 Package.Require("./Api.lua")
 
+Package.Require("./npc/NACT_Npc.lua")
+
 -- Uncomment thoose lines if you want to develop or debug
 Package.Require("./Tests.lua")
 Package.Require("./Debug.lua")

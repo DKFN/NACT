@@ -11,6 +11,7 @@ function NACT_Detection:Constructor(NpcInstance)
     end, 500, self)
 end
 
+-- TODO: cFocused should change to closest player in vision range
 -- If the player 
 function NACT_Detection:Main()
     Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
@@ -20,14 +21,9 @@ function NACT_Detection:Main()
         self.npc:GoNextBehavior()
     elseif (self.heat <= 0 and self.npc.triggers.detection.enemyCount <= 0) then
         self.npc:GoPreviousBehavior()
-        self:DecrementLevel()
     else
-        -- C'est grave bizzare comme truc, il faudrait garder la logique du focused, si le NPC voit le focused il devrait se tourner vers lui
-        if (self.npc.triggers.closeProximity.enemyCount > 0 and self.heat >= PROVISORY_NACT_HEAT_TURN_TO) then
-            -- Ambigu, c'est un player ou un npc etc, closestChar
-            local closestPlayerInRange = self.npc.triggers.closeProximity.enemies[1]
-            self.npc.character:LookAt(closestPlayerInRange:GetLocation())
-            self.npc.character:RotateTo(Rotator(0, (closestPlayerInRange:GetLocation() - self.npc.character:GetLocation()):Rotation().Yaw, 0), 0.5)
+        if (self.heat >= PROVISORY_NACT_HEAT_TURN_TO) then
+            self.npc:TurnToFocused()
         end
 
         if (self.npc:IsInVisionAngle(self.npc.cFocused)) then
@@ -44,6 +40,7 @@ function NACT_Detection:Main()
     end
 end
 
+-- TODO: Vary heat increment and decrement by distance (and possibly angle too)
 function NACT_Detection:IncrementLevel()
     self.heat = math.min(self.heat + PROVISORY_NACT_HEAT_INCREMENT, 100)
 end
