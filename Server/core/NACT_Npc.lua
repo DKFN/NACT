@@ -12,6 +12,8 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName)
     self.behavior = self.behaviorConfig[self.currentBehaviorIndex](self)
     self:_registerTriggerBoxes()
 
+    self.tracingLaunched = false
+
     -- DEBUG
     Timer.SetInterval(function()
         Chat.BroadcastMessage("Behavior index ".. self.currentBehaviorIndex)
@@ -115,6 +117,45 @@ function NACT_NPC:Debug_PrintTriggerStates()
     Console.Log("N.A.C.T. Npc ".. self:GetID() .. " Trigger states : ".. NanosTable.Dump(self.triggers))
 end
 
+---
+--- Tracing and Vision
+---
+function NACT_NPC:StopTracing()
+    if (self.tracingLaunched) then
+        Console.Log("Calling stop event for traces")
+        Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", Player.GetByIndex(1), self:GetID()) --, self.npc.character, self.npc.cFocused)
+        self.tracingLaunched = false
+    end
+end
+
+function NACT_NPC:StartTracing()
+    if (self.cFocused ~= nil) then
+        -- TODO Find best player to send the trace, nearest player in range
+        local delegatedPlayer = Player.GetByIndex(1) -- self.npc.cFocused:GetPlayer()
+        -- Console.Log("Calling remote event")
+        
+        
+        if (not self.tracingLaunched) then
+            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", delegatedPlayer, self.character, self.cFocused, self:GetID(), {
+                "head", "lowerarm_l", "lowerarm_r", "foot_l", "foot_r"
+            })
+            self.tracingLaunched = true
+        end
+    end
+end
+
+Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID, entityResult)
+    local npcSubscribedToTraces = NACT_NPC.GetByID(npcID)
+
+    if (npcSubscribedToTraces) then
+        local currentBehavior = npcSubscribedToTraces.behavior
+        if (currentBehavior.OnVisionChanged ~= nil) then
+            currentBehavior:OnVisionChanged(entityResult)
+        end
+    end
+
+    -- Console.Log("Entity poll result : ".. NanosTable.Dump(entityResult))
+end)
 
 -- Extend native library of Lua or atleast pu in table utils file
 function table_findIndex_by_value(tCollection, entity)

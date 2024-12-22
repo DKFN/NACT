@@ -10,7 +10,6 @@ function NACT_Detection:Constructor(NpcInstance)
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
     end, 500, self)
-    self.tracingLaunched = false
 end
 
 -- If the player 
@@ -34,37 +33,25 @@ function NACT_Detection:Main()
         local angleVersion =  math.abs(self.npc.character:GetRotation().Yaw - tAnglePlayerNpc.Yaw)
         Console.Log("Angle played npc : "..NanosTable.Dump(tAnglePlayerNpc) .. " yaw version " .. angleVersion)
         if (angleVersion > PROVISORY_NACT_ANGLE_DETECTION) then 
-            self:StartTracing()
+            self.npc:StartTracing()
         else
-            self:StopTracing()
+            self.npc:StopTracing()
+            self:DecrementLevel()
         end
     end
 end
 
 -- Tracing functions should be in NACT_NPC or NACT_Behavior
-function NACT_Detection:StopTracing()
-    if (self.tracingLaunched) then
-        Console.Log("Calling stop event for traces")
-        Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", Player.GetByIndex(1), self:GetID()) --, self.npc.character, self.npc.cFocused)
-        self.tracingLaunched = false
+-- It is not really good in base class, tried it. Better in NPC instance
+
+function NACT_Detection:OnVisionChanged(bNewState)
+    if (bNewState) then
+        self:IncrementLevel()
+    else
+        self:DecrementLevel()
     end
 end
 
-function NACT_Detection:StartTracing()
-    if (self.npc.cFocused ~= nil) then
-        -- TODO Find best player to send the trace, nearest player in range
-        local delegatedPlayer = Player.GetByIndex(1) -- self.npc.cFocused:GetPlayer()
-        -- Console.Log("Calling remote event")
-        
-        
-        if (not self.tracingLaunched) then
-            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", delegatedPlayer, self.npc.character, self.npc.cFocused, self:GetID(), {
-                "head", "lowerarm_l", "lowerarm_r", "foot_l", "foot_r"
-            })
-            self.tracingLaunched = true
-        end
-    end
-end
 
 function NACT_Detection:IncrementLevel()
     self.heat = math.min(self.heat + PROVISORY_NACT_HEAT_INCREMENT, 100)
@@ -73,20 +60,6 @@ end
 function NACT_Detection:DecrementLevel()
     self.heat = math.max(0, self.heat - PROVISORY_NACT_HEAT_INCREMENT)
 end
-
-Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, behaviorID, entityResult)
-    local behaviorSubscribedToTraces = NACT_Detection.GetByID(behaviorID)
-
-    if (behaviorSubscribedToTraces) then
-        if (entityResult) then
-            behaviorSubscribedToTraces:IncrementLevel()
-        else
-            behaviorSubscribedToTraces:DecrementLevel()
-        end
-    end
-
-    -- Console.Log("Entity poll result : ".. NanosTable.Dump(entityResult))
-end)
 
 function NACT_Detection:Destroy()
     self:StopTracing()
