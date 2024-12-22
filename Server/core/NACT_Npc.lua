@@ -1,11 +1,12 @@
 NACT_NPC = BaseClass.Inherit("NACT_NPC", false)
 
-
+PROVISORY_NACT_ANGLE_DETECTION = 90
 function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName)
     self.character = cNpcToHandle
     self.territory = tTerritoryOfNpc
     self.afInrangeEntities = {}
     self.cFocused = nil -- When someone gets noticed by the NPC and it takes actions against it
+    self.cFocusedTraceHit = false
      -- IDLE | DETECT | COVER | PUSH | FLANK | ENGAGE | SUPRESS | HEAL etc... see Server/behaviors
     self.behaviorConfig = {NACT_Idle, NACT_Detection}
     self.currentBehaviorIndex = 1
@@ -155,18 +156,15 @@ function NACT_NPC:IsInVisionAngle(cEntity)
     return angleVersion > PROVISORY_NACT_ANGLE_DETECTION
 end
 
+function NACT_NPC:IsFocusedVisible()
+    return self.cFocusedTraceHit and self:IsInVisionAngle(self.cFocused)
+end
+
 Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID, entityResult)
     local npcSubscribedToTraces = NACT_NPC.GetByID(npcID)
-
-    -- TODO: Log error of zombie events
     if (npcSubscribedToTraces) then
-        local currentBehavior = npcSubscribedToTraces.behavior
-        if (currentBehavior.OnVisionChanged ~= nil) then
-            currentBehavior:OnVisionChanged(entityResult)
-        end
+        npcSubscribedToTraces.cFocusedTraceHit = entityResult
     end
-
-    -- Console.Log("Entity poll result : ".. NanosTable.Dump(entityResult))
 end)
 
 -- Extend native library of Lua or atleast pu in table utils file
