@@ -29,10 +29,9 @@ function NACT_Detection:Main()
             self.npc.character:LookAt(closestPlayerInRange:GetLocation())
             self.npc.character:RotateTo(Rotator(0, (closestPlayerInRange:GetLocation() - self.npc.character:GetLocation()):Rotation().Yaw, 0), 0.5)
         end
-        local tAnglePlayerNpc = (self.npc.character:GetLocation() - self.npc.cFocused:GetLocation()):Rotation()
-        local angleVersion =  math.abs(self.npc.character:GetRotation().Yaw - tAnglePlayerNpc.Yaw)
-        Console.Log("Angle played npc : "..NanosTable.Dump(tAnglePlayerNpc) .. " yaw version " .. angleVersion)
-        if (angleVersion > PROVISORY_NACT_ANGLE_DETECTION) then 
+        
+        --Console.Log("Angle played npc : "..NanosTable.Dump(tAnglePlayerNpc) .. " yaw version " .. angleVersion)
+        if (self.npc:IsInVisionAngle(self.npc.cFocused)) then 
             self.npc:StartTracing()
         else
             self.npc:StopTracing()

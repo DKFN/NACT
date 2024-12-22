@@ -144,9 +144,21 @@ function NACT_NPC:StartTracing()
     end
 end
 
+function NACT_NPC:IsInVisionAngle(cEntity)
+    if (cEntity == nil) then
+        Console.Error("N.A.C.T. Called IsInVisionAngle with Nil entity")
+        return false
+    end
+
+    local tAnglePlayerNpc = (self.character:GetLocation() - cEntity:GetLocation()):Rotation()
+    local angleVersion =  math.abs(self.character:GetRotation().Yaw - tAnglePlayerNpc.Yaw)
+    return angleVersion > PROVISORY_NACT_ANGLE_DETECTION
+end
+
 Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID, entityResult)
     local npcSubscribedToTraces = NACT_NPC.GetByID(npcID)
 
+    -- TODO: Log error of zombie events
     if (npcSubscribedToTraces) then
         local currentBehavior = npcSubscribedToTraces.behavior
         if (currentBehavior.OnVisionChanged ~= nil) then
