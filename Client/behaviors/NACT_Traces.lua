@@ -1,7 +1,4 @@
--- TODO: This would be better in it's own class with start bone and end bones
--- TODO: Supports only one trace order at the time for the moment, make it compatible with multiple orders
--- TODO: For example (head to head, head to left arm, head to right arm, head to torso) for more accurate detection
--- TODO: And also add multiple interval so multiple NPCs can delegate traces to a few selected stable network authrorities
+
 local iTracesRefresherInterval = {}
 
 

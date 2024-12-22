@@ -15,7 +15,7 @@ end
 
 -- If the player 
 function NACT_Detection:Main()
-    Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() .." Detection heat".. self.heat)
+    Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
 
     -- Tracing functions should be in NACT_NPC or NACT_Behavior
     if (self.heat >= 100) then
@@ -24,7 +24,7 @@ function NACT_Detection:Main()
         self.npc:GoPreviousBehavior()
         self:DecrementLevel()
     else
-        if (self.npc.triggers.closeProximity.enemyCount >= 0 and self.heat >= PROVISORY_NACT_HEAT_TURN_TO) then
+        if (self.npc.triggers.closeProximity.enemyCount > 0 and self.heat >= PROVISORY_NACT_HEAT_TURN_TO) then
             -- Ambigu, c'est un player ou un npc etc, closestChar
             local closestPlayerInRange = self.npc.triggers.closeProximity.enemies[1]
             self.npc.character:LookAt(closestPlayerInRange:GetLocation())
