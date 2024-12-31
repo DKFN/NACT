@@ -1,5 +1,5 @@
 -- This behavior aims to try to detect the player and then go to the next state on the behavior tree
-PROVISORY_NACT_HEAT_INCREMENT = 1
+PROVISORY_NACT_HEAT_INCREMENT = 3
 PROVISORY_NACT_HEAT_TURN_TO = 50 -- Heat necessary for the NPC to turn towards the player
 
 NACT_Detection = BaseClass.Inherit("NACT_Detection")
@@ -14,12 +14,13 @@ end
 -- TODO: cFocused should change to closest player in vision range
 -- If the player 
 function NACT_Detection:Main()
+    local bHasEnemyDetectable = self.npc.triggers.detection.enemyCount > 0
     Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
 
     -- Tracing functions should be in NACT_NPC or NACT_Behavior
     if (self.heat >= 100) then
         self.npc:GoNextBehavior()
-    elseif (self.heat <= 0 and self.npc.triggers.detection.enemyCount <= 0) then
+    elseif (self.heat <= 0 and not bHasEnemyDetectable) then
         self.npc:GoPreviousBehavior()
     else
         if (self.heat >= PROVISORY_NACT_HEAT_TURN_TO) then
@@ -32,24 +33,27 @@ function NACT_Detection:Main()
             self.npc:StopTracing()
         end
         
-        if (self.npc:IsFocusedVisible()) then
+        if (self.npc:IsFocusedVisible() and bHasEnemyDetectable) then
             self:IncrementLevel()
         else
             self:DecrementLevel()
         end
     end
 end
-
 -- TODO: Vary heat increment and decrement by distance (and possibly angle too)
+
 function NACT_Detection:IncrementLevel()
-    self.heat = math.min(self.heat + PROVISORY_NACT_HEAT_INCREMENT, 100)
+    local nValue = PROVISORY_NACT_HEAT_INCREMENT + (1 / (self.npc:GetDistanceToFocused() + 1) * 2000)
+    self.heat = math.min(self.heat + nValue, 100)
 end
 
 function NACT_Detection:DecrementLevel()
-    self.heat = math.max(0, self.heat - PROVISORY_NACT_HEAT_INCREMENT)
+    local nValue = PROVISORY_NACT_HEAT_INCREMENT + ((self.npc:GetDistanceToFocused() + 1) / 2000)
+    self.heat = math.max(0, self.heat - nValue)
 end
 
 function NACT_Detection:Destroy()
+    self.npc:StopTracing()
     Timer.ClearInterval(self.timerHandle)
 end
 

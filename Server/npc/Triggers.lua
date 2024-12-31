@@ -55,5 +55,5 @@ function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
 end
 
 function NACT_NPC:Debug_PrintTriggerStates()
-    Console.Log("N.A.C.T. Npc ".. self:GetID() .. " Trigger states : ".. NanosTable.Dump(self.triggers))
+    -- Console.Log("N.A.C.T. Npc ".. self:GetID() .. " Trigger states : ".. NanosTable.Dump(self.triggers))
 end

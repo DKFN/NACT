@@ -45,6 +45,10 @@ function NACT_NPC:TurnToFocused()
     self.character:RotateTo(Rotator(0, (self.cFocused:GetLocation() - self.character:GetLocation()):Rotation().Yaw, 0), 0.5)
 end
 
+function NACT_NPC:GetDistanceToFocused()
+    return self.character:GetLocation():Distance(self.cFocused:GetLocation())
+end
+
 Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID, entityResult)
     local npcSubscribedToTraces = NACT_NPC.GetByID(npcID)
     if (npcSubscribedToTraces) then
