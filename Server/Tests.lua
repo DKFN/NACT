@@ -24,7 +24,7 @@ Package.Subscribe("Load", function()
     local wAk472 = AK47(Vector(1035, 154, 300), Rotator())
     local cDebugNPC2 = Character(Vector(8363.520, -4661.16, 467), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
     cDebugNPC2:SetTeam(1)
-    cDebugNPC2:PickUp(wAk47)
+    cDebugNPC2:PickUp(wAk472)
 
     NACT_RegisterNpc(cDebugNPC2, sTestZoneName)
     Console.Log("Ok")

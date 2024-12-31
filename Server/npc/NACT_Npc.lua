@@ -8,7 +8,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName)
     self.cFocused = nil -- When someone gets noticed by the NPC and it takes actions against it
     self.cFocusedTraceHit = false
      -- IDLE | DETECT | COVER | PUSH | FLANK | ENGAGE | SUPRESS | HEAL etc... see Server/behaviors
-    self.behaviorConfig = {NACT_Idle, NACT_Detection}
+    self.behaviorConfig = {NACT_Idle, NACT_Detection, NACT_Engage}
     self.currentBehaviorIndex = 1
     self.behavior = self.behaviorConfig[self.currentBehaviorIndex](self)
     self:_registerTriggerBoxes()
