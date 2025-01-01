@@ -15,7 +15,9 @@ end
 -- If the player 
 function NACT_Detection:Main()
     local bHasEnemyDetectable = self.npc.triggers.detection.enemyCount > 0
-    Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
+    if (NACT_DEBUG_DETECTION) then
+        Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
+    end
 
     -- Tracing functions should be in NACT_NPC or NACT_Behavior
     if (self.heat >= 100) then

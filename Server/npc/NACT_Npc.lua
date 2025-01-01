@@ -16,9 +16,11 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName)
     self.tracingLaunched = false
 
     -- DEBUG
-    Timer.SetInterval(function()
-        Chat.BroadcastMessage("Behavior index ".. self.currentBehaviorIndex)
-    end, 2000, self)
+    if (NACT_DEBUG_BEHAVIORS) then
+        Timer.SetInterval(function()
+            Chat.BroadcastMessage("Behavior index ".. self.currentBehaviorIndex)
+        end, 2000, self)
+    end
 end
 
 ---

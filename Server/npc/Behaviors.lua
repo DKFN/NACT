@@ -13,7 +13,10 @@ function NACT_NPC:GoPreviousBehavior()
 end
 
 function NACT_NPC:SetBehavior(iBehaviorIndex)
-    Console.Log("Switching to Behavior index ".. iBehaviorIndex)
+    if (NACT_DEBUG_BEHAVIORS) then
+        Console.Log("Switching to Behavior index ".. iBehaviorIndex)
+    end
+    
     local cBehaviorToSpawn = self.behaviorConfig[iBehaviorIndex]
 
     if (cBehaviorToSpawn == nil) then

@@ -1,0 +1,1 @@
+-- TODO: Periodically scan the cover points of the zone and keep track of the nearest that provides shelter from the cFocused entity

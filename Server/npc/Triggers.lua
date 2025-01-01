@@ -6,7 +6,7 @@ function NACT_NPC:_registerTriggerBoxes()
         detection = self:createTriggerBox(TriggerType.Sphere, 5000, Color.RED),
         midProximity = self:createTriggerBox(TriggerType.Sphere, 2000, TriggerType.Sphere, Color.ORANGE),
         closeProximity = self:createTriggerBox(TriggerType.Sphere, 1000, Color.BLUE),
-        melee = self:createTriggerBox(TriggerType.Box, 70, Color.YELLOW)
+        melee = self:createTriggerBox(TriggerType.Box, 100, Color.YELLOW)
     }
 
 end
@@ -55,5 +55,7 @@ function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
 end
 
 function NACT_NPC:Debug_PrintTriggerStates()
-    -- Console.Log("N.A.C.T. Npc ".. self:GetID() .. " Trigger states : ".. NanosTable.Dump(self.triggers))
+    if (NACT_DEBUG_TRIGGERS) then
+        Console.Log("N.A.C.T. Npc ".. self:GetID() .. " Trigger states : ".. NanosTable.Dump(self.triggers))
+    end
 end

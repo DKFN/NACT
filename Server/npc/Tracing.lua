@@ -40,8 +40,20 @@ function NACT_NPC:IsFocusedVisible()
     return self.cFocusedTraceHit and self:IsInVisionAngle(self.cFocused)
 end
 
-function NACT_NPC:TurnToFocused()
-    self.character:LookAt(self.cFocused:GetLocation())
+function NACT_NPC:TurnToFocused(nInaccuracyFactor)
+    local vInaccurayVector
+
+    if (nInaccuracyFactor) then
+        vInaccurayVector = Vector(
+            math.random(-nInaccuracyFactor, nInaccuracyFactor), 
+            math.random(-nInaccuracyFactor, nInaccuracyFactor), 
+            math.random(-nInaccuracyFactor, nInaccuracyFactor)
+        )
+    else
+        vInaccurayVector = Vector(0,0,0)
+    end        
+
+    self.character:LookAt(self.cFocused:GetLocation() + vInaccurayVector)
     self.character:RotateTo(Rotator(0, (self.cFocused:GetLocation() - self.character:GetLocation()):Rotation().Yaw, 0), 0.5)
 end
 

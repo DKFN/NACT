@@ -29,3 +29,7 @@ Package.Subscribe("Load", function()
     NACT_RegisterNpc(cDebugNPC2, sTestZoneName)
     Console.Log("Ok")
 end)
+
+Player.Subscribe("Spawn", function(player)
+
+end)
