@@ -3,12 +3,13 @@ NACT_NPC = BaseClass.Inherit("NACT_NPC", false)
 PROVISORY_NACT_ANGLE_DETECTION = 90
 function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName)
     self.character = cNpcToHandle
-    self.territory = tTerritoryOfNpc
+    self.territory = NACT_territories[sTerritoryName]
     self.afInrangeEntities = {}
     self.cFocused = nil -- When someone gets noticed by the NPC and it takes actions against it
     self.cFocusedTraceHit = false
      -- IDLE | DETECT | COVER | PUSH | FLANK | ENGAGE | SUPRESS | HEAL etc... see Server/behaviors
-    self.behaviorConfig = {NACT_Idle, NACT_Detection, NACT_Engage}
+    -- self.behaviorConfig = {NACT_Idle, NACT_Detection, NACT_Engage}
+    self.behaviorConfig = {NACT_Idle, NACT_Detection, NACT_Cover}
     self.currentBehaviorIndex = 1
     self.behavior = self.behaviorConfig[self.currentBehaviorIndex](self)
     self:_registerTriggerBoxes()

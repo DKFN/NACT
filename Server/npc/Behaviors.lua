@@ -14,6 +14,7 @@ end
 
 function NACT_NPC:SetBehavior(iBehaviorIndex)
     if (NACT_DEBUG_BEHAVIORS) then
+        Console.Log("Behavior configs : "..NanosTable.Dump(self.behaviorConfig))
         Console.Log("Switching to Behavior index ".. iBehaviorIndex)
     end
     

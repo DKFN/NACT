@@ -8,7 +8,34 @@ Package.Subscribe("Load", function()
     local sTestZoneName = "ShedByTheSea"
 
     NACT_RegisterTerritory(sTestZoneName, {
-        coverPoints = {},
+        -- TODO: In the future they should be calculated automatically
+        coverPoints = {
+            {
+                pos = Vector(9799.259, -2928.79, 123.70),
+                stance = StanceMode.Crouching,
+                -- TODO Move from NACT_Territory when it exists
+                coversFromAllFocused = false,
+                takenBy = nil
+            },
+            {
+                pos = Vector(9659.35, -2664.49, 178.55),
+                stance = StanceMode.Crouching,
+                coversFromAllFocused = false,
+                takenBy = nil
+            },
+            {
+                pos = Vector(6443.207, 9828.52, 232.66),
+                stance = StanceMode.Standing,
+                coversFromAllFocused = false,
+                takenBy = nil
+            },
+            {
+                post = Vector(6579.92, -10027.65, 201.87),
+                stance = StanceMode.Standing,
+                coversFromAllFocused = false,
+                takenBy = nil
+            }
+        },
         zoneBounds = {}
     })
 
@@ -31,5 +58,6 @@ Package.Subscribe("Load", function()
 end)
 
 Player.Subscribe("Spawn", function(player)
+    --player:GetCharacter():SetTeam(1)
 
 end)

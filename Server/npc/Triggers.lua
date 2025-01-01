@@ -42,7 +42,7 @@ function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
     tTriggerData.trigger:Subscribe("EndOverlap", function(self, entity)
         if (self == tTriggerData.trigger and _self.character:GetID() ~= entity:GetID()) then
             if (_self.character:GetTeam() == entity:GetTeam()) then
-                table.remove(tTriggerData.allies, entity)
+                table_remove_by_value(tTriggerData.allies, entity)
                 tTriggerData.allyCount = tTriggerData.allyCount + 1
             else
                 tTriggerData.enemyCount = tTriggerData.enemyCount - 1
