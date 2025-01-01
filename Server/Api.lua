@@ -23,6 +23,7 @@ function NACT_RegisterNpc(cNpcToHandle, sTerritoryName)
         return
     end
 
+
     -- TODO: This would definitly be better with Timmy classlib :D
     -- Type is NACT_NPC
     local NpcRegistred = NACT_NPC(cNpcToHandle, sTerritoryName)
@@ -32,6 +33,8 @@ function NACT_RegisterNpc(cNpcToHandle, sTerritoryName)
     Console.Log("N.A.C.T. npc " .. iNpcRegID .. " registered")
     cNpcToHandle:SetValue("NACT_NPC_ID", iNpcRegID)
 
+    tTerritoryOfNpc:AddNPC(NpcRegistred)
+
     return NpcRegistred
 
 end
@@ -39,5 +42,5 @@ end
 
 
 function NACT_RegisterTerritory(sTerritoryName, tZoneConfigTable)
-    NACT_territories[sTerritoryName] = tZoneConfigTable;
+    NACT_territories[sTerritoryName] = NACT_Territory(tZoneConfigTable);
 end

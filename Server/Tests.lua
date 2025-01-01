@@ -9,30 +9,39 @@ Package.Subscribe("Load", function()
 
     NACT_RegisterTerritory(sTestZoneName, {
         -- TODO: In the future they should be calculated automatically
+        -- TODO: In the meantime it would be nice to have some debug options that will
+        -- TODO: With chat commands write the cover points with the current gait mode
+        -- TODO: Like:
+        -- TODO: /nact editor on
+        -- TODO: /nact load "ShedByTheSea"
+        -- TODO: /nact cover show
+        -- TODO: /nact cover add
+        -- TODO: /nact cover remove
+        -- TODO: /nact save "SedByTheSea"
         coverPoints = {
             {
                 pos = Vector(9799.259, -2928.79, 123.70),
                 stance = StanceMode.Crouching,
                 -- TODO Move from NACT_Territory when it exists
-                coversFromAllFocused = false,
+                secure = false,
                 takenBy = nil
             },
             {
                 pos = Vector(9659.35, -2664.49, 178.55),
                 stance = StanceMode.Crouching,
-                coversFromAllFocused = false,
+                secure = false,
                 takenBy = nil
             },
             {
                 pos = Vector(6443.207, 9828.52, 232.66),
                 stance = StanceMode.Standing,
-                coversFromAllFocused = false,
+                secure = false,
                 takenBy = nil
             },
             {
-                post = Vector(6579.92, -10027.65, 201.87),
+                pos = Vector(6579.92, -10027.65, 201.87),
                 stance = StanceMode.Standing,
-                coversFromAllFocused = false,
+                secure = false,
                 takenBy = nil
             }
         },
