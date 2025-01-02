@@ -10,9 +10,9 @@ function NACT_Patrol:Constructor(NpcInstance)
     self.patrolPath = "BigEnemyCamp"
     self.targetPatrolPointIndex = 1
     -- TODO: Make patrol point configurable
-    self.patrolPointsTerritory = self.npc.territory.patrolRoutes["aroundCamp"]
-    self.patrolPoints = self.patrolPointsTerritory.points
-    self.maxPatrolPointIndex = self.patrolPointsTerritory.points
+    self.patrolRoute = self.npc.territory.patrolRoutes["aroundCamp"]
+    self.patrolPoints = self.patrolRoute.points
+    self.maxPatrolPointIndex = #self.patrolRoute.points
     self.moveCompleteCallback = nil
 
     self:WalkToNextPoint()
@@ -28,7 +28,7 @@ function NACT_Patrol:WalkToNextPoint()
     end)
     if (self.targetPatrolPointIndex == self.maxPatrolPointIndex) then
         -- TODO : Check if circling or not
-        if (self.walkMethod == "circle") then
+        if (self.patrolRoute.walkMethod == "circle") then
             self.targetPatrolPointIndex = 1
         else
             Console.Log("Circling method not implemented")
