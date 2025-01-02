@@ -11,10 +11,6 @@ function NACT_Detection:Constructor(NpcInstance)
     end, 500, self)
 end
 
-function NACT_Detection:GetNpc()
-    return self.npc
-end
-
 -- TODO: cFocused should change to closest player in vision range
 -- If the player 
 function NACT_Detection:Main()
@@ -49,11 +45,13 @@ function NACT_Detection:Main()
 end
 -- TODO: Vary heat increment and decrement by distance (and possibly angle too)
 
+--- Raises heat level depeing of increment and distance factosr
 function NACT_Detection:IncrementLevel()
     local nValue = PROVISORY_NACT_HEAT_INCREMENT + (1 / (self.npc:GetDistanceToFocused() + 1) * 2000)
     self.heat = math.min(self.heat + nValue, 100)
 end
 
+--- Decrement heat level depending of distance factor and increment configured
 function NACT_Detection:DecrementLevel()
     local nValue = PROVISORY_NACT_HEAT_INCREMENT + ((self.npc:GetDistanceToFocused() + 1) / 2000)
     self.heat = math.max(0, self.heat - nValue)

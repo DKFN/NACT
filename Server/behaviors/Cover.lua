@@ -24,6 +24,7 @@ function NACT_Cover:Main()
     end
 end
 
+--- Go to the nearest cover point
 function NACT_Cover:MoveToNearestCoverPoint()
     self.nearestCoverPoint = self:FindNearestCoverPoint()
     if (self.nearestCoverPoint) then
@@ -45,6 +46,8 @@ function NACT_Cover:MoveToNearestCoverPoint()
     end
 end
 
+--- Gets to the nearest safe and not taken cover point
+---@return nil | coverPoint
 function NACT_Cover:FindNearestCoverPoint()
     -- Console.Log("All territory "..NanosTable.Dump(self.npc))
     local allTerritoryCoverPoints = self.npc.territory.coverPoints

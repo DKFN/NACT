@@ -29,6 +29,9 @@ end
 --- Enemy functions
 ---
 
+----
+--- Sets the currently focused charcter by the NPC
+--- @param cEntity Character to be focused by the NPC  
 function NACT_NPC:SetFocusedEntity(cEntity)
     self.cFocused = cEntity
 end

@@ -1,5 +1,8 @@
 NACT_Territory = BaseClass.Inherit("NACT_Territory")
 
+--- Territory is a zone controlled by NPCs and contains the configuration of
+--- cover points and patrol routes 
+---@param tTerritoryConfig TerritoryConfig territory config map
 function NACT_Territory:Constructor(tTerritoryConfig)
     self.coverPoints = tTerritoryConfig.coverPoints
     self.coverPointsPositions = {}
@@ -45,6 +48,8 @@ function NACT_Territory:Constructor(tTerritoryConfig)
 
 end
 
+--- Updates the viability of cover points
+---@param tViabilityResult array [coverIndex]: <isCoverSafe>
 function NACT_Territory:UpdateCoverViability(tViabilityResult)
     for iCover, bIsCoverViable in ipairs(tViabilityResult) do
         self.coverPoints[iCover].secure = bIsCoverViable
