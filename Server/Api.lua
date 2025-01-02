@@ -4,7 +4,7 @@
 -- Parameters:
 --   cNpcTohandle : Npc to be delegated to N.A.C.T.
 --   sTerritoryName    : The Territory this NPC will use to find it's cover and patrol points
-function NACT_RegisterNpc(cNpcToHandle, sTerritoryName)
+function NACT_RegisterNpc(cNpcToHandle, sTerritoryName, tNpcConfig)
 
     if (cNpcToHandle == nil) then
         Console.Error("N.A.C.T. Invalid character provided to NACT_RegisterNpc")
@@ -26,7 +26,7 @@ function NACT_RegisterNpc(cNpcToHandle, sTerritoryName)
 
     -- TODO: This would definitly be better with Timmy classlib :D
     -- Type is NACT_NPC
-    local NpcRegistred = NACT_NPC(cNpcToHandle, sTerritoryName)
+    local NpcRegistred = NACT_NPC(cNpcToHandle, sTerritoryName, tNpcConfig)
     local iNpcRegID = NpcRegistred:GetID()
     NACT_handledNpcs[iNpcRegID] = NpcRegistred
 

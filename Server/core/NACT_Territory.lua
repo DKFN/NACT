@@ -7,6 +7,7 @@ function NACT_Territory:Constructor(tTerritoryConfig)
         table.insert(self.coverPointsPositions, cover.pos)
     end
     self.npcs = {}
+    self.patrolRoutes = tTerritoryConfig.patrolRoutes
 
     local _self = self
 

@@ -11,10 +11,15 @@ function NACT_Detection:Constructor(NpcInstance)
     end, 500, self)
 end
 
+function NACT_Detection:GetNpc()
+    return self.npc
+end
+
 -- TODO: cFocused should change to closest player in vision range
 -- If the player 
 function NACT_Detection:Main()
-    local bHasEnemyDetectable = self.npc.triggers.detection.enemyCount > 0
+    -- Console.Log("Main self of parent : "..NanosTable.Dump(self:GetNpc()))
+    local bHasEnemyDetectable = self:GetNpc().triggers.detection.enemyCount > 0
     if (NACT_DEBUG_DETECTION) then
         Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
     end

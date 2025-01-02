@@ -7,6 +7,9 @@ function NACT_Cover:Constructor(NpcInstance)
     self.inCover = false
     self.moveCompleteCallback = nil
 
+
+    -- TODO: Does not really need a timer.
+    -- TODO: It should work relying only on events instead of polling
     self.timerMain = Timer.SetInterval(function()
         self:Main()
     end, 250, self)
@@ -14,6 +17,7 @@ end
 
 function NACT_Cover:Main()
     if (self.inCover) then
+        -- While in cover the NPC should reload the ammo if needed and then wait a little bit before going to cover again
         local ammoValue = self.npc.character
     elseif (not (self.inCover or self.movingToCover)) then
         self:MoveToNearestCoverPoint()
@@ -23,6 +27,7 @@ end
 function NACT_Cover:MoveToNearestCoverPoint()
     self.nearestCoverPoint = self:FindNearestCoverPoint()
     if (self.nearestCoverPoint) then
+        self.nearestCoverPoint.taken = true
         self.npc.character:SetGaitMode(GaitMode.Sprinting)
         self.movingToCover = true
         self.npc.character:MoveTo(self.nearestCoverPoint.pos)
@@ -48,7 +53,7 @@ function NACT_Cover:FindNearestCoverPoint()
 
     for i, coverPoint in ipairs(allTerritoryCoverPoints) do
         -- TODO: Also check if cover point is taker
-        if (coverPoint.secure) then
+        if (coverPoint.secure and not coverPoint.taken) then
             Console.Log("Scanning cover point : "..NanosTable.Dump(coverPoint))
             local distanceToCoverPoint = coverPoint.pos:Distance(self.npc.character:GetLocation())
             if (distanceToCoverPoint < currentNearestDistance) then
