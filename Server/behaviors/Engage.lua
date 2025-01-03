@@ -29,6 +29,8 @@ function NACT_Engage:Main()
         if (weapon) then
             weapon:PullUse(0)
         end
+    else
+        self.npc:MoveToFocused()
     end
 end
 

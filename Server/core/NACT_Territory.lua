@@ -32,7 +32,7 @@ function NACT_Territory:Constructor(tTerritoryConfig)
         end
 
         if (#reachablePlayers == 0) then
-            Console.Log("No reachable players in range, not scanning viability of covers")
+            -- Console.Log("No reachable players in range, not scanning viability of covers")
             return
         end
 
@@ -43,8 +43,13 @@ function NACT_Territory:Constructor(tTerritoryConfig)
             Console.Log("Authority player : "..NanosTable.Dump(authorityPlayer))
         end
 
+        -- TODO: There is also no need to resend cover positions each time, this is dumb. Just send it once while getting into the zone
         Events.CallRemote("NACT:TRACE:COVER:VIABILITY:QUERY", authorityPlayer, _self:GetID(), allCfocused, _self.coverPointsPositions)
-    end, 1000)
+    end, 100)
+
+    if (NACT_DEBUG_EDITOR_MODE) then
+        self:DebugDisplayCoverPoints()
+    end
 
 end
 
@@ -64,6 +69,13 @@ end
 ---@param nactNpc any
 function NACT_Territory:AddNPC(nactNpc)
     table.insert(self.npcs, nactNpc)
+end
+
+function NACT_Territory:DebugDisplayCoverPoints()
+    for iCover, coverPoint in ipairs(self.coverPointsPositions) do
+        Trigger(coverPoint, Rotator(), Vector(50), TriggerType.Sphere, true, Color.RED)
+        -- Console.Log("Debugging : "..NanosTable.Dump(t))
+    end
 end
 
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTerritoryID, tViabilityResult)

@@ -11,6 +11,7 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 # TODO
 
 - Behavior Alert pour alerter tous les NPCs dans la zone
+- Engage ne devrait etre actif que lorsque l'ennemi est dans la ligne de mire
 - Behavior back qui est choisit dans le combat si le NPC est en insuffisance numerique dans sa zone de choix, cherchant de l'aide vers un NPC proche
 - Behavior push qui est choisit dans le combat si le NPC est en superiorité
 - Reaction aux evenements de hit d'un NPC (Engage, Cover, Detection)
@@ -18,6 +19,10 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - Cleanups en cas de mort du NPC
 - Cleanups en cas d'abandon du combat par le joueur
 - Cleanups en cas de deconnexion du joueur en combat
+- Make sure all character nanos function calls are wrapped in NACT_NPC so users can extend NACT_NPC and provide their own system
+- Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
+- Roaming NPC is just a NPC that carries the territory attached to the commander
+and regularly updates the cover point in range
 
 # Bails du turfu mais faut y penser
 

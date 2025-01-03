@@ -1,3 +1,5 @@
+-- TODO: Deprecated, make NACT a singleton class
+
 -- This index is used to keep track of the assigned ids of NPCs
 NACT_npcIndexCounter = 1
 

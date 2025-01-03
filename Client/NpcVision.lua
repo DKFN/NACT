@@ -33,7 +33,8 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY:START", function(cNpc, cTarget,
                     sourceLocation,
                     targetLocation.Location,
                     CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
-                    TraceMode.DrawDebug | TraceMode.ReturnEntity,
+                    -- TraceMode.DrawDebug | TraceMode.ReturnEntity,
+                    TraceMode.ReturnEntity,
                     {cNpc}
                 )
 

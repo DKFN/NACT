@@ -61,10 +61,14 @@ function NACT_NPC:SetFocusedEntity(cEntity)
     self.cFocused = cEntity
 end
 
+function NACT_NPC:MoveToFocused()
+    self:MoveToPoint(self.cFocused:GetLocation())
+end
+
 --- Move but also look towards point
 ---@param vPoint Vector point to go
 function NACT_NPC:MoveToPoint(vPoint)
-    self.character:MoveTo(vPoint)
+    self.character:MoveTo(vPoint, 1)
     self.character:LookAt(vPoint)
 end
 

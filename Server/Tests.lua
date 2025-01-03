@@ -48,6 +48,13 @@ Package.Subscribe("Load", function()
                     stance = StanceMode.Standing,
                     secure = false,
                     takenBy = nil
+                },
+                
+                {
+                    pos = Vector(6427.33, -9828.09, 225.01),
+                    stance = StanceMode.Standing,
+                    secure = false,
+                    takenBy = nil
                 }
             },
             zoneBounds = {}
@@ -89,7 +96,140 @@ Package.Subscribe("Load", function()
                     walkMethod = "circle"
                 }
             },
-            coverPoints = {}
+            coverPoints = {
+                -- Pillars
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-1593.31, 7752.51, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-1404.31, 7977.59, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-1555.09, 8191.83, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-1831.69, 8091.83, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                -- House 1
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-2102.33, 6983.11, 225.62),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-1862.27, 6476.46, 171.86),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-1974.46, 6508.96, 225.62),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-2176.58, 6395.58, 225.62),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-1560.02, 6549.36, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                -- House 2
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-3793.58, 8632.55, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-3715.83, 8342.52, 214.06),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-4184.83, 8213.54, 214.06),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-4173.97, 8327.27, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-4180.46, 7931.48, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-3930.42, 7931.42, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-3600.11, 8069.73, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+
+                -- House 3
+                
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-4665.83, 6939.65, 236.85),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-4705.88, 7438.09, 236.85),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-4919.11, 7440.97, 236.85),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-4974.38, 7579.03, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+                {
+                    stance = StanceMode.Standing,
+                    pos = Vector(-4483.30, 7309.64, 199.11),
+                    secure = false,
+                    takenBy = nil
+                },
+            }
         })
 
         
@@ -98,6 +238,25 @@ Package.Subscribe("Load", function()
         cDebugNPC3:PickUp(wAk473)
         cDebugNPC3:SetTeam(1)
         NACT_RegisterNpc(cDebugNPC3, "BigEnemyCamp", PatrollingNpc)
+
+        
+        local wAk474 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
+        local cDebugNPC4 = Character(Vector(-2810.47, 6807.50, 199.3), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC4:PickUp(wAk474)
+        cDebugNPC4:SetTeam(1)
+        NACT_RegisterNpc(cDebugNPC4, "BigEnemyCamp", StillNpc)
+
+        local wAk475 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
+        local cDebugNPC5 = Character(Vector(-3893.92, 7539.05, 199.3), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC5:PickUp(wAk475)
+        cDebugNPC5:SetTeam(1)
+        NACT_RegisterNpc(cDebugNPC5, "BigEnemyCamp", StillNpc)
+
+        local wAk476 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
+        local cDebugNPC6 = Character(Vector(-4267.27, 6199.80, 199.3), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC6:PickUp(wAk476)
+        cDebugNPC6:SetTeam(1)
+        NACT_RegisterNpc(cDebugNPC6, "BigEnemyCamp", StillNpc)
 
     end
 end)
