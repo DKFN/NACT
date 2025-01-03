@@ -8,6 +8,17 @@ While NACT is primarly focused on simulating gunfights with millitary combat tac
 
 Special thanks to olivato and voltaism for open sourcing Isolados and VZombies code wich implement bots and was an inspiration for this library
 
+# TODO
+
+- Behavior Alert pour alerter tous les NPCs dans la zone
+- Behavior back qui est choisit dans le combat si le NPC est en insuffisance numerique dans sa zone de choix, cherchant de l'aide vers un NPC proche
+- Behavior push qui est choisit dans le combat si le NPC est en superiorité
+- Reaction aux evenements de hit d'un NPC (Engage, Cover, Detection)
+- Le detection range du NPC devrait etre remplacé par un detection range de zone
+- Cleanups en cas de mort du NPC
+- Cleanups en cas d'abandon du combat par le joueur
+- Cleanups en cas de deconnexion du joueur en combat
+
 # Bails du turfu mais faut y penser
 
 -> Sync la position relative des bones face a l'actor qui les attachent pour pouvoir avoir une liste de bones interessantes (bras, tete, torse) puis ensuite faire un leger RNG sur la position pour pas hit tout le temps

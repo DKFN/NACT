@@ -11,6 +11,7 @@ function NACT_Detection:Constructor(NpcInstance)
     end, 500, self)
 end
 
+-- TODO: Getting hit by a bullet should add 50 to heat level
 -- TODO: cFocused should change to closest player in vision range
 -- If the player 
 function NACT_Detection:Main()
