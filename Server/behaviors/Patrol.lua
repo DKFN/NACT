@@ -19,7 +19,7 @@ function NACT_Patrol:Constructor(NpcInstance)
 end
 
 function NACT_Patrol:WalkToNextPoint()
-    self.npc.character:MoveTo(self.patrolPoints[self.targetPatrolPointIndex])
+    self.npc:MoveToPoint(self.patrolPoints[self.targetPatrolPointIndex])
     self.moveCompleteCallback = self.npc.character:Subscribe("MoveComplete", function()
         Timer.SetTimeout(function()
             self:WalkToNextPoint()

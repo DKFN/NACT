@@ -1,5 +1,5 @@
 NACT_Engage = BaseClass.Inherit("NACT_Engage")
-NACT_PROVISORY_INNACURACY = 100
+NACT_PROVISORY_INNACURACY = 1000
 
 -- TODO: This would be much better if controlled by a "Combat" main behavior
 -- TODO: The main "combat" behavior is just a behavior that will switch to anorther behavior
@@ -15,12 +15,24 @@ function NACT_Engage:Constructor(NpcInstance)
 end
 
 function NACT_Engage:Main()
+    
+    local weapon = self.npc:GetWeapon()
+
+    if (self.npc:ShouldReload()) then
+        weapon:ReleaseUse()
+        self.npc:SetBehavior(NACT_Combat)
+    end
+
     local bFocusedVisible = self.npc:IsFocusedVisible()
     if (bFocusedVisible) then
         self.npc:TurnToFocused(NACT_PROVISORY_INNACURACY)
-        local weapon = self.npc.character:GetPicked()
         if (weapon) then
             weapon:PullUse(0)
         end
     end
+end
+
+function NACT_Engage:Destructor()
+    Timer.ClearInterval(self.timerHandle)
+    self.npc:StopTracing()
 end

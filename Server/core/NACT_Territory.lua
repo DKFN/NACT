@@ -60,6 +60,8 @@ function NACT_Territory:UpdateCoverViability(tViabilityResult)
     end
 end
 
+--- 
+---@param nactNpc any
 function NACT_Territory:AddNPC(nactNpc)
     table.insert(self.npcs, nactNpc)
 end

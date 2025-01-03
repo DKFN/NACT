@@ -15,7 +15,7 @@ end
 -- If the player 
 function NACT_Detection:Main()
     -- Console.Log("Main self of parent : "..NanosTable.Dump(self:GetNpc()))
-    local bHasEnemyDetectable = self:GetNpc().triggers.detection.enemyCount > 0
+    local bHasEnemyDetectable = self.npc.triggers.detection.enemyCount > 0
     if (NACT_DEBUG_DETECTION) then
         Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
     end
@@ -57,7 +57,7 @@ function NACT_Detection:DecrementLevel()
     self.heat = math.max(0, self.heat - nValue)
 end
 
-function NACT_Detection:Destroy()
+function NACT_Detection:Destructor()
     self.npc:StopTracing()
     Timer.ClearInterval(self.timerHandle)
 end

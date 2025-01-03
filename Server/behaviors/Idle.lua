@@ -19,6 +19,6 @@ function NACT_Idle:Main()
 end
 
 
-function NACT_Idle:Destroy()
+function NACT_Idle:Destructor()
     Timer.ClearInterval(self.timerHandle)
 end

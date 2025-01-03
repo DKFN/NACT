@@ -20,7 +20,9 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     -- DEBUG
     if (NACT_DEBUG_BEHAVIORS) then
         Timer.SetInterval(function()
-            Chat.BroadcastMessage("Behavior index ".. self.currentBehaviorIndex)
+            if (self.currentBehaviorIndex) then
+                Chat.BroadcastMessage("Behavior index ".. self.currentBehaviorIndex)
+            end
         end, 2000, self)
     end
 end
@@ -29,6 +31,29 @@ end
 --- Enemy functions
 ---
 
+--- Firearm NPC functions, in the future it should be done by extending the
+--- NACT_NPC base class
+function NACT_NPC:GetWeapon()
+    -- TODO: Should check if this is a weapon or not
+    return self.character:GetPicked()
+end
+
+function NACT_NPC:ShouldReload()
+    local weapon = self:GetWeapon()
+    if (weapon --[[and weapon:GetAmmoBag() > 0]]) then
+        return weapon:GetAmmoClip() <= 0
+    end
+    return false
+end
+
+function NACT_NPC:Reload()
+    Console.Log("Called reload event")
+    local weapon = self:GetWeapon()
+    if (weapon --[[and weapon:GetAmmoBag() > 0]]) then
+        weapon:Reload()
+    end
+end
+
 ----
 --- Sets the currently focused charcter by the NPC
 --- @param cEntity Character to be focused by the NPC  
@@ -36,6 +61,12 @@ function NACT_NPC:SetFocusedEntity(cEntity)
     self.cFocused = cEntity
 end
 
+--- Move but also look towards point
+---@param vPoint Vector point to go
+function NACT_NPC:MoveToPoint(vPoint)
+    self.character:MoveTo(vPoint)
+    self.character:LookAt(vPoint)
+end
 
 
 -- Extend native library of Lua or atleast pu in table utils file

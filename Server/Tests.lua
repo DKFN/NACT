@@ -2,12 +2,12 @@
 -- It is used with TestingMap from nanos-world
 
 
-NACT_TEST_SCENARIO = 2
+NACT_TEST_SCENARIO = 1
 
 Package.Subscribe("Load", function()
     Console.Log("N.A.C.T. Debug tools enabled")
-    local StillNpc = {behaviors =  {NACT_Idle, NACT_Detection, NACT_Cover, NACT_Engage}}
-    local PatrollingNpc = {behaviors = {NACT_Idle, NACT_Patrol, NACT_Engage}}
+    local StillNpc = {behaviors =  {NACT_Idle, NACT_Detection, NACT_Combat}}
+    local PatrollingNpc = {behaviors = {NACT_Idle, NACT_Patrol, NACT_Combat}}
 
     if (NACT_TEST_SCENARIO == 1) then
         local sTestZoneName = "ShedByTheSea"
@@ -55,6 +55,7 @@ Package.Subscribe("Load", function()
 
 
         local wAk47 = AK47(Vector(1035, 154, 300), Rotator())
+        wAk47:SetAutoReload(false)
         local cDebugNPC = Character(Vector(6552.520, -8691.16, 467), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC:SetTeam(1)
         cDebugNPC:PickUp(wAk47)
@@ -63,6 +64,7 @@ Package.Subscribe("Load", function()
 
 
         local wAk472 = AK47(Vector(1035, 154, 300), Rotator())
+        wAk472:SetAutoReload(false)
         local cDebugNPC2 = Character(Vector(8363.520, -4661.16, 467), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC2:SetTeam(1)
         cDebugNPC2:PickUp(wAk472)
