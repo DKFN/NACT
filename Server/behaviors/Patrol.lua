@@ -7,10 +7,10 @@ function NACT_Patrol:Constructor(NpcInstance)
     self:Super().Constructor(self, NpcInstance)
     Console.Log("Instance a "..self.heat)
 
-    self.patrolPath = "BigEnemyCamp"
+    self.patrolPath = "gateFront"
     self.targetPatrolPointIndex = 1
     -- TODO: Make patrol point configurable
-    self.patrolRoute = self.npc.territory.patrolRoutes["aroundCamp"]
+    self.patrolRoute = self.npc.territory.patrolRoutes["gateFront"]
     self.patrolPoints = self.patrolRoute.points
     self.maxPatrolPointIndex = #self.patrolRoute.points
     self.moveCompleteCallback = nil
@@ -37,6 +37,10 @@ function NACT_Patrol:WalkToNextPoint()
         self.targetPatrolPointIndex = self.targetPatrolPointIndex + 1
     end
     
+end
+
+function NACT_Patrol:Destructor()
+    self:Super().Destructor(self)
 end
 
 -- function NACT_Patrol:Main()

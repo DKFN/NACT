@@ -75,10 +75,11 @@ function NACT_Cover:FindNearestCoverPoint()
     local currentNearestDistance = 99999999999
     local nearestCoverPoint = nil
 
+    local startSearch = os.clock()
     for i, coverPoint in ipairs(allTerritoryCoverPoints) do
         -- TODO: Also check if cover point is taker
         if (coverPoint.secure and not coverPoint.taken) then
-            Console.Log("Scanning cover point : "..NanosTable.Dump(coverPoint))
+            --Console.Log("Scanning cover point : "..NanosTable.Dump(coverPoint))
             local distanceToCoverPoint = coverPoint.pos:Distance(self.npc.character:GetLocation())
             if (distanceToCoverPoint < currentNearestDistance) then
                 currentNearestDistance = distanceToCoverPoint
@@ -87,6 +88,8 @@ function NACT_Cover:FindNearestCoverPoint()
         end
     end
 
+    local elapsedInSearch = math.floor((os.clock() - startSearch) * 1000)
+    Console.Log("Time elapsed searching cover : "..elapsedInSearch.."ms")
     return nearestCoverPoint
 end
 

@@ -4,9 +4,16 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(iTerritoryID
     for iCover, coverPos in ipairs(tAllCoverPositions) do
         local coverViable = true
         for iEntity, entity in ipairs(tAllFocusedEntities) do
+            local finalLoc
+            local entityPreciseLocation = entity:GetBoneTransform("head")
+            if (entityPreciseLocation) then
+                finalLoc = entityPreciseLocation.Location
+            else
+                finalLoc = entity:GetLocation()
+            end
             local traceResult = Trace.LineSingle(
                 coverPos,
-                entity:GetLocation(),
+                finalLoc,
                 CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
                 --TraceMode.DrawDebug | TraceMode.ReturnEntity
                 TraceMode.ReturnEntity
