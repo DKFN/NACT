@@ -6,8 +6,8 @@ NACT_TEST_SCENARIO = 4
 
 Package.Subscribe("Load", function()
     Console.Log("N.A.C.T. Debug tools enabled")
-    local StillNpc = {behaviors =  {NACT_Idle, NACT_Detection, NACT_Combat}}
-    local PatrollingNpc = {behaviors = {NACT_Idle, NACT_Patrol, NACT_Combat}}
+    local StillNpc = {behaviors =  {NACT_Idle, NACT_Detection, NACT_Alert, NACT_Combat}}
+    local PatrollingNpc = {behaviors = {NACT_Idle, NACT_Patrol, NACT_Alert, NACT_Combat}}
 
     if (NACT_TEST_SCENARIO == 1) then
         local sTestZoneName = "ShedByTheSea"
@@ -696,6 +696,22 @@ Package.Subscribe("Load", function()
         cDebugNPC:SetTeam(1)
         NACT_RegisterNpc(cDebugNPC, "TankBataillonSmall", PatrollingNpc)
 
+
+        
+        local wAk472 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
+        wAk472:SetAutoReload(false)
+        local cDebugNPC2 = Character(Vector(-3890.89, 14194.73, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC2:PickUp(wAk472)
+        cDebugNPC2:SetTeam(1)
+        NACT_RegisterNpc(cDebugNPC2, "TankBataillonSmall", StillNpc)
+
+        
+        local wAk473 = AK47(Vector(-5136, 15071.8, 188.45), Rotator())
+        wAk473:SetAutoReload(false)
+        local cDebugNPC3 = Character(Vector(-5136, 15071.8, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC3:PickUp(wAk473)
+        cDebugNPC3:SetTeam(1)
+        NACT_RegisterNpc(cDebugNPC3, "TankBataillonSmall", StillNpc)
     end
 end)
 

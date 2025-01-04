@@ -47,7 +47,7 @@ function NACT_Territory:Constructor(tTerritoryConfig)
 
         -- TODO: There is also no need to resend cover positions each time, this is dumb. Just send it once while getting into the zone
         Events.CallRemote("NACT:TRACE:COVER:VIABILITY:QUERY", authorityPlayer, _self:GetID(), allCfocused, _self.coverPointsPositions)
-    end, 100)
+    end, 500)
 
     if (NACT_DEBUG_EDITOR_MODE) then
         self:DebugDisplayCoverPoints()

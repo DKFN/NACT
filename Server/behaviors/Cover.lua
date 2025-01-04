@@ -3,6 +3,7 @@ NACT_Cover = BaseClass.Inherit("NACT_Cover")
 -- Make sure your NPC has enough time to perform actions while in cover !
 NACT_PROVISORY_COVER_HOLD_MIN = 2000
 NACT_PROVISORY_COVER_HOLD_MAX = 3000
+NACT_PROVISORY_MIN_COVER_DISTANCE = 200
 
 function NACT_Cover:Constructor(NpcInstance)
     self.npc = NpcInstance
@@ -32,10 +33,14 @@ function NACT_Cover:Main()
             self.npc:Reload()
             self.doingAction = false
         end
-    elseif (not (self.inCover or self.movingToCover)) then
-        local success = self:MoveToNearestCoverPoint()
-        if (not success) then
-            self.npc:SetBehavior(NACT_Combat)
+    else 
+        if (not self.doingAction) then 
+            if (not (self.inCover or self.movingToCover) or (self.nearestCoverPoint and not self.nearestCoverPoint.secure)) then
+                local success = self:MoveToNearestCoverPoint()
+                if (not success) then
+                    self.npc:SetBehavior(NACT_Combat)
+                end
+            end
         end
     end
 end
@@ -81,7 +86,7 @@ function NACT_Cover:FindNearestCoverPoint()
         if (coverPoint.secure and not coverPoint.taken) then
             --Console.Log("Scanning cover point : "..NanosTable.Dump(coverPoint))
             local distanceToCoverPoint = coverPoint.pos:Distance(self.npc.character:GetLocation())
-            if (distanceToCoverPoint < currentNearestDistance) then
+            if (distanceToCoverPoint < currentNearestDistance and distanceToCoverPoint > NACT_PROVISORY_MIN_COVER_DISTANCE) then
                 currentNearestDistance = distanceToCoverPoint
                 nearestCoverPoint = coverPoint
             end
