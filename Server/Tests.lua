@@ -2,7 +2,7 @@
 -- It is used with TestingMap from nanos-world
 
 
-NACT_TEST_SCENARIO = 1
+NACT_TEST_SCENARIO = 3
 
 Package.Subscribe("Load", function()
     Console.Log("N.A.C.T. Debug tools enabled")
@@ -257,6 +257,56 @@ Package.Subscribe("Load", function()
         cDebugNPC6:PickUp(wAk476)
         cDebugNPC6:SetTeam(1)
         NACT_RegisterNpc(cDebugNPC6, "BigEnemyCamp", StillNpc)
+
+    end
+
+    if (NACT_TEST_SCENARIO == 3) then
+        local sTestZoneName = "SolideLaMap"
+        NACT_RegisterTerritory(sTestZoneName, {
+            coverPoints = {
+                {
+                pos = Vector(-3788.0, -288.62, 198.14),
+                stance = StanceMode.Standing,
+                secure = false,
+                takenBy = nil
+            }, {
+                pos = Vector(-3788.0, -592, 198.14),
+                stance = StanceMode.Standing,
+                secure = false,
+                takenBy = nil
+            }, {
+                pos = Vector(-3223, 328.5, 198.1),
+                stance = StanceMode.Crouching,
+                secure = false,
+                takenBy = nil
+            }, {
+                pos = Vector(-4063, 1323, 198.1),
+                stance = StanceMode.Crouching,
+                secure = false,
+                takenBy = nil
+            }
+        },
+            zoneBounds = {},
+            patrolRoutes = {}
+        })
+        
+
+        
+        local wAk47 = AK47(Vector(1035, 154, 300), Rotator())
+        wAk47:SetAutoReload(false)
+        local cDebugNPC = Character(Vector(-3982.9, -417.69, 198), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC:SetTeam(1)
+        cDebugNPC:PickUp(wAk47)
+
+        NACT_RegisterNpc(cDebugNPC, sTestZoneName, StillNpc)
+
+        local wAk472 = AK47(Vector(1035, 154, 300), Rotator())
+        wAk472:SetAutoReload(false)
+        local cDebugNPC2 = Character(Vector(-3634.6, -714.73, 198), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC2:SetTeam(1)
+        cDebugNPC2:PickUp(wAk472)
+
+        NACT_RegisterNpc(cDebugNPC2, sTestZoneName, StillNpc)
 
     end
 end)

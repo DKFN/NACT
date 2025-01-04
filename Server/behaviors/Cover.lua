@@ -33,7 +33,10 @@ function NACT_Cover:Main()
             self.doingAction = false
         end
     elseif (not (self.inCover or self.movingToCover)) then
-        self:MoveToNearestCoverPoint()
+        local success = self:MoveToNearestCoverPoint()
+        if (not success) then
+            self.npc:SetBehavior(NACT_Combat)
+        end
     end
 end
 
@@ -59,7 +62,9 @@ function NACT_Cover:MoveToNearestCoverPoint()
             end, math.random(NACT_PROVISORY_COVER_HOLD_MIN, NACT_PROVISORY_COVER_HOLD_MAX))
             self.npc.character:Unsubscribe("MoveComplete", self.moveCompleteCallback)
         end)
+        return true
     end
+    return false
 end
 
 --- Gets to the nearest safe and not taken cover point

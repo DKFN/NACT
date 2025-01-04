@@ -21,7 +21,7 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(iTerritoryID
         end
     end
 
-    -- Console.Log("Received trace cover viability result"..NanosTable.Dump(tViabilityOfCovers))
+    Console.Log("Received trace cover viability result"..NanosTable.Dump(tViabilityOfCovers))
 
     Events.CallRemote("NACT:TRACE:COVER:VIABILITY:RESULT", iTerritoryID, tViabilityOfCovers)
 end)

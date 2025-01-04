@@ -12,6 +12,8 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     self.npcs = {}
     self.patrolRoutes = tTerritoryConfig.patrolRoutes
 
+    -- TODO: Ce serait mieux d'avoir surement le trigger sur le joueur et que ce soit lui
+    -- TODO: Qui reveille les npc. Bg Timmy
     local _self = self
 
     -- TODO: It should be much better to get a player within the zone bounds instead
@@ -74,7 +76,7 @@ end
 function NACT_Territory:DebugDisplayCoverPoints()
     for iCover, coverPoint in ipairs(self.coverPointsPositions) do
         Trigger(coverPoint, Rotator(), Vector(50), TriggerType.Sphere, true, Color.RED)
-        -- Console.Log("Debugging : "..NanosTable.Dump(t))
+        Console.Log("Debugging : "..NanosTable.Dump(t))
     end
 end
 
