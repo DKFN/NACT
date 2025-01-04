@@ -10,10 +10,9 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 
 # TODO
 
-- Behavior Alert pour alerter tous les NPCs dans la zone
-- Engage ne devrait etre actif que lorsque l'ennemi est dans la ligne de mire
 - Behavior back qui est choisit dans le combat si le NPC est en insuffisance numerique dans sa zone de choix, cherchant de l'aide vers un NPC proche
 - Behavior push qui est choisit dans le combat si le NPC est en superiorité
+- Engage ne devrait etre actif que lorsque l'ennemi est dans la ligne de mire
 - Reaction aux evenements de hit d'un NPC (Engage, Cover, Detection)
 - Le detection range du NPC devrait etre remplacé par un detection range de zone
 - Cleanups en cas de mort du NPC

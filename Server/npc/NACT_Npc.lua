@@ -72,6 +72,16 @@ function NACT_NPC:MoveToPoint(vPoint)
     self.character:LookAt(vPoint)
 end
 
+function NACT_NPC:Destructor()
+    self.behavior:Destroy()
+    self.territory:RemoveNPC(self)
+    for k, t in pairs(self.triggers) do
+        t.trigger:Destroy()
+    end
+    self.triggers = nil
+    Console.Log("NPC "..self:GetID().." reporting death, bye :(")
+end
+
 
 -- Extend native library of Lua or atleast pu in table utils file
 function table_findIndex_by_value(tCollection, entity)
@@ -89,3 +99,4 @@ end
 Package.Require("./Behaviors.lua")
 Package.Require("./Tracing.lua")
 Package.Require("./Triggers.lua")
+Package.Require("./Events.lua")

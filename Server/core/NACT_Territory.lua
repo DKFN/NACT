@@ -73,6 +73,10 @@ function NACT_Territory:AddNPC(nactNpc)
     table.insert(self.npcs, nactNpc)
 end
 
+function NACT_Territory:RemoveNPC(nactNpc)
+    table_remove_by_value(self.npcs, nactNpc)
+end
+
 function NACT_Territory:DebugDisplayCoverPoints()
     for iCover, coverPoint in ipairs(self.coverPointsPositions) do
         Trigger(coverPoint, Rotator(), Vector(50), TriggerType.Sphere, true, Color.RED)
