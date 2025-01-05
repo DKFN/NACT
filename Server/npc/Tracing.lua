@@ -20,7 +20,7 @@ function NACT_NPC:StartTracing()
         -- Console.Log("Calling remote event")
         
         
-        if (not self.tracingLaunched) then
+        if (not self.tracingLaunched and delegatedPlayer) then
             Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", delegatedPlayer, self.character, self:GetFocused(), self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
             self.tracingLaunched = true
         end
@@ -31,15 +31,19 @@ end
 --- This function attemps to change focused entity, if once is hit in the look range and 
 ---  
 function NACT_NPC:LookForFocused()
-    if (#self.npc:GetEnemiesInTrigger("detection") > 0 and not self.launchedScanAround) then
-        Console.Log("Launching trace results")
+    -- self:Log("Attempt "..NanosTable.Dump(#self:GetEnemiesInTrigger("detection") > 0).." scan launched ? "..NanosTable.Dump(self.launchedScanAround))
+    if (#self:GetEnemiesInTrigger("detection") > 0 and not self.launchedScanAround) then
+        self:Log("Looking around")
         self.launchedScanAround = true
         -- TODO Find best player to send the trace, nearest player in range
         local delegatedPlayer = Player.GetByIndex(1)
-        -- Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", delegatedPlayer, self.character, self.triggers.detection.enemies, self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
+        Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", delegatedPlayer, self.character, self.triggers.detection.enemies, self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
     end
 end
 
+function NACT_NPC:ReleaseScanLock()
+    self.launchedScanAround = false
+end
 function NACT_NPC:IsInVisionAngle(cEntity)
     if (cEntity == nil) then
         Console.Error("N.A.C.T. Called IsInVisionAngle with Nil entity")
@@ -97,9 +101,16 @@ end)
 
 Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", function(player, npcID, maybeNewCFocused)
     local npcForResult = NACT_NPC.GetByID(npcID)
-    Console.Log("Attempt vision lookup result : "..NanosTable.Dump(maybeNewCFocused).." for npc : "..NanosTable.Dump(npcForResult))
-    if (npcForResult and maybeNewCFocused) then
-        
-        npcForResult.cFocused = maybeNewCFocused
+    -- Console.Log("Attempt vision lookup result : "..NanosTable.Dump(maybeNewCFocused).." for npc : "..NanosTable.Dump(npcForResult))
+    
+    if (npcForResult) then
+        if maybeNewCFocused then
+            npcForResult:Log("Looked around, now focusing "..NanosTable.Dump(maybeNewCFocused))
+            npcForResult.cFocused = maybeNewCFocused
+        end
+        Timer.SetTimeout(function(npcForResult)
+            npcForResult.launchedScanAround = false
+            npcForResult:Log("Looked around, found nothing. Releasing scan")
+        end, 1000, npcForResult)
     end
 end)

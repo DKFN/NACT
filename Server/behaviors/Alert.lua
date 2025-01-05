@@ -10,8 +10,16 @@ end
 
 function NACT_Alert:Main()
     Chat.BroadcastMessage("NPC : "..self.npc:GetID().." alerting zone !!!")
-    local territoryNpcs = self.npc.territory.npcs
+    local territoryNpcs = self.npc.territory:GetAlliesInZone()
     for i, allyNpc in ipairs(territoryNpcs) do
-        allyNpc:SetBehavior(NACT_Combat)
+
+        -- TODO: 
+        local maybeNactNpcId = allyNpc:GetValue("NACT_NPC_ID")
+
+        Console.Log("Ally npc #"..maybeNactNpcId.." : "..NanosTable.Dump(allyNpc))
+        if maybeNactNpcId then
+            local nactNpc = NACT_NPC.GetByID(maybeNactNpcId)
+            nactNpc:SetBehavior(NACT_Combat)
+        end
     end
 end

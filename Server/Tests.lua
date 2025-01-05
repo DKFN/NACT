@@ -3,6 +3,7 @@
 
 
 NACT_TEST_SCENARIO = 4
+NACT_NPC_TEAMS = 1
 
 local StillNpc = {behaviors =  {NACT_Idle, NACT_Detection, NACT_Alert, NACT_Combat}}
 local PatrollingNpc = {behaviors = {NACT_Idle, NACT_Patrol, NACT_Alert, NACT_Combat}}
@@ -313,9 +314,11 @@ Package.Subscribe("Load", function()
 
     if (NACT_TEST_SCENARIO == 4) then
         local bigEnemyCamp = NACT.RegisterTerritory("TankBataillonSmall", {
-            -- zoneTrigger = Trigger(
-
-            -- ),
+            zoneBounds = {
+                pos = Vector(-4942.06, 15364.73, 338.15),
+                radius = 7000
+            },
+            team = NACT_NPC_TEAMS,
             patrolRoutes = {
                 gateFront = {
                     points = {
@@ -697,31 +700,28 @@ Package.Subscribe("Load", function()
         wAk47:SetAutoReload(false)
         local cDebugNPC = Character(Vector(-6246.35, 13107.7, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC:PickUp(wAk47)
-        -- cDebugNPC:SetTeam(1)
+        cDebugNPC:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC, "TankBataillonSmall", PatrollingNpc)
 
-
-        
         local wAk472 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
         wAk472:SetAutoReload(false)
         local cDebugNPC2 = Character(Vector(-3890.89, 14194.73, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC2:PickUp(wAk472)
-        -- cDebugNPC2:SetTeam(1)
+        cDebugNPC2:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC2, "TankBataillonSmall", StillNpc)
 
-        
         local wAk473 = AK47(Vector(-5136, 15071.8, 188.45), Rotator())
         wAk473:SetAutoReload(false)
         local cDebugNPC3 = Character(Vector(-5136, 15071.8, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC3:PickUp(wAk473)
-        -- cDebugNPC3:SetTeam(1)
+        cDebugNPC3:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC3, "TankBataillonSmall", StillNpc)
 
         local wAk474 = AK47(Vector(-5136, 15071.8, 188.45), Rotator())
         wAk474:SetAutoReload(false)
         local cDebugNPC4 = Character(Vector(-7563.89, 14397.17, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC4:PickUp(wAk474)
-        -- cDebugNPC4:SetTeam(1)
+        cDebugNPC4:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC4, "TankBataillonSmall", StillNpc)
 
 
@@ -730,7 +730,7 @@ Package.Subscribe("Load", function()
         wAk475:SetAutoReload(false)
         local cDebugNPC5 = Character(Vector(-7040.63, 14560.22, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC5:PickUp(wAk475)
-        -- cDebugNPC5:SetTeam(1)
+        cDebugNPC5:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC5, "TankBataillonSmall", StillNpc)
 
         
@@ -738,7 +738,7 @@ Package.Subscribe("Load", function()
         wAk476:SetAutoReload(false)
         local cDebugNPC6 = Character(Vector(-6894.24, 15736.28, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC6:PickUp(wAk476)
-        -- cDebugNPC6:SetTeam(1)
+        cDebugNPC6:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC6, "TankBataillonSmall", StillNpc)
 
         
@@ -746,7 +746,7 @@ Package.Subscribe("Load", function()
         wAk477:SetAutoReload(false)
         local cDebugNPC7 = Character(Vector(-5777.03, 16448.89, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC7:PickUp(wAk477)
-        -- cDebugNPC7:SetTeam(1)
+        cDebugNPC7:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC7, "TankBataillonSmall", StillNpc)
 
         
@@ -754,7 +754,7 @@ Package.Subscribe("Load", function()
         wAk478:SetAutoReload(false)
         local cDebugNPC8 = Character(Vector(-5099.22, 17197.28, 256.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC8:PickUp(wAk478)
-        -- cDebugNPC8:SetTeam(1)
+        cDebugNPC8:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC8, "TankBataillonSmall", StillNpc)
 
         
@@ -762,7 +762,7 @@ Package.Subscribe("Load", function()
         wAk479:SetAutoReload(false)
         local cDebugNPC9 = Character(Vector(-4245.41, 17259.10, 288.1), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC9:PickUp(wAk479)
-        -- cDebugNPC9:SetTeam(1)
+        cDebugNPC9:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC9, "TankBataillonSmall", StillNpc)
     end
 end)
@@ -778,5 +778,5 @@ Events.SubscribeRemote("NACT:DEBUG:SPAWN_ALLY_NPC", function(player, vLocationTo
     wAk473:SetAutoReload(false)
     local cDebugNPC3 = Character(vLocationToSpawn, Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
     cDebugNPC3:PickUp(wAk473)
-    NACT_RegisterNpc(cDebugNPC3, "TankBataillonSmall", StillNpc)
+    NACT.RegisterNpc(cDebugNPC3, "TankBataillonSmall", StillNpc)
 end)

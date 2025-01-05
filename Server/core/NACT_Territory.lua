@@ -11,7 +11,17 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     end
     self.npcs = {}
     self.patrolRoutes = tTerritoryConfig.patrolRoutes
-    self.zoneTrigger = tTerritoryConfig.zoneTrigger
+    self.team = tTerritoryConfig.team
+    
+    self.zone = NACT.createTriggerBox(
+        tTerritoryConfig.zoneBounds.pos,
+        self,
+        TriggerType.Sphere,
+        tTerritoryConfig.zoneBounds.radius,
+        Color.GREEN
+    )
+
+    Console.Log("Territory team : "..self.team)
 
     -- TODO: Ce serait mieux d'avoir surement le trigger sur le joueur et que ce soit lui
     -- TODO: Qui reveille les npc. Bg Timmy
@@ -83,6 +93,14 @@ function NACT_Territory:DebugDisplayCoverPoints()
         Trigger(coverPoint, Rotator(), Vector(50), TriggerType.Sphere, true, Color.RED)
         -- Console.Log("Debugging : "..NanosTable.Dump(t))
     end
+end
+
+function NACT_Territory:GetEnemiesInZone()
+    return NACT.GetTriggerPopulation(self.zone, "enemies")
+end
+
+function NACT_Territory:GetAlliesInZone()
+    return NACT.GetTriggerPopulation(self.zone, "allies")
 end
 
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTerritoryID, tViabilityResult)

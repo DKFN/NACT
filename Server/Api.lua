@@ -53,3 +53,6 @@ end
 function NACT.RegisterTerritory(sTerritoryName, tZoneConfigTable)
     NACT.territories[sTerritoryName] = NACT_Territory(tZoneConfigTable);
 end
+
+
+Package.Require("./core/Triggers.lua")

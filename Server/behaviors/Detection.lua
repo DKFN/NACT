@@ -21,11 +21,17 @@ function NACT_Detection:Main()
         Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
     end
 
+    -- Console.Log("Detection focused : "..NanosTable.Dump(self.npc:GetFocused()))
+    if (self.npc:GetFocused() == nil) then
+        self.npc:LookForFocused()
+        return
+    end
+
     -- Tracing functions should be in NACT_NPC or NACT_Behavior
     if (self.heat >= 100) then
         self.npc:GoNextBehavior()
     elseif (self.heat <= 0 and not bHasEnemyDetectable) then
-        self.npc:GoPreviousBehavior()
+            self.npc:GoPreviousBehavior()
     else
         if (self.heat >= PROVISORY_NACT_HEAT_TURN_TO) then
             self.npc:TurnToFocused()
@@ -35,12 +41,14 @@ function NACT_Detection:Main()
             self.npc:StartTracing()
         else
             self.npc:StopTracing()
+            self.npc:LookForFocused()
         end
         
         if (self.npc:IsFocusedVisible() and bHasEnemyDetectable) then
             self:IncrementLevel()
         else
             self:DecrementLevel()
+            self.npc:LookForFocused()
         end
     end
 end

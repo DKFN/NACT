@@ -12,8 +12,9 @@ end
 
 function NACT_Idle:Main()
     -- Console.Log(NanosTable.Dump(self.npc.triggers))
-    if (#self.npc:GetEnemiesInTrigger("detection") > 0) then
-        self.npc:SetFocusedEntity(self.npc.triggers.detection.enemies[1])
+    local enemiesInTerritory = self.npc.territory:GetEnemiesInZone()
+    -- Console.Log("enemiesInTerritory"..NanosTable.Dump(enemiesInTerritory))
+    if (#self.npc.territory:GetEnemiesInZone() > 0) then
         self.npc:GoNextBehavior()
     else
         if (not self.preventReturnToInitialPos) then

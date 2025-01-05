@@ -3,7 +3,7 @@ NACT_NPC = BaseClass.Inherit("NACT_NPC", false)
 PROVISORY_NACT_ANGLE_DETECTION = 90
 function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.character = cNpcToHandle
-    self.territory = NACT_territories[sTerritoryName]
+    self.territory = NACT.territories[sTerritoryName]
     self.afInrangeEntities = {}
     self.cFocused = nil -- When someone gets noticed by the NPC and it takes actions against it
     self.cFocusedTraceHit = false
@@ -64,9 +64,13 @@ function NACT_NPC:SetFocusedEntity(cEntity)
 end
 
 function NACT_NPC:MoveToFocused()
-    local focusedLocation = self.cFocused:GetLocation()
-    -- Console.Log("NPC : "..self:GetID().." Moving to location of cfocused ()")
-    self:MoveToPoint(focusedLocation)
+    local focusedEntity = self:GetFocused()
+    if (focusedEntity) then
+        local focusedLocation = self.cFocused:GetLocation()
+        -- Console.Log("NPC : "..self:GetID().." Moving to location of cfocused ()")
+        self:MoveToPoint(focusedLocation)    
+    end
+    
 end
 
 function NACT_NPC:GetFocused()
@@ -75,6 +79,11 @@ function NACT_NPC:GetFocused()
     else
         self.cFocused = nil
     end
+end
+
+function NACT_NPC:SetFocused(newFocused)
+    self:Log("Now focusing : "..NanosTable.Dump(newFocused))
+    self.cFocused = newFocused
 end
 
 --- Move but also look towards point
@@ -96,7 +105,7 @@ function NACT_NPC:Destructor()
 end
 
 function NACT_NPC:Log(sMessage)
-    Console.Log("NPC "..self:GetID()..sMessage)
+    Console.Log("NACT_NPC #"..self:GetID().." : "..sMessage)
 end
 
 
