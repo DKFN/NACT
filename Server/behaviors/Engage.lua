@@ -15,7 +15,6 @@ function NACT_Engage:Constructor(NpcInstance)
 end
 
 function NACT_Engage:Main()
-    
     local weapon = self.npc:GetWeapon()
 
     if (self.npc:ShouldReload()) then
@@ -30,6 +29,7 @@ function NACT_Engage:Main()
             weapon:PullUse(0)
         end
     else
+        -- TODO: Might be the culprit for the memory leak?
         self.npc:MoveToFocused()
     end
 end

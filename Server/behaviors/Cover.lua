@@ -3,7 +3,7 @@ NACT_Cover = BaseClass.Inherit("NACT_Cover")
 -- Make sure your NPC has enough time to perform actions while in cover !
 NACT_PROVISORY_COVER_HOLD_MIN = 2000
 NACT_PROVISORY_COVER_HOLD_MAX = 3000
-NACT_PROVISORY_MIN_COVER_DISTANCE = 200
+NACT_PROVISORY_MIN_COVER_DISTANCE = 500
 
 function NACT_Cover:Constructor(NpcInstance)
     self.npc = NpcInstance

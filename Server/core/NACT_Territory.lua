@@ -74,13 +74,14 @@ function NACT_Territory:AddNPC(nactNpc)
 end
 
 function NACT_Territory:RemoveNPC(nactNpc)
+    Console.Log("Remove npc from territory")
     table_remove_by_value(self.npcs, nactNpc)
 end
 
 function NACT_Territory:DebugDisplayCoverPoints()
     for iCover, coverPoint in ipairs(self.coverPointsPositions) do
         Trigger(coverPoint, Rotator(), Vector(50), TriggerType.Sphere, true, Color.RED)
-        Console.Log("Debugging : "..NanosTable.Dump(t))
+        -- Console.Log("Debugging : "..NanosTable.Dump(t))
     end
 end
 

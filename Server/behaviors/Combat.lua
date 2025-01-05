@@ -17,7 +17,12 @@ function NACT_Combat:Main()
         Console.Log("Combat: go to cover")
         self.npc:SetBehavior(NACT_Cover)
     else
-        Console.Log("Combat: Engage")
-        self.npc:SetBehavior(NACT_Engage)
+        if (self.npc.triggers.detection.enemyCount == 0) then
+             Console.Log("Setting back to idle")
+             self.npc:SetBehavior(NACT_Idle)
+        else
+            Console.Log("Combat: Engage")
+            self.npc:SetBehavior(NACT_Engage)
+        end
     end
 end

@@ -31,3 +31,8 @@ end)
 Console.RegisterCommand("nresetcovers", function()
     allPoints = {}
 end)
+
+
+Console.RegisterCommand("nallynpc", function()
+    Events.CallRemote("NACT:DEBUG:SPAWN_ALLY_NPC", Client.GetLocalPlayer():GetCameraLocation())
+end)

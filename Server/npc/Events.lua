@@ -1,6 +1,5 @@
 Character.Subscribe("Death", function(self)
     local iMaybeNactNpcId = self:GetValue("NACT_NPC_ID")
-    Console.Log("Death event on "..iMaybeNactNpcId)
     if (iMaybeNactNpcId) then
         local nactNpc = NACT_NPC.GetByID(iMaybeNactNpcId)
         if (nactNpc) then
@@ -10,3 +9,7 @@ Character.Subscribe("Death", function(self)
         end
     end
 end)
+
+-- Player.Subscribe("Death", function(player)
+    
+-- end)

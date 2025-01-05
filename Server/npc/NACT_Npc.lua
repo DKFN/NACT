@@ -16,6 +16,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self:_registerTriggerBoxes()
 
     self.tracingLaunched = false
+    self.launchedScanAround = false
 
     -- DEBUG
     if (NACT_DEBUG_BEHAVIORS) then
@@ -47,7 +48,7 @@ function NACT_NPC:ShouldReload()
 end
 
 function NACT_NPC:Reload()
-    Console.Log("Called reload event")
+    -- Console.Log("Called reload event")
     local weapon = self:GetWeapon()
     if (weapon --[[and weapon:GetAmmoBag() > 0]]) then
         weapon:Reload()
@@ -62,7 +63,17 @@ function NACT_NPC:SetFocusedEntity(cEntity)
 end
 
 function NACT_NPC:MoveToFocused()
-    self:MoveToPoint(self.cFocused:GetLocation())
+    local focusedLocation = self.cFocused:GetLocation()
+    -- Console.Log("NPC : "..self:GetID().." Moving to location of cfocused ()")
+    self:MoveToPoint(focusedLocation)
+end
+
+function NACT_NPC:GetFocused()
+    if (self.cFocused and self.cFocused:IsValid()) then
+        return self.cFocused
+    else
+        self.cFocused = nil
+    end
 end
 
 --- Move but also look towards point
@@ -79,7 +90,12 @@ function NACT_NPC:Destructor()
         t.trigger:Destroy()
     end
     self.triggers = nil
-    Console.Log("NPC "..self:GetID().." reporting death, bye :(")
+    self.cFocused = nil
+    self:Log(" reporting death, bye :(")
+end
+
+function NACT_NPC:Log(sMessage)
+    Console.Log("NPC "..self:GetID()..sMessage)
 end
 
 
@@ -93,6 +109,7 @@ function table_findIndex_by_value(tCollection, entity)
 end
 
 function table_remove_by_value(tCollection, entity)
+   -- Console.Log("RM bv "..NanosTable.Dump(entity).."  col : "..NanosTable.Dump(entity))
     table.remove(tCollection, table_findIndex_by_value(tCollection, entity))
 end
 

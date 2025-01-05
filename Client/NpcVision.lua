@@ -11,37 +11,11 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY:START", function(cNpc, cTarget,
     tTraces[iBehaviorId] = {
         detected = false,
         handle = Timer.SetInterval(function ()
-            local vNpcLocation = cNpc:GetLocation()
-
             -- TODO: Must fallback and check if GetBoneTransform is defined for CharacterSimple
-            local vNpcHeadLocation = cNpc:GetBoneTransform("head")
             -- Console.Log("Bone transform locator : ".. NanosTable.Dump(vNpcHeadLocation))
-            local sourceLocation
-            if (vNpcHeadLocation) then
-                sourceLocation = vNpcHeadLocation.Location
-            else
-                sourceLocation = vNpcLocation
-            end
+            local vSourceLocation = GetDetailledLocationOfTarget(cNpc, "head")
 
-            local vEntityLocation = cTarget:GetLocation()
-            local bTracesResults = false
-            
-            for i,boneName in ipairs(tMaybeTargetBones) do
-                local targetLocation = cTarget:GetBoneTransform(boneName)
-
-                local tTraceResult = Trace.LineSingle(
-                    sourceLocation,
-                    targetLocation.Location,
-                    CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
-                    -- TraceMode.DrawDebug | TraceMode.ReturnEntity,
-                    TraceMode.ReturnEntity,
-                    {cNpc}
-                )
-
-                bTracesResults = bTracesResults or (tTraceResult.Success and tTraceResult.Entity == cTarget)
-            end
-
-            -- Console.Log("Trace result value : ".. NanosTable.Dump(tTraceResult))
+            local bTracesResults = GetTraceResultFromListOfBones(vSourceLocation, cTarget, tMaybeTargetBones, {cNpc})
 
             local tTrace = tTraces[iBehaviorId]
             if (bTracesResults ~= tTrace.detected) then
@@ -62,3 +36,58 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", function(iBehaviorId)
         Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", iBehaviorId, false)
     end
 end)
+
+
+Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", function(sourceNpc, tAllEnemies, iNpcID, tTargetBones)
+    local tEnnemyLookupResult = {}
+    Console.Log("Attemp trace hit of : "..NanosTable.Dump(tAllEnemies))
+    for i, ennemy in ipairs(tAllEnemies) do
+        local traceResultEntity = GetTraceResultFromListOfBones(
+            GetDetailledLocationOfTarget(sourceNpc, "head"),
+            ennemy,
+            tTargetBones
+        )
+        Console.Log("Trace result for "..NanosTable.Dump(ennemy)..NanosTable.Dump(traceResultEntity))
+        if (traceResultEntity) then
+            Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", iNpcID, tAllEnemies[i])
+            break;
+        end
+    end
+end)
+
+
+function ClientsideVisionTrace(vSourceLocation, vTargetLocation, entitiesToIgnore)
+    return Trace.LineSingle(
+        vSourceLocation,
+        vTargetLocation,
+        CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
+        TraceMode.DrawDebug | TraceMode.ReturnEntity,
+        -- TraceMode.ReturnEntity,
+        entitiesToIgnore
+    )
+end
+
+function GetDetailledLocationOfTarget(cTarget, sTargetBone)
+    if (cTarget.GetBoneTransform) then
+        return cTarget:GetBoneTransform(sTargetBone).Location
+    else
+        return cTarget:GetLocation()
+    end
+end
+
+function GetTraceResultFromListOfBones(vSourceLocation, cTarget, tTargetBones, tIgnoreEntityList)
+    local bTracesResults = false
+
+    for i,boneName in ipairs(tTargetBones) do
+        local targetLocation = GetDetailledLocationOfTarget(cTarget, boneName)
+
+        local tTraceResult = ClientsideVisionTrace(
+            vSourceLocation,
+            targetLocation,
+            tIgnoreEntityList
+        )
+
+        bTracesResults = bTracesResults or (tTraceResult.Success and tTraceResult.Entity == cTarget)
+    end
+    return bTracesResults
+end

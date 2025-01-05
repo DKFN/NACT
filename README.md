@@ -12,11 +12,10 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 
 - Behavior back qui est choisit dans le combat si le NPC est en insuffisance numerique dans sa zone de choix, cherchant de l'aide vers un NPC proche
 - Behavior push qui est choisit dans le combat si le NPC est en superiorité
-- Engage ne devrait etre actif que lorsque l'ennemi est dans la ligne de mire
+- Lorsque l'ennemi sort de la ligne de mire, on choisit alors sa cible suivante (ca marche pas ouf ca j'ai l'impression)
 - Reaction aux evenements de hit d'un NPC (Engage, Cover, Detection)
 - Le detection range du NPC devrait etre remplacé par un detection range de zone
-- Cleanups en cas de mort du NPC
-- Cleanups en cas d'abandon du combat par le joueur
+- Cleanups en cas d'abandon du combat par le joueur  ----> Ca devrait etre ok mais j'ai un hack de zinzin quand meme
 - Cleanups en cas de deconnexion du joueur en combat
 - Make sure all character nanos function calls are wrapped in NACT_NPC so users can extend NACT_NPC and provide their own system
 - Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
