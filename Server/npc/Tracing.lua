@@ -31,7 +31,7 @@ end
 --- This function attemps to change focused entity, if once is hit in the look range and 
 ---  
 function NACT_NPC:LookForFocused()
-    if (self.triggers.detection.enemyCount > 0 and not self.launchedScanAround) then
+    if (#self.npc:GetEnemiesInTrigger("detection") > 0 and not self.launchedScanAround) then
         Console.Log("Launching trace results")
         self.launchedScanAround = true
         -- TODO Find best player to send the trace, nearest player in range

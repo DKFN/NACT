@@ -17,6 +17,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
 
     self.tracingLaunched = false
     self.launchedScanAround = false
+    self.initialPosition = cNpcToHandle:GetLocation()
 
     -- DEBUG
     if (NACT_DEBUG_BEHAVIORS) then

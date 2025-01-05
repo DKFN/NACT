@@ -16,7 +16,7 @@ end
 -- If the player 
 function NACT_Detection:Main()
     -- Console.Log("Main self of parent : "..NanosTable.Dump(self:GetNpc()))
-    local bHasEnemyDetectable = self.npc.triggers.detection.enemyCount > 0
+    local bHasEnemyDetectable = #self.npc:GetEnemiesInTrigger("detection") > 0
     if (NACT_DEBUG_DETECTION) then
         Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
     end

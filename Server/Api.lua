@@ -1,10 +1,19 @@
+NACT = BaseClass.Inherit("_NACT")
+
+NACT.territories = {}
+NACT.handledNpcs = {}
+
+function NACT:Constructor()
+    
+end
+
 -- This is all the public functions exposed by the package
 
 -- This functions handles registering a new NPC into the system. It will transform a Character in a NACT_NPC
 -- Parameters:
 --   cNpcTohandle : Npc to be delegated to N.A.C.T.
 --   sTerritoryName    : The Territory this NPC will use to find it's cover and patrol points
-function NACT_RegisterNpc(cNpcToHandle, sTerritoryName, tNpcConfig)
+function NACT.RegisterNpc(cNpcToHandle, sTerritoryName, tNpcConfig)
 
     if (cNpcToHandle == nil) then
         Console.Error("N.A.C.T. Invalid character provided to NACT_RegisterNpc")
@@ -16,7 +25,7 @@ function NACT_RegisterNpc(cNpcToHandle, sTerritoryName, tNpcConfig)
         return
     end
 
-    local tTerritoryOfNpc = NACT_territories[sTerritoryName];
+    local tTerritoryOfNpc = NACT.territories[sTerritoryName];
 
     if (tTerritoryOfNpc == nil) then
         Console.Error("N.A.C.T. Zone was not found for this NPC")
@@ -28,7 +37,7 @@ function NACT_RegisterNpc(cNpcToHandle, sTerritoryName, tNpcConfig)
     -- Type is NACT_NPC
     local NpcRegistred = NACT_NPC(cNpcToHandle, sTerritoryName, tNpcConfig)
     local iNpcRegID = NpcRegistred:GetID()
-    NACT_handledNpcs[iNpcRegID] = NpcRegistred
+    NACT.handledNpcs[iNpcRegID] = NpcRegistred
 
     Console.Log("N.A.C.T. npc " .. iNpcRegID .. " registered")
     cNpcToHandle:SetValue("NACT_NPC_ID", iNpcRegID)
@@ -41,6 +50,6 @@ end
 
 
 
-function NACT_RegisterTerritory(sTerritoryName, tZoneConfigTable)
-    NACT_territories[sTerritoryName] = NACT_Territory(tZoneConfigTable);
+function NACT.RegisterTerritory(sTerritoryName, tZoneConfigTable)
+    NACT.territories[sTerritoryName] = NACT_Territory(tZoneConfigTable);
 end

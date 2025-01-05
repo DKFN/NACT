@@ -11,6 +11,7 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     end
     self.npcs = {}
     self.patrolRoutes = tTerritoryConfig.patrolRoutes
+    self.zoneTrigger = tTerritoryConfig.zoneTrigger
 
     -- TODO: Ce serait mieux d'avoir surement le trigger sur le joueur et que ce soit lui
     -- TODO: Qui reveille les npc. Bg Timmy
@@ -74,7 +75,6 @@ function NACT_Territory:AddNPC(nactNpc)
 end
 
 function NACT_Territory:RemoveNPC(nactNpc)
-    Console.Log("Remove npc from territory")
     table_remove_by_value(self.npcs, nactNpc)
 end
 

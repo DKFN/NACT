@@ -12,9 +12,13 @@ end
 
 function NACT_Idle:Main()
     -- Console.Log(NanosTable.Dump(self.npc.triggers))
-    if (self.npc.triggers.detection.enemyCount > 0) then
+    if (#self.npc:GetEnemiesInTrigger("detection") > 0) then
         self.npc:SetFocusedEntity(self.npc.triggers.detection.enemies[1])
         self.npc:GoNextBehavior()
+    else
+        if (not self.preventReturnToInitialPos) then
+            self.npc:MoveToPoint(self.npc.initialPosition)
+        end
     end
 end
 

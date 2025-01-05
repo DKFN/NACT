@@ -15,6 +15,8 @@ function NACT_Patrol:Constructor(NpcInstance)
     self.maxPatrolPointIndex = #self.patrolRoute.points
     self.moveCompleteCallback = nil
 
+    self.preventReturnToInitialPos = true
+
     self:WalkToNextPoint()
 end
 

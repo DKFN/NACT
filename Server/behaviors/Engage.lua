@@ -1,6 +1,7 @@
 NACT_Engage = BaseClass.Inherit("NACT_Engage")
-NACT_PROVISORY_INNACURACY = 1000
-
+-- NACT_PROVISORY_INNACURACY = 1000
+NACT_PROVISORY_INNACURACY = 200
+NACT_PROVISORY_MAX_TIME_ENGAGED_SEC = 30
 -- TODO: This would be much better if controlled by a "Combat" main behavior
 -- TODO: The main "combat" behavior is just a behavior that will switch to anorther behavior
 -- TODO: Depending on various factors
@@ -12,6 +13,8 @@ function NACT_Engage:Constructor(NpcInstance)
 
     self.npc:StartTracing()
     self.npc.character:SetWeaponAimMode(AimMode.ADS)
+
+    self.startedAt = os.clock()
 end
 
 function NACT_Engage:Main()
@@ -32,6 +35,14 @@ function NACT_Engage:Main()
         -- TODO: Might be the culprit for the memory leak?
         self.npc:MoveToFocused()
     end
+
+    if (self:TimeElapsed() > NACT_PROVISORY_MAX_TIME_ENGAGED_SEC) then
+        self.npc:SetBehavior(NACT_Combat)
+    end
+end
+
+function NACT_Engage:TimeElapsed()
+    return os.clock() - self.startedAt
 end
 
 function NACT_Engage:Destructor()
