@@ -1,4 +1,4 @@
-Console.Log("N.A.C.T. Nanos Advanced Combat Tactics")
+Console.Log("N.A.C.T. Nanos Advanced Combat Tactics v"..Package:GetVersion())
 Console.Log("N.A.C.T. https://github.com/DKFN/NACT")
 
 Package.Require("./core/Index.lua")

@@ -3,11 +3,19 @@
 ---
 
 function NACT_NPC:GoNextBehavior()
+    if (not self.currentBehaviorIndex) then
+        self:Log("Cannot switch behavior, no index defined")
+        return
+    end
     local nextBehavior = self.currentBehaviorIndex + 1
     self:SetBehaviorIndex(nextBehavior)
 end
 
 function NACT_NPC:GoPreviousBehavior()
+    if (not self.currentBehaviorIndex) then
+        self:Log("Cannot switch behavior, no index defined")
+        return
+    end
     local previousBehavior = self.currentBehaviorIndex - 1
     self:SetBehaviorIndex(previousBehavior)
 end
@@ -32,6 +40,7 @@ function NACT_NPC:SetBehavior(cBehaviorClass)
     if (self.behavior and self.behavior:IsValid()) then
         self.behavior:Destroy()
     end
+    local maybeBehaviorIndex = table_findIndex_by_value(self.behaviorConfig, cBehaviorClass)
     self.behavior = cBehaviorClass(self)
-    self.currentBehaviorIndex = nil
+    self.currentBehaviorIndex = maybeBehaviorIndex
 end

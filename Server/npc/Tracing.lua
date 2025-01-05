@@ -72,11 +72,18 @@ function NACT_NPC:TurnToFocused(nInaccuracyFactor)
 end
 
 function NACT_NPC:GetDistanceToFocused()
-    if (self:GetFocused()) then
-        return self.character:GetLocation():Distance(self.cFocused:GetLocation())
+    local focusedLocation = self:GetFocusedLocation()
+    if (focusedLocation) then
+        return self.character:GetLocation():Distance(focusedLocation)
     else
         -- TODO: Heu ? Vazy je clean plus tard :D
         return 99999999999
+    end
+end
+
+function NACT_NPC:GetFocusedLocation()
+    if (self:GetFocused()) then
+        return self.cFocused:GetLocation()
     end
 end
 
