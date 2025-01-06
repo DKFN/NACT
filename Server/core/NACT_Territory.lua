@@ -106,6 +106,7 @@ end
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTerritoryID, tViabilityResult)
     local territoryOfResult = NACT_Territory.GetByID(iTerritoryID)
     if (territoryOfResult) then
+        -- Console.Log("Result of cover viability "..NanosTable.Dump(tViabilityResult))
         territoryOfResult:UpdateCoverViability(tViabilityResult)
     end
 end)

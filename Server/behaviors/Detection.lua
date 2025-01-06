@@ -38,9 +38,9 @@ function NACT_Detection:Main()
         end
 
         if (self.npc:IsInVisionAngle(self.npc.cFocused)) then
-            self.npc:StartTracing()
+            -- self.npc:StartTracing()
         else
-            self.npc:StopTracing()
+            -- self.npc:StopTracing()
             self.npc:LookForFocused()
         end
         
@@ -67,7 +67,7 @@ function NACT_Detection:DecrementLevel()
 end
 
 function NACT_Detection:Destructor()
-    self.npc:StopTracing()
+    -- self.npc:StopTracing()
     Timer.ClearInterval(self.timerHandle)
 end
 

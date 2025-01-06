@@ -48,7 +48,7 @@ Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", function(sourceNpc, t
             tTargetBones,
             {sourceNpc}
         )
-        -- Console.Log("Trace result for "..NanosTable.Dump(ennemy)..NanosTable.Dump(traceResultEntity))
+        Console.Log("Trace result for "..NanosTable.Dump(ennemy)..NanosTable.Dump(traceResultEntity))
         if (traceResultEntity) then
             Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", iNpcID, tAllEnemies[i])
             return
@@ -63,8 +63,8 @@ function ClientsideVisionTrace(vSourceLocation, vTargetLocation, entitiesToIgnor
         vSourceLocation,
         vTargetLocation,
         CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
-        TraceMode.DrawDebug | TraceMode.ReturnEntity,
-        -- TraceMode.ReturnEntity,
+        -- TraceMode.DrawDebug | TraceMode.ReturnEntity,
+        TraceMode.ReturnEntity,
         entitiesToIgnore
     )
 end

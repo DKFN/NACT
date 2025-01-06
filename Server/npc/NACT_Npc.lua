@@ -7,6 +7,8 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.afInrangeEntities = {}
     self.cFocused = nil -- When someone gets noticed by the NPC and it takes actions against it
     self.cFocusedTraceHit = false
+    self.cFocusedLastPosition = Vector()
+
      -- IDLE | DETECT | COVER | PUSH | FLANK | ENGAGE | SUPRESS | HEAL etc... see Server/behaviors
     -- self.behaviorConfig = {NACT_Idle, NACT_Detection, NACT_Engage}
     -- self.behaviorConfig = {NACT_Idle, NACT_Detection, NACT_Cover}
@@ -60,7 +62,13 @@ end
 --- Sets the currently focused charcter by the NPC
 --- @param cEntity Character to be focused by the NPC  
 function NACT_NPC:SetFocusedEntity(cEntity)
-    self.cFocused = cEntity
+    if (cEntity ~= self.cFocused) then
+        self:StopTracing()
+        self.cFocused = cEntity
+        if (cEntity) then
+            self:StartTracing()
+        end
+    end
 end
 
 function NACT_NPC:MoveToFocused()
@@ -68,9 +76,12 @@ function NACT_NPC:MoveToFocused()
     if (focusedEntity) then
         local focusedLocation = self.cFocused:GetLocation()
         -- Console.Log("NPC : "..self:GetID().." Moving to location of cfocused ()")
-        self:MoveToPoint(focusedLocation)    
+        self:MoveToPoint(focusedLocation)
+    else
+        if (self.cFocusedLastPosition) then
+            self:MoveToPoint(self.cFocusedLastPosition)
+        end
     end
-    
 end
 
 function NACT_NPC:GetFocused()
@@ -83,7 +94,7 @@ end
 
 function NACT_NPC:SetFocused(newFocused)
     self:Log("Now focusing : "..NanosTable.Dump(newFocused))
-    self.cFocused = newFocused
+    self:SetFocusedEntity(newFocused)
 end
 
 --- Move but also look towards point

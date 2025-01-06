@@ -33,7 +33,7 @@ end
 function NACT_NPC:LookForFocused()
     -- self:Log("Attempt "..NanosTable.Dump(#self:GetEnemiesInTrigger("detection") > 0).." scan launched ? "..NanosTable.Dump(self.launchedScanAround))
     if (#self:GetEnemiesInTrigger("detection") > 0 and not self.launchedScanAround) then
-        self:Log("Looking around")
+        -- self:Log("Looking around")
         self.launchedScanAround = true
         -- TODO Find best player to send the trace, nearest player in range
         local delegatedPlayer = Player.GetByIndex(1)
@@ -46,7 +46,7 @@ function NACT_NPC:ReleaseScanLock()
 end
 function NACT_NPC:IsInVisionAngle(cEntity)
     if (cEntity == nil) then
-        Console.Error("N.A.C.T. Called IsInVisionAngle with Nil entity")
+        -- Console.Error("N.A.C.T. Called IsInVisionAngle with Nil entity")
         return false
     end
 
@@ -96,6 +96,20 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID
     if (npcSubscribedToTraces) then
         Console.Log("Cfocused hit "..NanosTable.Dump(entityResult))
         npcSubscribedToTraces.cFocusedTraceHit = entityResult
+        local currentFocused = npcSubscribedToTraces:GetFocused()
+        if (currentFocused) then
+            npcSubscribedToTraces.cFocusedLastPosition = currentFocused:GetLocation()
+        end
+        if not entityResult then
+            Timer.SetTimeout(function(npcSubscribedToTraces)
+                if (not npcSubscribedToTraces.cFocusedTraceHit) then
+                    npcSubscribedToTraces:Log("Player lost")
+                    npcSubscribedToTraces:SetFocused(nil)
+                end
+            end, 1000, npcSubscribedToTraces)
+        else
+            
+        end
     end
 end)
 
@@ -105,12 +119,13 @@ Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", function(player, npc
     
     if (npcForResult) then
         if maybeNewCFocused then
-            npcForResult:Log("Looked around, now focusing "..NanosTable.Dump(maybeNewCFocused))
-            npcForResult.cFocused = maybeNewCFocused
+            -- npcForResult:Log("Looked around, now focusing "..NanosTable.Dump(maybeNewCFocused))
+            npcForResult:SetFocused(maybeNewCFocused)
         end
+
         Timer.SetTimeout(function(npcForResult)
             npcForResult.launchedScanAround = false
-            npcForResult:Log("Looked around, found nothing. Releasing scan")
+            npcForResult:Log("Looked around, found "..NanosTable.Dump(maybeNewCFocused).." Releasing scan")
         end, 1000, npcForResult)
     end
 end)

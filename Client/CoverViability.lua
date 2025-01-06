@@ -1,13 +1,10 @@
 -- This allows to launch more traces to be more precise in the secure behavior
 -- (For example doing a kind of "box" instead of a mono trace)
-local tracePrecisionsVectorOffsets = {
-    Vector(0, 0, 0),
-    Vector(0, 0, 100),
-}
 
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(iTerritoryID, tAllFocusedEntities, tAllCoverPositions)
     local tViabilityOfCovers = {}
 
+    -- TODO: We should also launch a trace towards the player camera for third person combat
     for iCover, coverPos in ipairs(tAllCoverPositions) do
         local coverViable = true
         for iEntity, entity in ipairs(tAllFocusedEntities) do
@@ -18,22 +15,37 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(iTerritoryID
             else
                 finalLoc = entity:GetLocation()
             end
-            for i, vTracePrecisionOffset in ipairs(tracePrecisionsVectorOffsets) do
-                local traceResult = Trace.LineSingle(
-                    coverPos,
-                    finalLoc  + vTracePrecisionOffset,
-                    CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
-                    -- TraceMode.DrawDebug | TraceMode.ReturnEntity
-                    TraceMode.ReturnEntity
-                )
 
-                coverViable = coverViable and (traceResult.Entity ~= entity)
+            local traceResultToHead = Trace.LineSingle(
+                coverPos,
+                finalLoc,
+                CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
+                -- TraceMode.DrawDebug | TraceMode.ReturnEntity
+                TraceMode.ReturnEntity
+            )
 
+            coverViable = coverViable and (traceResultToHead.Entity ~= entity)
+
+            if (not coverViable) then
                 tViabilityOfCovers[iCover] = coverViable
-                if (not coverViable) then
-                    break;
+            else
+                local playerOfEntity = entity:GetPlayer()
+                if (playerOfEntity) then        
+                    local traceResultToCamera = Trace.LineSingle(
+                        coverPos,
+                        playerOfEntity:GetCameraLocation(),
+                        CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
+                        -- TraceMode.DrawDebug | TraceMode.ReturnEntity
+                        TraceMode.ReturnEntity
+                    )
+
+                    -- Console.Log("Cover status "..NanosTable.Dump(traceResultToCamera))
+                    coverViable = coverViable and traceResultToCamera.Success
+                    tViabilityOfCovers[iCover] = coverViable
                 end
             end
+            
+            
         end
     end
 

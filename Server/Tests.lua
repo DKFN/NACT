@@ -14,17 +14,12 @@ Package.Subscribe("Load", function()
     if (NACT_TEST_SCENARIO == 1) then
         local sTestZoneName = "ShedByTheSea"
 
-        NACT_RegisterTerritory(sTestZoneName, {
-            -- TODO: In the future they should be calculated automatically
-            -- TODO: In the meantime it would be nice to have some debug options that will
-            -- TODO: With chat commands write the cover points with the current gait mode
-            -- TODO: Like:
-            -- TODO: /nact editor on
-            -- TODO: /nact load "ShedByTheSea"
-            -- TODO: /nact cover show
-            -- TODO: /nact cover add
-            -- TODO: /nact cover remove
-            -- TODO: /nact save "SedByTheSea"
+        NACT.RegisterTerritory(sTestZoneName, {
+            zoneBounds = {
+                pos = Vector(4930.06, -6576.22, 199.34),
+                radius = 7000
+            },
+            team = NACT_NPC_TEAMS,
             coverPoints = {
                 {
                     pos = Vector(9799.259, -2928.79, 123.70),
@@ -58,8 +53,7 @@ Package.Subscribe("Load", function()
                     secure = false,
                     takenBy = nil
                 }
-            },
-            zoneBounds = {}
+            }
         })
 
 
@@ -69,7 +63,7 @@ Package.Subscribe("Load", function()
         cDebugNPC:SetTeam(1)
         cDebugNPC:PickUp(wAk47)
 
-        NACT_RegisterNpc(cDebugNPC, sTestZoneName, StillNpc)
+        NACT.RegisterNpc(cDebugNPC, sTestZoneName, StillNpc)
 
 
         local wAk472 = AK47(Vector(1035, 154, 300), Rotator())
@@ -78,7 +72,7 @@ Package.Subscribe("Load", function()
         cDebugNPC2:SetTeam(1)
         cDebugNPC2:PickUp(wAk472)
 
-        NACT_RegisterNpc(cDebugNPC2, sTestZoneName, StillNpc)
+        NACT.RegisterNpc(cDebugNPC2, sTestZoneName, StillNpc)
         Console.Log("Ok")
     end
 
@@ -703,6 +697,7 @@ Package.Subscribe("Load", function()
         cDebugNPC:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC, "TankBataillonSmall", PatrollingNpc)
 
+        if (false) then 
         local wAk472 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
         wAk472:SetAutoReload(false)
         local cDebugNPC2 = Character(Vector(-3890.89, 14194.73, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
@@ -764,6 +759,7 @@ Package.Subscribe("Load", function()
         cDebugNPC9:PickUp(wAk479)
         cDebugNPC9:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC9, "TankBataillonSmall", StillNpc)
+        end
     end
 end)
 
