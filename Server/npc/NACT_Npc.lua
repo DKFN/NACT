@@ -89,6 +89,7 @@ function NACT_NPC:GetFocused()
         return self.cFocused
     else
         self.cFocused = nil
+        return nil
     end
 end
 
@@ -119,6 +120,14 @@ function NACT_NPC:Log(sMessage)
     Console.Log("NACT_NPC #"..self:GetID().." : "..sMessage)
 end
 
+function NACT_NPC.GetFromCharacter(character)
+    local iMaybeNactNpcId = character:GetValue("NACT_NPC_ID")
+    if (iMaybeNactNpcId) then
+        local nactNpc = NACT_NPC.GetByID(iMaybeNactNpcId)
+        return nactNpc
+    end
+    return nil
+end
 
 -- Extend native library of Lua or atleast pu in table utils file
 function table_findIndex_by_value(tCollection, entity)

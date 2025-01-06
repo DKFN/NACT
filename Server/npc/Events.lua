@@ -1,15 +1,20 @@
 Character.Subscribe("Death", function(self)
-    local iMaybeNactNpcId = self:GetValue("NACT_NPC_ID")
-    if (iMaybeNactNpcId) then
-        local nactNpc = NACT_NPC.GetByID(iMaybeNactNpcId)
-        if (nactNpc) then
-            nactNpc:Destroy()
-        else
-            Console.Error("N.A.C.T. entity with NACT_NPC_ID "..iMaybeNactNpcId.." is dead but was not found for destruction")
-        end
+    local nactNpc = NACT_NPC.GetFromCharacter(self)
+    if (nactNpc) then
+        nactNpc:Destroy()
     end
 end)
 
+
+Character.Subscribe("TakesDamage", function(self, damageTaken)
+    local nactNpc = NACT_NPC.GetFromCharacter(self)
+    if (nactNpc) then
+        local currentBehavior = nactNpc.behavior
+        if (currentBehavior and currentBehavior.OnTakeDamage) then
+            currentBehavior:OnTakeDamage(damageTaken)
+        end
+    end
+end)
 -- Player.Subscribe("Death", function(player)
     
 -- end)

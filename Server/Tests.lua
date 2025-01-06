@@ -697,7 +697,7 @@ Package.Subscribe("Load", function()
         cDebugNPC:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC, "TankBataillonSmall", PatrollingNpc)
 
-        if (false) then 
+       -- (false) then 
         local wAk472 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
         wAk472:SetAutoReload(false)
         local cDebugNPC2 = Character(Vector(-3890.89, 14194.73, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
@@ -759,7 +759,7 @@ Package.Subscribe("Load", function()
         cDebugNPC9:PickUp(wAk479)
         cDebugNPC9:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC9, "TankBataillonSmall", StillNpc)
-        end
+        -- end
     end
 end)
 

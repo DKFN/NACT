@@ -56,7 +56,7 @@ function NACT_NPC:IsInVisionAngle(cEntity)
 end
 
 function NACT_NPC:IsFocusedVisible()
-    return self.cFocusedTraceHit and self:IsInVisionAngle(self:GetFocused())
+    return self:GetFocused() ~= nil and self.cFocusedTraceHit and self:IsInVisionAngle(self:GetFocused())
 end
 
 function NACT_NPC:TurnToFocused(nInaccuracyFactor)
@@ -80,8 +80,7 @@ function NACT_NPC:GetDistanceToFocused()
     if (focusedLocation) then
         return self.character:GetLocation():Distance(focusedLocation)
     else
-        -- TODO: Heu ? Vazy je clean plus tard :D
-        return 99999999999
+        return 0
     end
 end
 

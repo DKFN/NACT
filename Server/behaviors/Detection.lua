@@ -24,7 +24,6 @@ function NACT_Detection:Main()
     -- Console.Log("Detection focused : "..NanosTable.Dump(self.npc:GetFocused()))
     if (self.npc:GetFocused() == nil) then
         self.npc:LookForFocused()
-        return
     end
 
     -- Tracing functions should be in NACT_NPC or NACT_Behavior
@@ -44,6 +43,8 @@ function NACT_Detection:Main()
             self.npc:LookForFocused()
         end
         
+        Console.Log("Enemy has detectable "..NanosTable.Dump(bHasEnemyDetectable))
+        Console.Log("Is focused visible "..NanosTable.Dump(bHasEnemyDetectable))
         if (self.npc:IsFocusedVisible() and bHasEnemyDetectable) then
             self:IncrementLevel()
         else
@@ -64,6 +65,11 @@ end
 function NACT_Detection:DecrementLevel()
     local nValue = PROVISORY_NACT_HEAT_INCREMENT + ((self.npc:GetDistanceToFocused() + 1) / 2000)
     self.heat = math.max(0, self.heat - nValue)
+end
+
+function NACT_Detection:OnTakeDamage()
+    self:Log("Damage taken !")
+    self.heat = self.heat + 2
 end
 
 function NACT_Detection:Destructor()
