@@ -1,3 +1,3 @@
-Events.SubscribeRemote("NACT:NAVIGATION:QUERY", function(iNpcID, vStart, vEnd)
-    Events.CallRemote("NACT:NAVIGATION:RESULT", iNpcID, Navigation.FindPathToLocation(vStart, vEnd))
+Events.SubscribeRemote("NACT:NAVIGATION:RANDOM_QUERY", function(iNpcID, vPoint, radius)
+    Events.CallRemote("NACT:NAVIGATION:RANDOM_RESULT", iNpcID, Navigation.GetRandomReachablePointInRadius(vPoint, radius))
 end)

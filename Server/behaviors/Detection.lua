@@ -1,5 +1,5 @@
 -- This behavior aims to try to detect the player and then go to the next state on the behavior tree
-PROVISORY_NACT_HEAT_INCREMENT = 3
+PROVISORY_NACT_HEAT_INCREMENT = 1 -- 3
 PROVISORY_NACT_HEAT_TURN_TO = 50 -- Heat necessary for the NPC to turn towards the player
 
 NACT_Detection = BaseClass.Inherit("NACT_Detection")
@@ -37,14 +37,10 @@ function NACT_Detection:Main()
         end
 
         if (self.npc:IsInVisionAngle(self.npc.cFocused)) then
-            -- self.npc:StartTracing()
         else
-            -- self.npc:StopTracing()
             self.npc:LookForFocused()
         end
-        
-        Console.Log("Enemy has detectable "..NanosTable.Dump(bHasEnemyDetectable))
-        Console.Log("Is focused visible "..NanosTable.Dump(bHasEnemyDetectable))
+
         if (self.npc:IsFocusedVisible() and bHasEnemyDetectable) then
             self:IncrementLevel()
         else
@@ -67,9 +63,12 @@ function NACT_Detection:DecrementLevel()
     self.heat = math.max(0, self.heat - nValue)
 end
 
-function NACT_Detection:OnTakeDamage()
-    self:Log("Damage taken !")
-    self.heat = self.heat + 2
+function NACT_Detection:OnTakeDamage(_, damage, bone, type, from_direction, instigator)
+    if (instigator) then
+        self.npc:TurnTo(instigator:GetControlledCharacter():GetLocation())
+        self.heat = self.heat + 50
+    end
+    
 end
 
 function NACT_Detection:Destructor()

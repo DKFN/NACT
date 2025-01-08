@@ -10,15 +10,17 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 
 # TODO
 
-- Pour ameliorer les coverpoints, il faudrait aussi (une fois qu'on a les rotators dessus) lancer les traces legerement derriere plutot que colé a la cover
+- Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
+- Reaction aux evenements de hit d'un NPC (Engage, Cover, Detection) => J'ai commencé mais ca marche vitef
+- Make vision based focusing change optionnal (for example, humans work like that, zombies don't)
+- Add events for focus changed etc
 - Behavior back qui est choisit dans le combat si le NPC est en insuffisance numerique dans sa zone de choix, cherchant de l'aide vers un NPC proche
 - Behavior push qui est choisit dans le combat si le NPC est en superiorité
-- Reaction aux evenements de hit d'un NPC (Engage, Cover, Detection)
-- Clenups des triggers en cas de mort d'un NPC
+- Behavior seek qui recherche le joueur lorsqu'il est perdu de vue dans la zone de son dernier point de position connu pendant max 1mn avant de revenir vers le behavior d'index 0
 - Cleanups en cas d'abandon du combat par le joueur
 - Cleanups en cas de deconnexion du joueur en combat
+- Passer tous les NACT_PROVISORY en valeur configurable
 - Make sure all character nanos function calls are wrapped in NACT_NPC so users can extend NACT_NPC and provide their own system
-- Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
 - Roaming NPC is just a NPC that carries the territory attached to the commander
 and regularly updates the cover point in range
 

@@ -1,6 +1,7 @@
 NACT_NPC = BaseClass.Inherit("NACT_NPC", false)
 
-PROVISORY_NACT_ANGLE_DETECTION = 90
+-- PROVISORY_NACT_ANGLE_DETECTION = 90
+PROVISORY_NACT_ANGLE_DETECTION = 110
 function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.character = cNpcToHandle
     self.territory = NACT.territories[sTerritoryName]
@@ -20,6 +21,15 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.tracingLaunched = false
     self.launchedScanAround = false
     self.initialPosition = cNpcToHandle:GetLocation()
+
+
+    self.takenDamageCallback = nil
+
+    self.takenDamageCallback = cNpcToHandle:Subscribe("TakeDamage", function(...)
+        if (self.behavior and self.behavior.OnTakeDamage) then
+            self.behavior:OnTakeDamage(...)
+        end
+    end)
 
     -- DEBUG
     if (NACT_DEBUG_BEHAVIORS) then
@@ -117,7 +127,13 @@ function NACT_NPC:Destructor()
 end
 
 function NACT_NPC:Log(sMessage)
-    Console.Log("NACT_NPC #"..self:GetID().." : "..sMessage)
+    if NACT_DEBUG_NPC_CHIT_CHAT then
+        Console.Log("NACT_NPC #"..self:GetID().." : "..sMessage)
+    end
+end
+
+function NACT_NPC:Error(sMessage)
+    Console.Error("NACT NPC #"..self:GetID().. " : "..sMessage)
 end
 
 function NACT_NPC.GetFromCharacter(character)

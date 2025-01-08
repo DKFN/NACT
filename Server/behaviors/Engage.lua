@@ -21,7 +21,6 @@ function NACT_Engage:Main()
     local weapon = self.npc:GetWeapon()
 
     if (self.npc:ShouldReload()) then
-        weapon:ReleaseUse()
         self.npc:SetBehavior(NACT_Combat)
     end
 
@@ -38,7 +37,6 @@ function NACT_Engage:Main()
             weapon:PullUse(0)
         end
     else
-        -- TODO: Might be the culprit for the memory leak?
         
     end
 
@@ -53,5 +51,9 @@ end
 
 function NACT_Engage:Destructor()
     Timer.ClearInterval(self.timerHandle)
+    local weapon = self.npc:GetWeapon()
+    if (weapon) then
+        weapon:ReleaseUse()
+    end
     -- self.npc:StopTracing()
 end

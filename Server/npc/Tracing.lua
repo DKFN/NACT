@@ -2,6 +2,8 @@ local NACT_PROVISORY_VISION_LOOKUP_BONES = {
     "head", "lowerarm_l", "lowerarm_r", "foot_l", "foot_r"
 }
 
+local NACT_PROVISORY_LOOKAROUND_THROTTLE = 1000
+
 ---
 --- Tracing and Vision
 ---
@@ -32,12 +34,19 @@ end
 ---  
 function NACT_NPC:LookForFocused()
     -- self:Log("Attempt "..NanosTable.Dump(#self:GetEnemiesInTrigger("detection") > 0).." scan launched ? "..NanosTable.Dump(self.launchedScanAround))
-    if (#self:GetEnemiesInTrigger("detection") > 0 and not self.launchedScanAround) then
+    local enemiesInDetection = self:GetEnemiesInTrigger("detection")
+    if (#enemiesInDetection > 0 and not self.launchedScanAround) then
         -- self:Log("Looking around")
         self.launchedScanAround = true
         -- TODO Find best player to send the trace, nearest player in range
         local delegatedPlayer = Player.GetByIndex(1)
-        Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", delegatedPlayer, self.character, self.triggers.detection.enemies, self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
+        local enemiesInVisionAngle = {}
+        for i, enemy in ipairs(enemiesInDetection) do
+            if (self:IsInVisionAngle(enemy)) then
+                table.insert(enemiesInVisionAngle, enemy)
+            end
+        end
+        Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", delegatedPlayer, self.character, enemiesInVisionAngle, self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
     end
 end
 
@@ -52,6 +61,7 @@ function NACT_NPC:IsInVisionAngle(cEntity)
 
     local tAnglePlayerNpc = (self.character:GetLocation() - cEntity:GetLocation()):Rotation()
     local angleVersion =  math.abs(self.character:GetRotation().Yaw - tAnglePlayerNpc.Yaw)
+    Console.Log("Angle "..NanosTable.Dump(angleVersion))
     return angleVersion > PROVISORY_NACT_ANGLE_DETECTION
 end
 
@@ -60,6 +70,14 @@ function NACT_NPC:IsFocusedVisible()
 end
 
 function NACT_NPC:TurnToFocused(nInaccuracyFactor)
+    local vFocusedLocation = self:GetFocusedLocation()
+    if vFocusedLocation == nil then
+        return
+    end
+    self:TurnTo(vFocusedLocation, nInaccuracyFactor)
+end
+
+function NACT_NPC:TurnTo(vLocation, nInaccuracyFactor)
     local vInaccurayVector
     if (nInaccuracyFactor) then
         vInaccurayVector = Vector(
@@ -70,9 +88,8 @@ function NACT_NPC:TurnToFocused(nInaccuracyFactor)
     else
         vInaccurayVector = Vector(0,0,0)
     end
-
-    self.character:LookAt(self:GetFocused():GetLocation() + vInaccurayVector)
-    self.character:RotateTo(Rotator(0, (self:GetFocused():GetLocation() - self.character:GetLocation()):Rotation().Yaw, 0), 0.5)
+    self.character:LookAt(vLocation + vInaccurayVector)
+    self.character:RotateTo(Rotator(0, (vLocation - self.character:GetLocation()):Rotation().Yaw, 0), 0.5)
 end
 
 function NACT_NPC:GetDistanceToFocused()
@@ -125,6 +142,6 @@ Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", function(player, npc
         Timer.SetTimeout(function(npcForResult)
             npcForResult.launchedScanAround = false
             npcForResult:Log("Looked around, found "..NanosTable.Dump(maybeNewCFocused).." Releasing scan")
-        end, 1000, npcForResult)
+        end, NACT_PROVISORY_LOOKAROUND_THROTTLE, npcForResult)
     end
 end)
