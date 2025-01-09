@@ -17,7 +17,6 @@ function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerT
 
     if (linkedClass == NACT_Territory) then
         linkedTeam = linkedTerritoryOrNpc.team
-        Console.Log("Registering Territory"..linkedTeam)
         linkedID = nil
     end
 

@@ -14,6 +14,7 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - Reaction aux evenements de hit d'un NPC (Engage, Cover, Detection) => J'ai commencé mais ca marche vitef
 - Make vision based focusing change optionnal (for example, humans work like that, zombies don't)
 - Add events for focus changed etc
+- Make the Functions with standard naming for nanos (ex: MoveToPoint should be renamed MoveToLocation)
 - Behavior back qui est choisit dans le combat si le NPC est en insuffisance numerique dans sa zone de choix, cherchant de l'aide vers un NPC proche
 - Behavior push qui est choisit dans le combat si le NPC est en superiorité
 - Behavior seek qui recherche le joueur lorsqu'il est perdu de vue dans la zone de son dernier point de position connu pendant max 1mn avant de revenir vers le behavior d'index 0

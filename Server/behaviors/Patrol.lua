@@ -22,12 +22,6 @@ end
 
 function NACT_Patrol:WalkToNextPoint()
     self.npc:MoveToPoint(self.patrolPoints[self.targetPatrolPointIndex])
-    self.moveCompleteCallback = self.npc.character:Subscribe("MoveComplete", function()
-        Timer.SetTimeout(function()
-            self:WalkToNextPoint()
-        end, math.random(NACT_PROVISORY_WAITFOR_MIN, NACT_PROVISORY_WAITFOR_MAX))
-        self.npc.character:Unsubscribe("MoveComplete", self.moveCompleteCallback)
-    end)
     if (self.targetPatrolPointIndex == self.maxPatrolPointIndex) then
         -- TODO : Check if circling or not
         if (self.patrolRoute.walkMethod == "circle") then
@@ -39,6 +33,12 @@ function NACT_Patrol:WalkToNextPoint()
         self.targetPatrolPointIndex = self.targetPatrolPointIndex + 1
     end
     
+end
+
+function NACT_Patrol:OnMoveComplete()
+    Timer.SetTimeout(function()
+        self:WalkToNextPoint()
+    end, math.random(NACT_PROVISORY_WAITFOR_MIN, NACT_PROVISORY_WAITFOR_MAX))
 end
 
 function NACT_Patrol:Destructor()

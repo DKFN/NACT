@@ -13,6 +13,7 @@ function NACT_Combat:Constructor(NpcInstance)
 end
 
 function NACT_Combat:Main()
+    self.npc:Log("Combat")
     if (self.npc:ShouldReload()) then
         Console.Log("Combat: go to cover")
         self.npc:SetBehavior(NACT_Cover)
@@ -20,9 +21,12 @@ function NACT_Combat:Main()
         if (#self.npc.territory:GetEnemiesInZone() == 0) then
              Console.Log("Setting back to idle")
              self.npc:SetBehavior(NACT_Idle)
-        else
-            Console.Log("Combat: Engage")
-            self.npc:SetBehavior(NACT_Engage)
+             return
         end
+        if (self.npc:GetFocused() == nil) then
+            self.npc:SetBehavior(NACT_Seek)
+            return
+        end
+        self.npc:SetBehavior(NACT_Engage)
     end
 end

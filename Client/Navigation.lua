@@ -1,3 +1,6 @@
 Events.SubscribeRemote("NACT:NAVIGATION:RANDOM_QUERY", function(iNpcID, vPoint, radius)
-    Events.CallRemote("NACT:NAVIGATION:RANDOM_RESULT", iNpcID, Navigation.GetRandomReachablePointInRadius(vPoint, radius))
+    Console.Log("Asking for navpoint from npc : "..iNpcID)
+    local randomPointFound = Navigation.GetRandomReachablePointInRadius(vPoint, radius)
+    Console.Log("Result : "..NanosTable.Dump(randomPointFound))
+    Events.CallRemote("NACT:NAVIGATION:RANDOM_RESULT", iNpcID, randomPointFound)
 end)

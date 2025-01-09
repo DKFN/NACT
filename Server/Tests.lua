@@ -690,14 +690,14 @@ Package.Subscribe("Load", function()
             }
         })
 
-        if (false) then 
+        -- if (false) then 
         local wAk47 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
         wAk47:SetAutoReload(false)
         local cDebugNPC = Character(Vector(-6246.35, 13107.7, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC:PickUp(wAk47)
         cDebugNPC:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC, "TankBataillonSmall", PatrollingNpc)
-        end
+        -- end
 
         local wAk472 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
         wAk472:SetAutoReload(false)
@@ -706,7 +706,7 @@ Package.Subscribe("Load", function()
         cDebugNPC2:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC2, "TankBataillonSmall", StillNpc)
 
-        if (false) then 
+        -- if (false) then 
         local wAk473 = AK47(Vector(-5136, 15071.8, 188.45), Rotator())
         wAk473:SetAutoReload(false)
         local cDebugNPC3 = Character(Vector(-5136, 15071.8, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
@@ -761,7 +761,53 @@ Package.Subscribe("Load", function()
         cDebugNPC9:PickUp(wAk479)
         cDebugNPC9:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC9, "TankBataillonSmall", StillNpc)
-        end
+
+        local wAk4710 = AK47(Vector(-4703.67, 11625.8, 198.14), Rotator())
+        wAk4710:SetAutoReload(false)
+        local cDebugNPC10 = Character(Vector(-4703.67, 11625.8, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC10:PickUp(wAk479)
+        cDebugNPC10:SetTeam(NACT_NPC_TEAMS)
+        NACT.RegisterNpc(cDebugNPC10, "TankBataillonSmall", StillNpc)
+
+        
+        local wAk4711 = AK47(Vector(-4703.67, 11625.8, 198.14), Rotator())
+        wAk4711:SetAutoReload(false)
+        local cDebugNPC11 = Character(Vector(-6291.85, 11901.37, 198.15), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC11:PickUp(wAk479)
+        cDebugNPC11:SetTeam(NACT_NPC_TEAMS)
+        NACT.RegisterNpc(cDebugNPC11, "TankBataillonSmall", StillNpc)
+
+        
+        local wAk4712 = AK47(Vector(6931.17, 11625.8, 198.14), Rotator())
+        wAk4712:SetAutoReload(false)
+        local cDebugNPC12 = Character(Vector(-6931.17, 13029.47, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC12:PickUp(wAk479)
+        cDebugNPC12:SetTeam(NACT_NPC_TEAMS)
+        NACT.RegisterNpc(cDebugNPC12, "TankBataillonSmall", StillNpc)
+
+        local wAk4713 = AK47(Vector(6931.17, 11625.8, 198.14), Rotator())
+        wAk4713:SetAutoReload(false)
+        local cDebugNPC13 = Character(Vector(-7257.26, 11606.09, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC13:PickUp(wAk479)
+        cDebugNPC13:SetTeam(NACT_NPC_TEAMS)
+        NACT.RegisterNpc(cDebugNPC13, "TankBataillonSmall", StillNpc)
+
+        
+        local wAk4714 = AK47(Vector(6931.17, 11625.8, 198.14), Rotator())
+        wAk4714:SetAutoReload(false)
+        local cDebugNPC14 = Character(Vector(-4309.89, 10443.71, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC14:PickUp(wAk479)
+        cDebugNPC14:SetTeam(NACT_NPC_TEAMS)
+        NACT.RegisterNpc(cDebugNPC14, "TankBataillonSmall", StillNpc)
+
+        
+        local wAk4714 = AK47(Vector(6931.17, 11625.8, 198.14), Rotator())
+        wAk4714:SetAutoReload(false)
+        local cDebugNPC14 = Character(Vector(-3097.35, 11408.16, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
+        cDebugNPC14:PickUp(wAk479)
+        cDebugNPC14:SetTeam(NACT_NPC_TEAMS)
+        NACT.RegisterNpc(cDebugNPC14, "TankBataillonSmall", StillNpc)
+        -- end
     end
 end)
 

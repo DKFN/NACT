@@ -20,6 +20,7 @@ function NACT_Alert:Main()
         if maybeNactNpcId then
             local nactNpc = NACT_NPC.GetByID(maybeNactNpcId)
             nactNpc:SetBehavior(NACT_Combat)
+            nactNpc:SetFocused(self.npc:GetFocused())
         end
     end
 end

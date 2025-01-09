@@ -1,5 +1,10 @@
 NACT_NPC = BaseClass.Inherit("NACT_NPC", false)
 
+NACT_PROVISORY_REGISTERED_EVENTS = {
+    "TakeDamage",
+    "MoveComplete"
+}
+
 -- PROVISORY_NACT_ANGLE_DETECTION = 90
 PROVISORY_NACT_ANGLE_DETECTION = 110
 function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
@@ -11,8 +16,6 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.cFocusedLastPosition = Vector()
 
      -- IDLE | DETECT | COVER | PUSH | FLANK | ENGAGE | SUPRESS | HEAL etc... see Server/behaviors
-    -- self.behaviorConfig = {NACT_Idle, NACT_Detection, NACT_Engage}
-    -- self.behaviorConfig = {NACT_Idle, NACT_Detection, NACT_Cover}
     self.behaviorConfig = tNpcConfig.behaviors
     self.currentBehaviorIndex = 1
     self.behavior = self.behaviorConfig[self.currentBehaviorIndex](self)
@@ -25,11 +28,9 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
 
     self.takenDamageCallback = nil
 
-    self.takenDamageCallback = cNpcToHandle:Subscribe("TakeDamage", function(...)
-        if (self.behavior and self.behavior.OnTakeDamage) then
-            self.behavior:OnTakeDamage(...)
-        end
-    end)
+    for i, sEventToRegister in ipairs(NACT_PROVISORY_REGISTERED_EVENTS) do
+        self:RegisterEvent(cNpcToHandle, sEventToRegister)
+    end
 
     -- DEBUG
     if (NACT_DEBUG_BEHAVIORS) then
@@ -163,3 +164,4 @@ Package.Require("./Behaviors.lua")
 Package.Require("./Tracing.lua")
 Package.Require("./Triggers.lua")
 Package.Require("./Events.lua")
+Package.Require("./Navigation.lua")

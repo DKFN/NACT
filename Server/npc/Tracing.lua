@@ -34,19 +34,21 @@ end
 ---  
 function NACT_NPC:LookForFocused()
     -- self:Log("Attempt "..NanosTable.Dump(#self:GetEnemiesInTrigger("detection") > 0).." scan launched ? "..NanosTable.Dump(self.launchedScanAround))
-    local enemiesInDetection = self:GetEnemiesInTrigger("detection")
-    if (#enemiesInDetection > 0 and not self.launchedScanAround) then
-        -- self:Log("Looking around")
-        self.launchedScanAround = true
-        -- TODO Find best player to send the trace, nearest player in range
-        local delegatedPlayer = Player.GetByIndex(1)
-        local enemiesInVisionAngle = {}
-        for i, enemy in ipairs(enemiesInDetection) do
-            if (self:IsInVisionAngle(enemy)) then
-                table.insert(enemiesInVisionAngle, enemy)
+    if (not self.launchedScanAround) then
+        local enemiesInDetection = self:GetEnemiesInTrigger("detection")
+        if (#enemiesInDetection > 0) then
+            -- self:Log("Looking around")
+            self.launchedScanAround = true
+            -- TODO Find best player to send the trace, nearest player in range
+            local delegatedPlayer = Player.GetByIndex(1)
+            local enemiesInVisionAngle = {}
+            for i, enemy in ipairs(enemiesInDetection) do
+                if (self:IsInVisionAngle(enemy)) then
+                    table.insert(enemiesInVisionAngle, enemy)
+                end
             end
+            Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", delegatedPlayer, self.character, enemiesInVisionAngle, self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
         end
-        Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", delegatedPlayer, self.character, enemiesInVisionAngle, self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
     end
 end
 
@@ -61,7 +63,7 @@ function NACT_NPC:IsInVisionAngle(cEntity)
 
     local tAnglePlayerNpc = (self.character:GetLocation() - cEntity:GetLocation()):Rotation()
     local angleVersion =  math.abs(self.character:GetRotation().Yaw - tAnglePlayerNpc.Yaw)
-    Console.Log("Angle "..NanosTable.Dump(angleVersion))
+    -- Console.Log("Angle "..NanosTable.Dump(angleVersion))
     return angleVersion > PROVISORY_NACT_ANGLE_DETECTION
 end
 
@@ -110,7 +112,7 @@ end
 Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID, entityResult)
     local npcSubscribedToTraces = NACT_NPC.GetByID(npcID)
     if (npcSubscribedToTraces) then
-        Console.Log("Cfocused hit "..NanosTable.Dump(entityResult))
+        -- Console.Log("Cfocused hit "..NanosTable.Dump(entityResult))
         npcSubscribedToTraces.cFocusedTraceHit = entityResult
         local currentFocused = npcSubscribedToTraces:GetFocused()
         if (currentFocused) then

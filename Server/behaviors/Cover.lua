@@ -3,7 +3,7 @@ NACT_Cover = BaseClass.Inherit("NACT_Cover")
 -- Make sure your NPC has enough time to perform actions while in cover !
 NACT_PROVISORY_COVER_HOLD_MIN = 2000
 NACT_PROVISORY_COVER_HOLD_MAX = 3000
-NACT_PROVISORY_MIN_COVER_DISTANCE = 1000
+NACT_PROVISORY_MIN_COVER_DISTANCE = 10
 
 function NACT_Cover:Constructor(NpcInstance)
     self.npc = NpcInstance
@@ -53,23 +53,26 @@ function NACT_Cover:MoveToNearestCoverPoint()
         self.npc.character:SetGaitMode(GaitMode.Sprinting)
         self.movingToCover = true
         self.npc:MoveToPoint(self.nearestCoverPoint.pos)
-        local _self = self
-        self.moveCompleteCallback = self.npc.character:Subscribe("MoveComplete", function()
-            self.movingToCover = false
-            self.inCover = true
-            self.npc.character:SetGaitMode(GaitMode.Walking)
-            local stanceOfCoverPoint =_self.nearestCoverPoint.stance
-            if (stanceOfCoverPoint) then
-                self.npc.character:SetStanceMode(stanceOfCoverPoint)
-            end
-            Timer.SetTimeout(function()
-                self.shouldExitCover = true
-            end, math.random(NACT_PROVISORY_COVER_HOLD_MIN, NACT_PROVISORY_COVER_HOLD_MAX))
-            self.npc.character:Unsubscribe("MoveComplete", self.moveCompleteCallback)
-        end)
         return true
     end
     return false
+end
+
+function NACT_Cover:OnMoveComplete()
+    if (not self.nearestCoverPoint) then
+        self.npc:SetBehavior(NACT_Combat)
+        return
+    end
+    self.movingToCover = false
+    self.inCover = true
+    self.npc.character:SetGaitMode(GaitMode.Walking)
+    local stanceOfCoverPoint = self.nearestCoverPoint.stance
+    if (stanceOfCoverPoint) then
+        self.npc.character:SetStanceMode(stanceOfCoverPoint)
+    end
+    Timer.SetTimeout(function()
+        self.shouldExitCover = true
+    end, math.random(NACT_PROVISORY_COVER_HOLD_MIN, NACT_PROVISORY_COVER_HOLD_MAX))
 end
 
 --- Gets to the nearest safe and not taken cover point
@@ -109,8 +112,13 @@ function NACT_Cover:FindNearestCoverPoint()
     return nearestCoverPoint
 end
 
+function NACT_Cover:OnTakeDamage(_, damage, bone, type, from_direction, instigator)
+    self.npc:SetFocused(instigator)
+    self.npc:SetBehavior(NACT_Combat)
+end
+
 function NACT_Cover:LeaveCover()
-    Console.Log("Exiting cover")
+    -- Console.Log("Exiting cover")
     self.nearestCoverPoint.taken = false
     self.npc.character:SetStanceMode(StanceMode.Standing)
 end

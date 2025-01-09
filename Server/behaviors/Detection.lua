@@ -1,5 +1,5 @@
 -- This behavior aims to try to detect the player and then go to the next state on the behavior tree
-PROVISORY_NACT_HEAT_INCREMENT = 1 -- 3
+PROVISORY_NACT_HEAT_INCREMENT = 5
 PROVISORY_NACT_HEAT_TURN_TO = 50 -- Heat necessary for the NPC to turn towards the player
 
 NACT_Detection = BaseClass.Inherit("NACT_Detection")
@@ -68,7 +68,6 @@ function NACT_Detection:OnTakeDamage(_, damage, bone, type, from_direction, inst
         self.npc:TurnTo(instigator:GetControlledCharacter():GetLocation())
         self.heat = self.heat + 50
     end
-    
 end
 
 function NACT_Detection:Destructor()

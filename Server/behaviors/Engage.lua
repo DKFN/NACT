@@ -1,6 +1,6 @@
 NACT_Engage = BaseClass.Inherit("NACT_Engage")
 -- NACT_PROVISORY_INNACURACY = 1000
-NACT_PROVISORY_INNACURACY = 500
+NACT_PROVISORY_INNACURACY = 200
 NACT_PROVISORY_MAX_TIME_ENGAGED_SEC = 30
 -- TODO: This would be much better if controlled by a "Combat" main behavior
 -- TODO: The main "combat" behavior is just a behavior that will switch to anorther behavior
@@ -24,10 +24,6 @@ function NACT_Engage:Main()
         self.npc:SetBehavior(NACT_Combat)
     end
 
-    if (self.npc:GetFocused() == nil) then
-        self.npc:LookForFocused()
-    end
-
     self.npc:MoveToFocused()
 
     local bFocusedVisible = self.npc:IsFocusedVisible()
@@ -40,7 +36,7 @@ function NACT_Engage:Main()
         
     end
 
-    if (self:TimeElapsed() > NACT_PROVISORY_MAX_TIME_ENGAGED_SEC) then
+    if (self.npc:GetFocused() == nil or self:TimeElapsed() > NACT_PROVISORY_MAX_TIME_ENGAGED_SEC) then
         self.npc:SetBehavior(NACT_Combat)
     end
 end
