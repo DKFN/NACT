@@ -84,8 +84,8 @@ end
 
 function NACT_NPC:MoveToFocused()
     local focusedEntity = self:GetFocused()
-    if (focusedEntity) then
-        local focusedLocation = self.cFocused:GetLocation()
+    if (focusedEntity ~= nil) then
+        local focusedLocation = self:GetFocused():GetLocation()
         -- Console.Log("NPC : "..self:GetID().." Moving to location of cfocused ()")
         self:MoveToPoint(focusedLocation)
     else

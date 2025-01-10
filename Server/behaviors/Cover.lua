@@ -16,7 +16,7 @@ function NACT_Cover:Constructor(NpcInstance)
 
     -- TODO: Does not really need a timer.
     -- TODO: It should work relying only on events instead of polling
-    self.timerMain = Timer.SetInterval(function()
+    self.timerMain = Timer.SetInterval(function(self)
         self:Main()
     end, 250, self)
 end

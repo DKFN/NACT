@@ -2,6 +2,7 @@ NACT_Seek = BaseClass.Inherit("NACT_Seek")
 
 NACT_PROVISORY_HOLD_AT_POINT = 3000
 NACt_PROVISORY_SEEK_RADIUS = 5000
+NACT_PROVISORY_MAX_TIME_IN_SEEKING = 5000
 
 
 -- TODO: Finish seek behavior
@@ -12,20 +13,20 @@ function NACT_Seek:Constructor(NpcInstance)
     self.timeLastPointAcquired = 0
     self.seekAttemps = 0
 
-    self.timerHandle = Timer.SetInterval(function()
+    self.timerHandle = Timer.SetInterval(function(self)
         self:Main()
-    end, 500)
+    end, 500, self)
 end
 
 
 function NACT_Seek:Main()
     self.npc:LookForFocused()
     -- Finish tomorrow and plug it in NACT_Combat
-    if (self.npc:GetFocused()) then
+    if (self.npc:GetFocused() or self.npc.territory:GetEnemiesInZone("detection")) then
         self.npc:SetBehavior(NACT_Combat)
     end
 
-    Console.Log("Moving to focused ? "..NanosTable.Dump(self.movingToPoint))
+    -- Console.Log("Moving to focused ? "..NanosTable.Dump(self.movingToPoint))
     if (self.seekAttemps == 0) then
         self.seekAttemps = self.seekAttemps + 1
         self.movingToPoint = true
@@ -40,8 +41,8 @@ function NACT_Seek:Main()
             local randomIndexOfAlly = math.random(1, #allAlliesNpc)
             Console.Log("Going to ally for help")
             local maybeFoundAlly = allAlliesNpc[randomIndexOfAlly]
-            if (maybeFoundAlly) then
-                self.npc:RandomPointToQuery(maybeFoundAlly.character:GetLocation())    
+            if (maybeFoundAlly and maybeFoundAlly.character) then
+                self.npc:RandomPointToQuery(maybeFoundAlly.character:GetLocation())
             end
         end
     end

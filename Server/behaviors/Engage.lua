@@ -1,13 +1,13 @@
 NACT_Engage = BaseClass.Inherit("NACT_Engage")
--- NACT_PROVISORY_INNACURACY = 1000
-NACT_PROVISORY_INNACURACY = 200
+NACT_PROVISORY_INNACURACY = 1000
+-- NACT_PROVISORY_INNACURACY = 200
 NACT_PROVISORY_MAX_TIME_ENGAGED_SEC = 30
 -- TODO: This would be much better if controlled by a "Combat" main behavior
 -- TODO: The main "combat" behavior is just a behavior that will switch to anorther behavior
 -- TODO: Depending on various factors
 function NACT_Engage:Constructor(NpcInstance)
     self.npc = NpcInstance
-    self.timerHandle = Timer.SetInterval(function()
+    self.timerHandle = Timer.SetInterval(function(self)
         self:Main()
     end, 25, self)
 
@@ -37,6 +37,15 @@ function NACT_Engage:Main()
     end
 
     if (self.npc:GetFocused() == nil or self:TimeElapsed() > NACT_PROVISORY_MAX_TIME_ENGAGED_SEC) then
+        self.npc:SetBehavior(NACT_Combat)
+    end
+end
+
+
+function NACT_Engage:OnTakeDamage(_, damage, bone, type, from_direction, instigator)
+    local decision = math.random(0, 2)
+    self.npc:SetFocused(instigator)
+    if (decision == 2) then
         self.npc:SetBehavior(NACT_Combat)
     end
 end
