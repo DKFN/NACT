@@ -67,6 +67,7 @@ function NACT_Seek:OnRandomPointResult(vTargetPoint)
     self.timeLastPointAcquired = os.clock()
 end
 
+-- TODO: This should be default in NACT_Behavior base
 function NACT_Seek:OnTakeDamage(_, damage, bone, type, from_direction, instigator)
     self.npc:SetFocused(instigator)
     self.npc:SetBehavior(NACT_Combat)
