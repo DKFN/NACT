@@ -81,6 +81,9 @@ function NACT_NPC:SetFocusedEntity(cEntity)
             self:StartTracing()
         end
     end
+    if (cEntity == nil) then
+        self:StopTracing()
+    end
 end
 
 function NACT_NPC:MoveToFocused()

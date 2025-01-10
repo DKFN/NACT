@@ -72,7 +72,7 @@ function NACT_Seek:OnTakeDamage(_, damage, bone, type, from_direction, instigato
     -- TODO: Check if Ally
     local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
     if (causerCharacter) then
-        self.npc:SetFocused(causer)
+        self.npc:SetFocused(causerCharacter)
         self.npc:SetBehavior(NACT_Combat)
     end
 end

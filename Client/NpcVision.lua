@@ -11,6 +11,10 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY:START", function(cNpc, cTarget,
     tTraces[iBehaviorId] = {
         detected = false,
         handle = Timer.SetInterval(function ()
+            if not cTarget or not cNpc then
+                Console.Warn("Trace query to entity while entity is nil, this should be avoided")
+                return
+            end
             -- TODO: Must fallback and check if GetBoneTransform is defined for CharacterSimple
             -- Console.Log("Bone transform locator : ".. NanosTable.Dump(vNpcHeadLocation))
             local vSourceLocation = GetDetailledLocationOfTarget(cNpc, "head")
