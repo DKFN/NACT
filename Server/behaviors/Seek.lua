@@ -39,7 +39,7 @@ function NACT_Seek:Main()
         local allAlliesNpc = self.npc.territory:GetAlliesInZone("detection")
         if (#allAlliesNpc > 0) then
             local randomIndexOfAlly = math.random(1, #allAlliesNpc)
-            Console.Log("Going to ally for help")
+            self.npc:Log("Going to ally for help "..NanosTable.Dump(randomIndexOfAlly))
             local maybeFoundAlly = allAlliesNpc[randomIndexOfAlly]
             if (maybeFoundAlly and maybeFoundAlly.character) then
                 self.npc:RandomPointToQuery(maybeFoundAlly.character:GetLocation())
@@ -62,15 +62,19 @@ function NACT_Seek:OnRandomPointResult(vTargetPoint)
         self.npc:SetBehavior(NACT_Combat)
         return
     end
-    Console.Log("Random point result : "..NanosTable.Dump(vTargetPoint))
+    -- Console.Log("Random point result : "..NanosTable.Dump(vTargetPoint))
     self.npc:MoveToPoint(vTargetPoint)
     self.timeLastPointAcquired = os.clock()
 end
 
 -- TODO: This should be default in NACT_Behavior base
-function NACT_Seek:OnTakeDamage(_, damage, bone, type, from_direction, instigator)
-    self.npc:SetFocused(instigator)
-    self.npc:SetBehavior(NACT_Combat)
+function NACT_Seek:OnTakeDamage(_, damage, bone, type, from_direction, instigator, causer)
+    -- TODO: Check if Ally
+    local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
+    if (causerCharacter) then
+        self.npc:SetFocused(causer)
+        self.npc:SetBehavior(NACT_Combat)
+    end
 end
 
 function NACT_Seek:Destroy()

@@ -36,9 +36,8 @@ function NACT_Territory:Constructor(tTerritoryConfig)
         local allCfocused = {}
         for iNpc, npc in ipairs(_self.npcs) do
             if (npc.cFocused) then
-                local playerFocused = npc.cFocused:GetPlayer()
-                if (playerFocused) then
-                    table.insert(reachablePlayers, playerFocused)
+                if (npc.cFocused and npc.cFocused.GetPlayer) then
+                    table.insert(reachablePlayers, npc.cFocused:GetPlayer())
                 end
                 table.insert(allCfocused, npc.cFocused)
             end

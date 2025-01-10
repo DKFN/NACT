@@ -16,7 +16,7 @@ function NACT_Alert:Main()
         -- TODO: 
         local maybeNactNpcId = allyNpc:GetValue("NACT_NPC_ID")
 
-        Console.Log("Ally npc #"..maybeNactNpcId.." : "..NanosTable.Dump(allyNpc))
+        -- Console.Log("Ally npc #"..maybeNactNpcId.." : "..NanosTable.Dump(allyNpc))
         if maybeNactNpcId then
             local nactNpc = NACT_NPC.GetByID(maybeNactNpcId)
             nactNpc:SetBehavior(NACT_Combat)

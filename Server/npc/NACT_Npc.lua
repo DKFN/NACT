@@ -29,6 +29,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.takenDamageCallback = nil
 
     for i, sEventToRegister in ipairs(NACT_PROVISORY_REGISTERED_EVENTS) do
+        Console.Log("Registered "..sEventToRegister)
         self:RegisterEvent(cNpcToHandle, sEventToRegister)
     end
 
@@ -85,8 +86,9 @@ end
 function NACT_NPC:MoveToFocused()
     local focusedEntity = self:GetFocused()
     if (focusedEntity ~= nil) then
-        local focusedLocation = self:GetFocused():GetLocation()
-        -- Console.Log("NPC : "..self:GetID().." Moving to location of cfocused ()")
+        -- Console.Log("NPC : "..self:GetID().." Moving to location of cfocused "..NanosTable.Dump(focusedEntity))
+        local focusedLocation = focusedEntity:GetLocation()
+        
         self:MoveToPoint(focusedLocation)
     else
         if (self.cFocusedLastPosition) then
@@ -96,6 +98,9 @@ function NACT_NPC:MoveToFocused()
 end
 
 function NACT_NPC:GetFocused()
+    if not self then
+        return
+    end
     if (self.cFocused and self.cFocused:IsValid()) then
         return self.cFocused
     else

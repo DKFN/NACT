@@ -42,9 +42,12 @@ function NACT_Engage:Main()
 end
 
 
-function NACT_Engage:OnTakeDamage(_, damage, bone, type, from_direction, instigator)
+function NACT_Engage:OnTakeDamage(_, damage, bone, type, from_direction, instigator, causer)
     local decision = math.random(0, 2)
-    self.npc:SetFocused(instigator)
+    local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
+    if (causerCharacter) then
+        self.npc:SetFocused(causerCharacter)
+    end
     if (decision == 2) then
         self.npc:SetBehavior(NACT_Combat)
     end

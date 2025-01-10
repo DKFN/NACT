@@ -41,6 +41,7 @@ function NACT_NPC:SetBehavior(cBehaviorClass)
         self.behavior:Destroy()
     end
     local maybeBehaviorIndex = table_findIndex_by_value(self.behaviorConfig, cBehaviorClass)
+    self:Log(" Going to "..cBehaviorClass:GetClassName())
     self.behavior = cBehaviorClass(self)
     self.currentBehaviorIndex = maybeBehaviorIndex
 end

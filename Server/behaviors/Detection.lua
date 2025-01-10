@@ -63,9 +63,13 @@ function NACT_Detection:DecrementLevel()
     self.heat = math.max(0, self.heat - nValue)
 end
 
-function NACT_Detection:OnTakeDamage(_, damage, bone, type, from_direction, instigator)
-    if (instigator) then
-        self.npc:TurnTo(instigator:GetControlledCharacter():GetLocation())
+function NACT_Detection:OnTakeDamage(_, damage, bone, type, from_direction, instigator, causer)
+    -- Console.Log("Taken damange from "..NanosTable.Dump(causer))
+    -- TODO: Check if Ally
+    local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
+    if (causerCharacter) then
+        Console.Log("Causer is character")
+        self.npc:TurnTo(causerCharacter:GetLocation())
         self.heat = self.heat + 50
     end
 end

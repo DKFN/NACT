@@ -54,5 +54,14 @@ function NACT.RegisterTerritory(sTerritoryName, tZoneConfigTable)
     NACT.territories[sTerritoryName] = NACT_Territory(tZoneConfigTable);
 end
 
+function NACT.GetCharacterFromCauserEntity(causer)
+    if (causer:IsA(Character)) then
+        return causer
+    end
+    if (causer:IsA(Weapon) or causer:IsA(Melee)) then
+        return causer:GetHandler()
+    end
+end
+
 
 Package.Require("./core/Triggers.lua")

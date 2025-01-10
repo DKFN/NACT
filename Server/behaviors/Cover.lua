@@ -108,13 +108,16 @@ function NACT_Cover:FindNearestCoverPoint()
     end
 
     local elapsedInSearch = math.floor((os.clock() - startSearch) * 1000)
-    Console.Log("Time elapsed searching cover : "..elapsedInSearch.."ms")
+    -- Console.Log("Time elapsed searching cover : "..elapsedInSearch.."ms")
     return nearestCoverPoint
 end
 
-function NACT_Cover:OnTakeDamage(_, damage, bone, type, from_direction, instigator)
-    self.npc:SetFocused(instigator)
-    self.npc:SetBehavior(NACT_Combat)
+function NACT_Cover:OnTakeDamage(_, damage, bone, type, from_direction, instigator, causer)
+    local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
+    if (causerCharacter) then
+        self.npc:SetFocused(causerCharacter)
+        self.npc:SetBehavior(NACT_Combat)
+    end
 end
 
 function NACT_Cover:LeaveCover()
