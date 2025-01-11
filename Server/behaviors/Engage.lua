@@ -48,6 +48,12 @@ function NACT_Engage:OnTakeDamage(_, damage, bone, type, from_direction, instiga
     if (causerCharacter) then
         self.npc:SetFocused(causerCharacter)
     end
+    if (decision == 1) then
+        self.npc.character:SetStanceMode(StanceMode.Crouching)
+        Timer.SetTimeout(function()
+            self.npc.character:SetStanceMode(StanceMode.Standing)
+        end, 1000)
+    end
     if (decision == 2) then
         self.npc:SetBehavior(NACT_Combat)
     end

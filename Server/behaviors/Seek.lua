@@ -13,13 +13,14 @@ function NACT_Seek:Constructor(NpcInstance)
     self.timeLastPointAcquired = 0
     self.seekAttemps = 0
 
-    self.timerHandle = Timer.SetInterval(function(self)
+    self.timerHandle = Timer.SetInterval(function()
         self:Main()
     end, 500, self)
 end
 
 
 function NACT_Seek:Main()
+    -- Console.Log("Inside thing with timer handle : "..NanosTable.Dump(self.timerHandle))
     self.npc:LookForFocused()
     -- Finish tomorrow and plug it in NACT_Combat
     if (self.npc:GetFocused() or self.npc.territory:GetEnemiesInZone("detection")) then
@@ -77,6 +78,7 @@ function NACT_Seek:OnTakeDamage(_, damage, bone, type, from_direction, instigato
     end
 end
 
-function NACT_Seek:Destroy()
+function NACT_Seek:Destructor()
+    -- Console.Log("Destroying seek with "..NanosTable.Dump(self.timerHandle))
     Timer.ClearInterval(self.timerHandle)
 end

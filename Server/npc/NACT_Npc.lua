@@ -101,7 +101,7 @@ function NACT_NPC:MoveToFocused()
 end
 
 function NACT_NPC:GetFocused()
-    if not self then
+    if not self or not self:IsValid() then
         return
     end
     if (self.cFocused and self.cFocused:IsValid()) then
