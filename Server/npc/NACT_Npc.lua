@@ -70,9 +70,8 @@ function NACT_NPC:Reload()
     end
 end
 
-----
 --- Sets the currently focused charcter by the NPC
---- @param cEntity Character to be focused by the NPC  
+--- @param cEntity Character | nil Character or nil to be focused by the NPC  
 function NACT_NPC:SetFocusedEntity(cEntity)
     if (cEntity ~= self.cFocused) then
         self:StopTracing()

@@ -5,7 +5,6 @@ NACt_PROVISORY_SEEK_RADIUS = 5000
 NACT_PROVISORY_MAX_TIME_IN_SEEKING = 5000
 
 
--- TODO: Finish seek behavior
 function NACT_Seek:Constructor(NpcInstance)
     self.npc = NpcInstance
     self.moveCompleteCallback = nil
@@ -13,6 +12,7 @@ function NACT_Seek:Constructor(NpcInstance)
     self.timeLastPointAcquired = 0
     self.seekAttemps = 0
 
+    -- TODO: Make Utility function to create them
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
     end, 500, self)
