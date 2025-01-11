@@ -10,6 +10,7 @@ function NACT_Engage:Constructor(NpcInstance)
     self.timerHandle = Timer.SetInterval(function(self)
         self:Main()
     end, 25, self)
+    Timer.Bind(self.timerHandle, self.npc)
 
     -- self.npc:StartTracing()
     self.npc.character:SetWeaponAimMode(AimMode.ADS)

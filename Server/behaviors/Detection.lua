@@ -9,6 +9,7 @@ function NACT_Detection:Constructor(NpcInstance)
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
     end, 500, self)
+    Timer.Bind(self.timerHandle, self.npc)
 end
 
 -- TODO: Getting hit by a bullet should add 50 to heat level
