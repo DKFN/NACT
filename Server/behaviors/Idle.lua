@@ -7,7 +7,7 @@ function NACT_Idle:Constructor(NpcInstance)
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
     end, 1000, self)
-    Timer.Bind(self.timerHandle, self.npc)
+    Timer.Bind(self.timerHandle, self.npc.character)
 end
 
 

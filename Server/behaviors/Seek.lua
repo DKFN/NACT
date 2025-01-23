@@ -16,7 +16,7 @@ function NACT_Seek:Constructor(NpcInstance)
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
     end, 500, self)
-    Timer.Bind(self.timerHandle, self.npc)
+    Timer.Bind(self.timerHandle, self.npc.character)
 end
 
 

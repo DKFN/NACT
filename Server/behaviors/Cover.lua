@@ -19,7 +19,7 @@ function NACT_Cover:Constructor(NpcInstance)
     self.timerMain = Timer.SetInterval(function(self)
         self:Main()
     end, 250, self)
-    Timer.Bind(self.timerMain, self.npc)
+    Timer.Bind(self.timerMain, self.npc.character)
 end
 
 function NACT_Cover:Main()
