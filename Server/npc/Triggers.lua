@@ -26,6 +26,7 @@ end
 --- Gets the entities that populates a trigger, enemies or allies. Given they are valid and alive
 ---@param sPopulationType any
 function NACT_NPC:GetTriggerPopulation(sTriggerName, sPopulationType)
+    -- Console.Log("Self triggers : "..NanosTable.Dump(self.triggers))
     local trigger = self.triggers[sTriggerName]
     if (trigger == nil) then
         self:Log("No trigger found in GetTriggerPopulation call with the name "..sTriggerName)

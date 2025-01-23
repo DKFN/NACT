@@ -24,13 +24,12 @@ function NACT_Seek:Main()
     -- Console.Log("Inside thing with timer handle : "..NanosTable.Dump(self.timerHandle))
     self.npc:LookForFocused()
     -- Finish tomorrow and plug it in NACT_Combat
-    if (self.npc:GetFocused() or self.npc.territory:GetEnemiesInZone("detection")) then
+    if (self.npc:GetFocused() or #self.npc.territory:GetEnemiesInZone("detection") == 0) then
         self.npc:SetBehavior(NACT_Combat)
     end
 
     -- Console.Log("Moving to focused ? "..NanosTable.Dump(self.movingToPoint))
     if (self.seekAttemps == 0) then
-        self.seekAttemps = self.seekAttemps + 1
         self.movingToPoint = true
         self.seekAttemps = self.seekAttemps + 1
         self.npc:MoveToFocused()
@@ -60,7 +59,10 @@ function NACT_Seek:OnMoveComplete()
 end
 
 function NACT_Seek:OnRandomPointResult(vTargetPoint)
+    -- TODO: This creates way too much instance creation and destruction when you noclip somewhere not reachable
+    -- TODO: Should not happend in real life, but not ideal nonetheless
     if (vTargetPoint:IsZero()) then
+        Console.Log("Zero result, returning to combat for decision")
         self.npc:SetBehavior(NACT_Combat)
         return
     end
@@ -80,6 +82,6 @@ function NACT_Seek:OnTakeDamage(_, damage, bone, type, from_direction, instigato
 end
 
 function NACT_Seek:Destructor()
-    -- Console.Log("Destroying seek with "..NanosTable.Dump(self.timerHandle))
+    Console.Log("Destroying seek with "..NanosTable.Dump(self.timerHandle))
     Timer.ClearInterval(self.timerHandle)
 end

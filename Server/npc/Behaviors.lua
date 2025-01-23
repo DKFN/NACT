@@ -37,11 +37,13 @@ function NACT_NPC:SetBehaviorIndex(iBehaviorIndex)
 end
 
 function NACT_NPC:SetBehavior(cBehaviorClass)
-    if (self.behavior and self.behavior:IsValid()) then
-        self.behavior:Destroy()
+    if (self:IsValid() and not self:IsBeingDestroyed()) then
+        if (self.behavior and self.behavior:IsValid()) then
+            self.behavior:Destroy()
+        end
+        local maybeBehaviorIndex = table_findIndex_by_value(self.behaviorConfig, cBehaviorClass)
+        self:Log(" Going to "..cBehaviorClass:GetClassName())
+        self.behavior = cBehaviorClass(self)
+        self.currentBehaviorIndex = maybeBehaviorIndex
     end
-    local maybeBehaviorIndex = table_findIndex_by_value(self.behaviorConfig, cBehaviorClass)
-    self:Log(" Going to "..cBehaviorClass:GetClassName())
-    self.behavior = cBehaviorClass(self)
-    self.currentBehaviorIndex = maybeBehaviorIndex
 end

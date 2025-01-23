@@ -6,7 +6,7 @@ function NACT_NPC:RandomPointToFocusedQuery(radius)
         focusedLocation = self.cFocusedLastPosition
     end
 
-   -- Console.Log("Focused location : "..NanosTable.Dump(focusedLocation))
+   Console.Log("Focused location : "..NanosTable.Dump(focusedLocation))
     if (focusedLocation and not focusedLocation:IsZero()) then
         self:RandomPointToQuery(focusedLocation, radius)
     end

@@ -33,6 +33,11 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
         self:RegisterEvent(cNpcToHandle, sEventToRegister)
     end
 
+    cNpcToHandle:Subscribe("Death", function()
+        self:Log("Death called")
+        self:Destroy()
+    end)
+
     -- DEBUG
     if (NACT_DEBUG_BEHAVIORS) then
         Timer.SetInterval(function()
@@ -124,6 +129,7 @@ function NACT_NPC:MoveToPoint(vPoint)
 end
 
 function NACT_NPC:Destructor()
+    self:Log2("Destroying behavior is : "..NanosTable.Dump(self.behavior))
     self.behavior:Destroy()
     self.territory:RemoveNPC(self)
     for k, t in pairs(self.triggers) do
@@ -140,6 +146,12 @@ function NACT_NPC:Log(sMessage)
     end
 end
 
+
+function NACT_NPC:Log2(sMessage)
+    if true then
+        Console.Log("NACT_NPC #"..self:GetID().." : "..sMessage)
+    end
+end
 function NACT_NPC:Error(sMessage)
     Console.Error("NACT NPC #"..self:GetID().. " : "..sMessage)
 end
