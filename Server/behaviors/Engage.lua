@@ -1,44 +1,55 @@
 NACT_Engage = BaseClass.Inherit("NACT_Engage")
-NACT_PROVISORY_INNACURACY = 1000
 -- NACT_PROVISORY_INNACURACY = 200
-NACT_PROVISORY_MAX_TIME_ENGAGED_SEC = 30
+-- NACT_PROVISORY_MAX_TIME_ENGAGED_SEC = 30
+local MAX_TIME_ENGAGED_SEC_DEFAULT = 30
+local DEFAULT_INNACURACY = 1000
+local DEFAULT_MAIN_BEHAVIOR = NACT_Combat
+local DEFAULT_INTERVAL_TIME = 25
+
 -- TODO: This would be much better if controlled by a "Combat" main behavior
 -- TODO: The main "combat" behavior is just a behavior that will switch to anorther behavior
 -- TODO: Depending on various factors
-function NACT_Engage:Constructor(NpcInstance)
+function NACT_Engage:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
     self.timerHandle = Timer.SetInterval(function(self)
         self:Main()
-    end, 25, self)
+    end, NACT.ValueOrDefault(tBehaviorConfig.intervalTime, DEFAULT_INTERVAL_TIME), self)
     Timer.Bind(self.timerHandle, self.npc.character)
 
     -- self.npc:StartTracing()
     self.npc.character:SetWeaponAimMode(AimMode.ADS)
 
     self.startedAt = os.clock()
+
+    self.maxTimeEngaged = NACT.ValueOrDefault(tBehaviorConfig.maxTimeEngaged, MAX_TIME_ENGAGED_SEC_DEFAULT)
+    self.innacuracy = NACT.ValueOrDefault(tBehaviorConfig.innacuracy, DEFAULT_INNACURACY)
+    self.mainBehavior = NACT.ValueOrDefault(tBehaviorConfig.mainBehavior, DEFAULT_MAIN_BEHAVIOR)
+    
 end
 
 function NACT_Engage:Main()
     local weapon = self.npc:GetWeapon()
 
     if (self.npc:ShouldReload()) then
-        self.npc:SetBehavior(NACT_Combat)
+        -- Console.Log("Main behavior : "..NanosTable.Dump(self.mainBehavior))
+        -- Console.Log("Main behavior : "..NanosTable.Dump(DEFAULT_MAIN_BEHAVIOR))
+        self.npc:SetBehavior(self.mainBehavior)
     end
 
     self.npc:MoveToFocused()
 
     local bFocusedVisible = self.npc:IsFocusedVisible()
     if (bFocusedVisible) then
-        self.npc:TurnToFocused(NACT_PROVISORY_INNACURACY)
+        self.npc:TurnToFocused(self.innacuracy)
         if (weapon) then
             weapon:PullUse(0)
         end
-    else
-        
     end
 
-    if (self.npc:GetFocused() == nil or self:TimeElapsed() > NACT_PROVISORY_MAX_TIME_ENGAGED_SEC) then
-        self.npc:SetBehavior(NACT_Combat)
+    if (not bFocusedVisible or self:TimeElapsed() > self.maxTimeEngaged) then
+        -- Console.Log("Main behavior : "..NanosTable.Dump(self.mainBehavior))
+        -- Console.Log("Main behavior : "..NanosTable.Dump(DEFAULT_MAIN_BEHAVIOR))
+        self.npc:SetBehavior(self.mainBehavior)
     end
 end
 
@@ -56,7 +67,7 @@ function NACT_Engage:OnTakeDamage(_, damage, bone, type, from_direction, instiga
         end, 1000)
     end
     if (decision == 2) then
-        self.npc:SetBehavior(NACT_Combat)
+        self.npc:SetBehavior(self.mainBehavior)
     end
 end
 

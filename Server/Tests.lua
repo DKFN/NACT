@@ -5,8 +5,38 @@
 NACT_TEST_SCENARIO = 4
 NACT_NPC_TEAMS = 1
 
-local StillNpc = {behaviors =  {NACT_Idle, NACT_Detection, NACT_Alert, NACT_Combat}}
-local PatrollingNpc = {behaviors = {NACT_Idle, NACT_Patrol, NACT_Alert, NACT_Combat}}
+local StillNpc = {behaviors = {
+    { class = NACT_Idle },
+    { class = NACT_Detection},
+    { class = NACT_Alert},
+    { class = NACT_Combat},
+    { class = NACT_Engage},
+    { class = NACT_Seek},
+    { class = NACT_Cover},
+
+}}
+local PatrollingNpc = {behaviors = {
+    { class = NACT_Idle },
+    { class = NACT_Patrol},
+    { class = NACT_Alert},
+    { class = NACT_Combat},
+    { class = NACT_Engage},
+    { class = NACT_Seek},
+    { class = NACT_Cover},
+}}
+
+local ZombieNpc = {}
+
+-- ZombieNpc:AddBehavior(NACT_Idle, {timerTime = 1000})
+-- npc:SetBehaviorConfig(NACT_Patrol, {maxIdleAtPoint = 5000})
+-- npc:SetBehaviorValue(NACT_Patrol, "maxIdleAtPoint", 5000)
+
+-- tBehaviorConfig = {
+--    class = NACT_Patrol,
+--    config = {
+--        maxIdleAtPoint = 5000
+--    }
+--}
 
 Package.Subscribe("Load", function()
     Console.Log("N.A.C.T. Debug tools enabled")

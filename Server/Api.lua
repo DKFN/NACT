@@ -63,5 +63,13 @@ function NACT.GetCharacterFromCauserEntity(causer)
     end
 end
 
+function NACT.ValueOrDefault(maybeValue, default)
+    if (maybeValue ~= nil) then
+        return maybeValue
+    else
+        return default
+    end
+end
+
 
 Package.Require("./core/Triggers.lua")

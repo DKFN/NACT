@@ -17,8 +17,14 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
 
      -- IDLE | DETECT | COVER | PUSH | FLANK | ENGAGE | SUPRESS | HEAL etc... see Server/behaviors
     self.behaviorConfig = tNpcConfig.behaviors
+
+    -- TODO: Add 
     self.currentBehaviorIndex = 1
-    self.behavior = self.behaviorConfig[self.currentBehaviorIndex](self)
+
+    -- TODO; This should not be directly iun the constructor
+    if (#self.behaviorConfig > 0) then
+        self:SetBehaviorIndex(1)
+    end
     self:_registerTriggerBoxes()
 
     self.tracingLaunched = false

@@ -20,6 +20,7 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
 
 ## Beta
+- Changing a value/config of a behavior should also change the value of the current running behavior, not the next one instancied
 - Behavior back qui est choisit dans le combat si le NPC est en insuffisance numerique dans sa zone de choix, cherchant de l'aide vers un NPC proche
 - Behavior push qui est choisit dans le combat si le NPC est en superiorité
 - Make vision based focusing change optionnal (for example, humans work like that, zombies don't)
