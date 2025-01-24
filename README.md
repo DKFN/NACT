@@ -10,21 +10,20 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 
 # TODO
 
-- Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
-- Reaction aux evenements de hit d'un NPC (Engage, Cover, Detection) => J'ai commencé mais ca marche vitef
-- Make vision based focusing change optionnal (for example, humans work like that, zombies don't)
-- Issue with destroying behaviors, specifically Seek where there is debug logs for it.
+## Alpha
+- Passer tous les NACT_PROVISORY en valeur configurable
 - Add events for focus changed etc
 - Make the Functions with standard naming for nanos (ex: MoveToPoint should be renamed MoveToLocation)
-- Behavior back qui est choisit dans le combat si le NPC est en insuffisance numerique dans sa zone de choix, cherchant de l'aide vers un NPC proche
-- Behavior push qui est choisit dans le combat si le NPC est en superiorité
-- Behavior seek qui recherche le joueur lorsqu'il est perdu de vue dans la zone de son dernier point de position connu pendant max 1mn avant de revenir vers le behavior d'index 0
 - Cleanups en cas d'abandon du combat par le joueur
 - Cleanups en cas de deconnexion du joueur en combat
-- Passer tous les NACT_PROVISORY en valeur configurable
+- Roaming NPC is just a NPC that carries the territory attached to the commander and regularly updates the cover point in range
+- Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
+
+## Beta
+- Behavior back qui est choisit dans le combat si le NPC est en insuffisance numerique dans sa zone de choix, cherchant de l'aide vers un NPC proche
+- Behavior push qui est choisit dans le combat si le NPC est en superiorité
+- Make vision based focusing change optionnal (for example, humans work like that, zombies don't)
 - Make sure all character nanos function calls are wrapped in NACT_NPC so users can extend NACT_NPC and provide their own system
-- Roaming NPC is just a NPC that carries the territory attached to the commander
-and regularly updates the cover point in range
 
 # Bails du turfu mais faut y penser
 
