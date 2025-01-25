@@ -14,6 +14,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.cFocused = nil -- When someone gets noticed by the NPC and it takes actions against it
     self.cFocusedTraceHit = false
     self.cFocusedLastPosition = Vector()
+    self.tracingAuthority = nil
 
      -- IDLE | DETECT | COVER | PUSH | FLANK | ENGAGE | SUPRESS | HEAL etc... see Server/behaviors
     self.behaviorConfig = tNpcConfig.behaviors

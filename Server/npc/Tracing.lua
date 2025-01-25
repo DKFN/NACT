@@ -10,7 +10,7 @@ local NACT_PROVISORY_LOOKAROUND_THROTTLE = 1000
 function NACT_NPC:StopTracing()
     if (self.tracingLaunched) then
         Console.Log("Calling stop event for traces")
-        Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", Player.GetByIndex(1), self:GetID()) --, self.npc.character, self.npc.cFocused)
+        Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", self.tracingAuthority, self:GetID()) --, self.npc.character, self.npc.cFocused)
         self.tracingLaunched = false
     end
 end
@@ -18,12 +18,12 @@ end
 function NACT_NPC:StartTracing()
     if (self:GetFocused() ~= nil) then
         -- TODO Find best player to send the trace, nearest player in range
-        local delegatedPlayer = Player.GetByIndex(1) -- self.npc.cFocused:GetPlayer()
+        self.tracingAuthority = self.character:GetNetworkAuthority()
         -- Console.Log("Calling remote event")
         
         
-        if (not self.tracingLaunched and delegatedPlayer) then
-            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", delegatedPlayer, self.character, self:GetFocused(), self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
+        if (not self.tracingLaunched and self.tracingAuthority) then
+            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", self.tracingAuthority, self.character, self:GetFocused(), self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
             self.tracingLaunched = true
         end
     end
@@ -40,15 +40,24 @@ function NACT_NPC:LookForFocused()
         if (#enemiesInDetection > 0) then
             -- self:Log("Looking around")
             self.launchedScanAround = true
-            -- TODO Find best player to send the trace, nearest player in range
-            local delegatedPlayer = Player.GetByIndex(1)
+            local delegatedPlayer = self.character:GetNetworkAuthority()
             local enemiesInVisionAngle = {}
-            for i, enemy in ipairs(enemiesInDetection) do
-                if (self:IsInVisionAngle(enemy)) then
-                    table.insert(enemiesInVisionAngle, enemy)
+            if (delegatedPlayer) then
+                for i, enemy in ipairs(enemiesInDetection) do
+                    if (self:IsInVisionAngle(enemy)) then
+                        enemiesInVisionAngle[#enemiesInVisionAngle + 1] = enemy
+                    end
                 end
+                Events.CallRemote(
+                    "NACT:TRACE:NPC_LOOK_AROUND:QUERY",
+                    delegatedPlayer,
+                    self.character,
+                    enemiesInVisionAngle,
+                    self:GetID(),
+                    NACT_PROVISORY_VISION_LOOKUP_BONES
+                )
             end
-            Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", delegatedPlayer, self.character, enemiesInVisionAngle, self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
+            
         end
     end
 end
