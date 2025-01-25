@@ -62,6 +62,27 @@ function NACT_NPC:SetBehavior(cBehaviorClass)
     end
 end
 
-function NACT_NPC:SetBehaviorConfig(cBehaviorClass, tBehaviorConfigTable)
+function NACT_NPC:AddBehavior(cBehaviorClass, tMaybeBehaviorConfig)
+    self.behaviorConfig[#self.behaviorConfig+1] = {
+        class = cBehaviorClass,
+        config = NACT.ValueOrDefault(tMaybeBehaviorConfig, {})
+    }
+end
 
+function NACT_NPC:SetBehaviorConfig(cBehaviorClass, tBehaviorConfigTable)
+    local nBehaviorIndex = table_findIndex_by_value(self.behavior, cBehaviorClass)
+    if (nBehaviorIndex) then
+        self.behavior[nBehaviorIndex].config = tBehaviorConfigTable
+    else
+        Console.Error("Unable to find index of behavior "..cBehaviorClass:GetClassName())
+    end
+end
+
+function NACT_NPC:SetBehaviorValue(cBehaviorClass, sBehaviorKey, aBehaviorConfigValue)
+    local nBehaviorIndex = table_findIndex_by_value(self.behavior, cBehaviorClass)
+    if (nBehaviorIndex) then
+        self.behavior[nBehaviorIndex].config[sBehaviorKey] = aBehaviorConfigValue
+    else
+        Console.Error("Unable to find index of behavior "..cBehaviorClass:GetClassName())
+    end
 end
