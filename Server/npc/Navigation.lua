@@ -6,7 +6,7 @@ function NACT_NPC:RandomPointToFocusedQuery(radius)
         focusedLocation = self.cFocusedLastPosition
     end
 
-   Console.Log("Focused location : "..NanosTable.Dump(focusedLocation))
+   -- Console.Log("Focused location : "..NanosTable.Dump(focusedLocation))
     if (focusedLocation and not focusedLocation:IsZero()) then
         self:RandomPointToQuery(focusedLocation, radius)
     end
@@ -14,7 +14,10 @@ function NACT_NPC:RandomPointToFocusedQuery(radius)
 end
 
 function NACT_NPC:RandomPointToQuery(vLocation, radius)
-    Events.CallRemote("NACT:NAVIGATION:RANDOM_QUERY", Player.GetByIndex(1), self:GetID(), vLocation, radius)
+    local authorityPlayer = self.territory.authorityPlayer
+    if (authorityPlayer) then
+        Events.CallRemote("NACT:NAVIGATION:RANDOM_QUERY", authorityPlayer, self:GetID(), vLocation, radius)    
+    end
 end
 
 Events.SubscribeRemote("NACT:NAVIGATION:RANDOM_RESULT", function(player, iNpcID, vTargetPoints)

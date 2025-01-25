@@ -16,15 +16,15 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - All cover points are being exhausted after Seek will call Alert instead of NACT_Combat
 
 ### Features
-- Territory should define an authority and switch authority every 10s
+- Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
 - CoverViability positions are send every refresh tick, this is not useful you can send covers once and for all
-- Passer tous les NACT_PROVISORY en valeur configurable
+- Passer tous les NACT_PROVISORY en valeur configurable => Ok behaviors
 - Add events for focus changed etc
 - Make the Functions with standard naming for nanos (ex: MoveToPoint should be renamed MoveToLocation)
 - Cleanups en cas d'abandon du combat par le joueur
 - Cleanups en cas de deconnexion du joueur en combat
 - Faire en sorte que les NPCs ils sortent jamais du territoire
-- Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
+
 
 ## Beta
 - Changing a value/config of a behavior should also change the value of the current running behavior, not the next one instancied
