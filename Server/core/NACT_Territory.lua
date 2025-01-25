@@ -117,7 +117,7 @@ function NACT_Territory:SwitchNetworkAuthority()
         self.authorityPlayer = reachablePlayers[reachablePlayerIndex]
         if (not self.authorityPlayerHistory[self.authorityPlayer]) then
             self.authorityPlayerHistory[self.authorityPlayer] = true
-            Events.CallRemote("NACT:TRACE:QUERY:VIABILITY:POSITIONS", self.authorityPlayer, self:GetID(), self.coverPointsPositions)
+            Events.CallRemote("NACT:TRACE:COVER:VIABILITY:POSITIONS", self.authorityPlayer, self:GetID(), self.coverPointsPositions)
         end
     else
         self.authorityPlayer = nil

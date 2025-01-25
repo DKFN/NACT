@@ -2,7 +2,7 @@
 -- (For example doing a kind of "box" instead of a mono trace)
 
 local coverPositionsByTerritoryID = {}
-Events.SubscribeRemote("NACT:TRACE:QUERY:VIABILITY:POSITIONS", function(iTerritoryID, allPositions)
+Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:POSITIONS", function(iTerritoryID, allPositions)
     coverPositionsByTerritoryID[iTerritoryID] = allPositions
 end)
 
