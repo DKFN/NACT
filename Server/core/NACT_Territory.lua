@@ -21,6 +21,8 @@ function NACT_Territory:Constructor(tTerritoryConfig)
         Color.GREEN
     )
 
+    self.authorityPlayer = nil
+
     Console.Log("Territory team : "..self.team)
 
     -- TODO: Ce serait mieux d'avoir surement le trigger sur le joueur et que ce soit lui
@@ -32,32 +34,28 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     -- TODO: and will stop viability checks until a player is focused again
     -- TODO: And finding one random will cost much less because not looping all seconds
     self.coverViabilityHandleTimer = Timer.SetInterval(function()
-        local reachablePlayers = {}
         local allCfocused = {}
-        for iNpc, npc in ipairs(_self.npcs) do
+        for iNpc, npc in ipairs(self.npcs) do
             if (npc.cFocused) then
-                if (npc.cFocused and npc.cFocused.GetPlayer) then
-                    table.insert(reachablePlayers, npc.cFocused:GetPlayer())
-                end
                 table.insert(allCfocused, npc.cFocused)
             end
         end
+    
+        if (NACT_DEBUG_COVERS) then
+            Console.Log("Authority player : "..NanosTable.Dump(self.authorityPlayer))
+        end
 
-        if (#reachablePlayers == 0) then
-            -- Console.Log("No reachable players in range, not scanning viability of covers")
+        if (not self.authorityPlayer) then
+            Console.Log("No reachable players in range, not scanning viability of covers")
             return
         end
-
-        local reachablePlayerIndex = math.random(1, #reachablePlayers)
-        local authorityPlayer = reachablePlayers[reachablePlayerIndex]
-
-        if (NACT_DEBUG_COVERS) then
-            Console.Log("Authority player : "..NanosTable.Dump(authorityPlayer))
-        end
-
         -- TODO: There is also no need to resend cover positions each time, this is dumb. Just send it once while getting into the zone
-        Events.CallRemote("NACT:TRACE:COVER:VIABILITY:QUERY", authorityPlayer, _self:GetID(), allCfocused, _self.coverPointsPositions)
+        Events.CallRemote("NACT:TRACE:COVER:VIABILITY:QUERY", self.authorityPlayer, _self:GetID(), allCfocused, _self.coverPointsPositions)
     end, 500)
+
+    self.authorityPlayerHandleTimer = Timer.SetInterval(function()
+        self:SwitchNetworkAuthority()
+    end, 10000)
 
     if (NACT_DEBUG_EDITOR_MODE) then
         self:DebugDisplayCoverPoints()
@@ -100,6 +98,23 @@ end
 
 function NACT_Territory:GetAlliesInZone()
     return NACT.GetTriggerPopulation(self.zone, "allies")
+end
+
+function NACT_Territory:SwitchNetworkAuthority()
+    local reachablePlayers = {}
+    
+    for iEnemy, enemy in ipairs(self:GetEnemiesInZone()) do
+        if (enemy:GetPlayer()) then
+            table.insert(reachablePlayers, enemy:GetPlayer())
+        end
+    end
+
+    if (#reachablePlayers ~= 0) then
+        local reachablePlayerIndex = math.random(1, #reachablePlayers)
+        self.authorityPlayer = reachablePlayers[reachablePlayerIndex]
+    else
+        self.authorityPlayer = nil
+    end
 end
 
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTerritoryID, tViabilityResult)

@@ -1,11 +1,12 @@
 NACT_Cover = BaseClass.Inherit("NACT_Cover")
 
 -- Make sure your NPC has enough time to perform actions while in cover !
-NACT_PROVISORY_COVER_HOLD_MIN = 2000
-NACT_PROVISORY_COVER_HOLD_MAX = 3000
-NACT_PROVISORY_MIN_COVER_DISTANCE = 10
+local DEFAULT_TIMER_TIME = 250
+local DEFAULT_COVER_HOLD_MIN = 2000
+local DEFAULT_COVER_HOLD_MAX = 3000
+local DEFAULT_MIN_COVER_DISTANCE = 10
 
-function NACT_Cover:Constructor(NpcInstance)
+function NACT_Cover:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
     self.nearestCoverPoint = nil
     self.movingToCover = false
@@ -14,11 +15,15 @@ function NACT_Cover:Constructor(NpcInstance)
     self.doingAction = false
     self.shouldExitCover = false
 
+    self.coverHoldMin = NACT.ValueOrDefault(tBehaviorConfig.coverHoldMin, DEFAULT_COVER_HOLD_MIN)
+    self.coverHoldMax = NACT.ValueOrDefault(tBehaviorConfig.coverHoldMax, DEFAULT_COVER_HOLD_MAX)
+    self.minCoverDistance = NACT.ValueOrDefault(tBehaviorConfig.timerHandle, DEFAULT_MIN_COVER_DISTANCE)
+
     -- TODO: Does not really need a timer.
     -- TODO: It should work relying only on events instead of polling
     self.timerMain = Timer.SetInterval(function(self)
         self:Main()
-    end, 250, self)
+    end, NACT.ValueOrDefault(tBehaviorConfig.timerTime, DEFAULT_TIMER_TIME), self)
     Timer.Bind(self.timerMain, self.npc.character)
 end
 
@@ -74,7 +79,7 @@ function NACT_Cover:OnMoveComplete()
     end
     Timer.SetTimeout(function()
         self.shouldExitCover = true
-    end, math.random(NACT_PROVISORY_COVER_HOLD_MIN, NACT_PROVISORY_COVER_HOLD_MAX))
+    end, math.random(self.coverHoldMin, self.coverHoldMax))
 end
 
 --- Gets to the nearest safe and not taken cover point
@@ -97,7 +102,7 @@ function NACT_Cover:FindNearestCoverPoint()
             if (distanceToCoverPoint < currentNearestDistance) then
                 if (focusedLocation) then
                     local distanceToFocused = coverPoint.pos:Distance(focusedLocation)
-                    if (distanceToFocused > NACT_PROVISORY_MIN_COVER_DISTANCE) then
+                    if (distanceToFocused > self.minCoverDistance) then
                         currentNearestDistance = distanceToCoverPoint
                         nearestCoverPoint = coverPoint
                     end

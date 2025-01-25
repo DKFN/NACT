@@ -100,6 +100,10 @@ function NACT_NPC:SetFocusedEntity(cEntity)
         if (cEntity) then
             self:StartTracing()
         end
+        -- If no authority at the territory level and npc has focused. Start calculations on the territory
+        if (not self.territory.authorityPlayer and cEntity and cEntity:GetPlayer()) then
+            self.territory:SwitchNetworkAuthority()
+        end
     end
     if (cEntity == nil) then
         self:StopTracing()
@@ -145,7 +149,7 @@ function NACT_NPC:MoveToPoint(vPoint)
 end
 
 function NACT_NPC:Destructor()
-    self:Log2("Destroying behavior is : "..NanosTable.Dump(self.behavior))
+    -- self:Log2("Destroying behavior is : "..NanosTable.Dump(self.behavior))
     self.behavior:Destroy()
     self.territory:RemoveNPC(self)
     for k, t in pairs(self.triggers) do

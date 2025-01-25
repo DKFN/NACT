@@ -23,6 +23,7 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - Make the Functions with standard naming for nanos (ex: MoveToPoint should be renamed MoveToLocation)
 - Cleanups en cas d'abandon du combat par le joueur
 - Cleanups en cas de deconnexion du joueur en combat
+- Faire en sorte que les NPCs ils sortent jamais du territoire
 - Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
 
 ## Beta

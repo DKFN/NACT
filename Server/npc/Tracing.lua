@@ -35,7 +35,7 @@ end
 function NACT_NPC:LookForFocused()
     -- self:Log("Attempt "..NanosTable.Dump(#self:GetEnemiesInTrigger("detection") > 0).." scan launched ? "..NanosTable.Dump(self.launchedScanAround))
     if (not self.launchedScanAround) then
-        self:Log2("Poll from me")
+        -- self:Log2("Poll from me")
         local enemiesInDetection = self:GetEnemiesInTrigger("detection")
         if (#enemiesInDetection > 0) then
             -- self:Log("Looking around")
