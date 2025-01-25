@@ -40,6 +40,9 @@ function NACT_NPC:SetBehaviorIndex(iBehaviorIndex)
         -- self:SetBehavior(cBehaviorToSpawn)
         self.behavior = cBehaviorToSpawn.class(self, NACT.ValueOrDefault(cBehaviorToSpawn.config, {}))
         self.currentBehaviorIndex = iBehaviorIndex
+        if (self.debugTextBehavior) then
+            self.debugTextBehavior:SetText(cBehaviorToSpawn.class:GetClassName())
+        end
     end
 end
 
@@ -51,13 +54,12 @@ function NACT_NPC:SetBehavior(cBehaviorClass)
             break;
         end
     end
-    self:Log(" Going to "..cBehaviorClass:GetClassName())
+
     if (maybeBehaviorIndex) then
         self:SetBehaviorIndex(maybeBehaviorIndex)
     else
         Console.Warn("Behavior index was not found !")
     end
-    
 end
 
 function NACT_NPC:SetBehaviorConfig(cBehaviorClass, tBehaviorConfigTable)

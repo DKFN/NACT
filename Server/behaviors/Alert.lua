@@ -19,8 +19,15 @@ function NACT_Alert:Main()
         -- Console.Log("Ally npc #"..maybeNactNpcId.." : "..NanosTable.Dump(allyNpc))
         if maybeNactNpcId then
             local nactNpc = NACT_NPC.GetByID(maybeNactNpcId)
-            nactNpc:SetBehavior(NACT_Combat)
-            nactNpc:SetFocused(self.npc:GetFocused())
+
+            -- TODO: The alerting mechanism should be smarter and only switch
+            -- TODO: If the current NPC is not in Combat towards someone already
+            -- TODO: So make a list of behavior that if it is the current behavior of the NPC they should not switch back
+            -- TODO: To combat
+            -- if (not nactNpc:GetFocused()) then
+                nactNpc:SetBehavior(NACT_Combat)
+                nactNpc:SetFocused(self.npc:GetFocused())
+            -- end
         end
     end
 end

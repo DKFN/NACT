@@ -1,5 +1,8 @@
 NACT_Combat = BaseClass.Inherit("NACT_Combat", false)
 
+NACT_PROVISORY_RNG_MAX = 30
+NACT_PROVISORY_RNG_COVER_VALUE = 10
+
 function NACT_Combat:Constructor(NpcInstance)
     self.npc = NpcInstance
 
@@ -13,10 +16,10 @@ function NACT_Combat:Constructor(NpcInstance)
 end
 
 function NACT_Combat:Main()
-    local rng = math.random(0, 10)
+    local rng = math.random(0, NACT_PROVISORY_RNG_MAX)
     self.npc:Log("Combat")
 
-    if (self.npc:ShouldReload() or rng == 10) then
+    if (self.npc:ShouldReload() or rng == NACT_PROVISORY_RNG_COVER_VALUE) then
         Console.Log("Combat: go to cover")
         self.npc:SetBehavior(NACT_Cover)
     else

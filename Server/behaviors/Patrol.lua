@@ -1,10 +1,13 @@
 NACT_Patrol = NACT_Detection.Inherit("NACT_Patrol")
 
-NACT_PROVISORY_WAITFOR_MIN = 0
-NACT_PROVISORY_WAITFOR_MAX = 5000
+-- NACT_PROVISORY_WAITFOR_MIN = 0
+-- NACT_PROVISORY_WAITFOR_MAX = 5000
 
-function NACT_Patrol:Constructor(NpcInstance)
-    self:Super().Constructor(self, NpcInstance)
+local DEFAULT_WAITFOR_MIN = 0
+local DEFAULT_WAITFOR_MAX = 5000
+
+function NACT_Patrol:Constructor(NpcInstance, tBehaviorConfig)
+    self:Super().Constructor(self, NpcInstance, tBehaviorConfig)
     Console.Log("Instance a "..self.heat)
 
     self.patrolPath = "gateFront"
@@ -16,6 +19,9 @@ function NACT_Patrol:Constructor(NpcInstance)
     self.moveCompleteCallback = nil
 
     self.preventReturnToInitialPos = true
+
+    self.waitForMin = NACT.ValueOrDefault(tBehaviorConfig.waitForMin, DEFAULT_WAITFOR_MIN)
+    self.waitForMax = NACT.ValueOrDefault(tBehaviorConfig.waitForMax, DEFAULT_WAITFOR_MAX)
 
     self:WalkToNextPoint()
 end
@@ -38,7 +44,7 @@ end
 function NACT_Patrol:OnMoveComplete()
     Timer.SetTimeout(function()
         self:WalkToNextPoint()
-    end, math.random(NACT_PROVISORY_WAITFOR_MIN, NACT_PROVISORY_WAITFOR_MAX))
+    end, math.random(self.waitForMin, self.waitForMax))
 end
 
 function NACT_Patrol:Destructor()

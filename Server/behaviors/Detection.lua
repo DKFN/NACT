@@ -1,14 +1,20 @@
 -- This behavior aims to try to detect the player and then go to the next state on the behavior tree
-PROVISORY_NACT_HEAT_INCREMENT = 5
-PROVISORY_NACT_HEAT_TURN_TO = 50 -- Heat necessary for the NPC to turn towards the player
+-- PROVISORY_NACT_HEAT_INCREMENT = 5
+-- PROVISORY_NACT_HEAT_TURN_TO = 50 -- Heat necessary for the NPC to turn towards the player
+
+local DEFAULT_INTERVAL_TIME = 500
+local DEFAULT_HEAT_INCREMENT = 5
+local DEFAULT_HEAT_TURN_TO = 50
 
 NACT_Detection = BaseClass.Inherit("NACT_Detection")
-function NACT_Detection:Constructor(NpcInstance)
+function NACT_Detection:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
-    self.heat = PROVISORY_NACT_HEAT_INCREMENT
+    self.heatIncrement = NACT.ValueOrDefault(tBehaviorConfig.heatIncrement, DEFAULT_HEAT_INCREMENT)
+    self.heatTurnTo = NACT.ValueOrDefault(tBehaviorConfig.heatTurnTo, DEFAULT_HEAT_TURN_TO)
+    self.heat = self.heatIncrement
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
-    end, 500, self)
+    end, NACT.ValueOrDefault(tBehaviorConfig.timerHandle, DEFAULT_INTERVAL_TIME), self)
     Timer.Bind(self.timerHandle, self.npc.character)
 end
 
@@ -33,7 +39,7 @@ function NACT_Detection:Main()
     elseif (self.heat <= 0 and not bHasEnemyDetectable) then
             self.npc:GoPreviousBehavior()
     else
-        if (self.heat >= PROVISORY_NACT_HEAT_TURN_TO) then
+        if (self.heat >= self.heatTurnTo) then
             self.npc:TurnToFocused()
         end
 
@@ -54,13 +60,13 @@ end
 
 --- Raises heat level depeing of increment and distance factosr
 function NACT_Detection:IncrementLevel()
-    local nValue = PROVISORY_NACT_HEAT_INCREMENT + (1 / (self.npc:GetDistanceToFocused() + 1) * 2000)
+    local nValue = self.heatIncrement + (1 / (self.npc:GetDistanceToFocused() + 1) * 2000)
     self.heat = math.min(self.heat + nValue, 100)
 end
 
 --- Decrement heat level depending of distance factor and increment configured
 function NACT_Detection:DecrementLevel()
-    local nValue = PROVISORY_NACT_HEAT_INCREMENT + ((self.npc:GetDistanceToFocused() + 1) / 2000)
+    local nValue = self.heatIncrement + ((self.npc:GetDistanceToFocused() + 1) / 2000)
     self.heat = math.max(0, self.heat - nValue)
 end
 

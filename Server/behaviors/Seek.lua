@@ -1,21 +1,24 @@
 NACT_Seek = BaseClass.Inherit("NACT_Seek")
 
-NACT_PROVISORY_HOLD_AT_POINT = 3000
-NACt_PROVISORY_SEEK_RADIUS = 5000
-NACT_PROVISORY_MAX_TIME_IN_SEEKING = 5000
+local DEFAULT_INTERVAL_TIME = 500
+local DEFAULT_MAX_TIME_SEEKING = 5000
+local DEFAULT_SEEK_RADIUS = 5000
+local DEFAULT_MAX_TIME_HOLD = 3000
 
-
-function NACT_Seek:Constructor(NpcInstance)
+function NACT_Seek:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
     self.moveCompleteCallback = nil
     self.movingToPoint = true
     self.timeLastPointAcquired = 0
     self.seekAttemps = 0
+    self.maxTimeSeeking = NACT.ValueOrDefault(tBehaviorConfig.maxTimeSeeking, DEFAULT_MAX_TIME_SEEKING)
+    self.seekRadius = NACT.ValueOrDefault(tBehaviorConfig.seekRadius, DEFAULT_SEEK_RADIUS)
+    self.maxTimeHold = NACT.ValueOrDefault(tBehaviorConfig.maxTimeHold, DEFAULT_MAX_TIME_HOLD)
 
     -- TODO: Make Utility function to create them
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
-    end, 500, self)
+    end, NACT.ValueOrDefault(tBehaviorConfig.intervalTime, DEFAULT_INTERVAL_TIME), self)
     Timer.Bind(self.timerHandle, self.npc.character)
 end
 
@@ -25,7 +28,7 @@ function NACT_Seek:Main()
     self.npc:LookForFocused()
     -- Finish tomorrow and plug it in NACT_Combat
     if (self.npc:GetFocused() or #self.npc.territory:GetEnemiesInZone("detection") == 0) then
-        self.npc:SetBehavior(NACT_Combat)
+        self.npc:SetBehavior(NACT_Alert)
     end
 
     -- Console.Log("Moving to focused ? "..NanosTable.Dump(self.movingToPoint))
@@ -50,7 +53,7 @@ function NACT_Seek:Main()
 
     if (not self.movingToPoint) then
         self.movingToPoint = true
-        self.npc:RandomPointToFocusedQuery(NACt_PROVISORY_SEEK_RADIUS)
+        self.npc:RandomPointToFocusedQuery(self.seekRadius)
     end
 end
 

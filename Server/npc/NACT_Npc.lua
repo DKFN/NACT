@@ -20,8 +20,18 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
 
     -- TODO: Add 
     self.currentBehaviorIndex = 1
+    
+    self.debugTextBehavior = TextRender(
+        Vector(0, 300, 0),
+        Rotator(),
+        "Initializing",
+        Vector(0.5, 0.5, 0.5), -- Scale
+        Color(1, 0, 0), -- Red Color
+        FontType.OpenSans,
+        TextRenderAlignCamera.FaceCamera
+    )
+    self.debugTextBehavior:AttachTo(cNpcToHandle, AttachmentRule.KeepRelative, "head")
 
-    -- TODO; This should not be directly iun the constructor
     if (#self.behaviorConfig > 0) then
         self:SetBehaviorIndex(1)
     end

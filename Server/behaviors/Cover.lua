@@ -61,6 +61,7 @@ end
 
 function NACT_Cover:OnMoveComplete()
     if (not self.nearestCoverPoint) then
+        Console.Warn("Cover points exhausted the NPC will be dumb")
         self.npc:SetBehavior(NACT_Combat)
         return
     end
@@ -128,5 +129,9 @@ function NACT_Cover:LeaveCover()
 end
 
 function NACT_Cover:Destructor()
+    if (self.nearestCoverPoint) then
+        self.nearestCoverPoint.taken = false
+        self.npc.character:SetStanceMode(StanceMode.Standing)
+    end
     Timer.ClearInterval(self.timerMain)
 end

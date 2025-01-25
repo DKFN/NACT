@@ -11,12 +11,18 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 # TODO
 
 ## Alpha
+
+### Bugs
+- All cover points are being exhausted after Seek will call Alert instead of NACT_Combat
+
+### Features
+- Territory should define an authority and switch authority every 10s
+- CoverViability positions are send every refresh tick, this is not useful you can send covers once and for all
 - Passer tous les NACT_PROVISORY en valeur configurable
 - Add events for focus changed etc
 - Make the Functions with standard naming for nanos (ex: MoveToPoint should be renamed MoveToLocation)
 - Cleanups en cas d'abandon du combat par le joueur
 - Cleanups en cas de deconnexion du joueur en combat
-- Roaming NPC is just a NPC that carries the territory attached to the commander and regularly updates the cover point in range
 - Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
 
 ## Beta
@@ -25,6 +31,7 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - Behavior push qui est choisit dans le combat si le NPC est en superiorité
 - Make vision based focusing change optionnal (for example, humans work like that, zombies don't)
 - Make sure all character nanos function calls are wrapped in NACT_NPC so users can extend NACT_NPC and provide their own system
+- Roaming NPC is just a NPC that carries the territory attached to the commander and regularly updates the cover point in range
 
 # Bails du turfu mais faut y penser
 
