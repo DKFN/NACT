@@ -3,6 +3,8 @@ NACT = BaseClass.Inherit("_NACT")
 NACT.territories = {}
 NACT.handledNpcs = {}
 
+NACT.mapCoverPoints = {}
+
 function NACT:Constructor()
     
 end
@@ -48,8 +50,6 @@ function NACT.RegisterNpc(cNpcToHandle, sTerritoryName, tNpcConfig)
 
 end
 
-
-
 function NACT.RegisterTerritory(sTerritoryName, tZoneConfigTable)
     NACT.territories[sTerritoryName] = NACT_Territory(tZoneConfigTable);
 end
@@ -69,6 +69,14 @@ function NACT.ValueOrDefault(maybeValue, default)
     else
         return default
     end
+end
+
+function NACT.SetMapCoverPoints(tMapCoverPoints)
+    NACT.mapCoverPoints = tMapCoverPoints
+end
+
+function NACT.GetMapCoverPoints()
+    return NACT.mapCoverPoints
 end
 
 

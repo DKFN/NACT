@@ -4,11 +4,11 @@ NACT_Territory = BaseClass.Inherit("NACT_Territory")
 --- cover points and patrol routes 
 ---@param tTerritoryConfig TerritoryConfig territory config map
 function NACT_Territory:Constructor(tTerritoryConfig)
-    self.coverPoints = tTerritoryConfig.coverPoints
+    self.coverPoints = {}
     self.coverPointsPositions = {}
-    for iCover, cover in ipairs(self.coverPoints) do
-        table.insert(self.coverPointsPositions, cover.pos)
-    end
+    self.zoneBounds = tTerritoryConfig.zoneBounds
+    self:RefreshCoverPoints()
+
     self.npcs = {}
     self.patrolRoutes = tTerritoryConfig.patrolRoutes
     self.team = tTerritoryConfig.team
@@ -27,6 +27,7 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     self.authorityPlayerHistory = {}
 
     Console.Log("Territory team : "..self.team)
+    -- Console.Log("Territory cover points : "..NanosTable.Dump(self.coverPoints))
 
     -- TODO: Ce serait mieux d'avoir surement le trigger sur le joueur et que ce soit lui
     -- TODO: Qui reveille les npc. Bg Timmy
@@ -122,6 +123,25 @@ function NACT_Territory:SwitchNetworkAuthority()
     else
         self.authorityPlayer = nil
     end
+end
+
+--- This function will refresh the cover points of the territory by getting the map cover points
+--- thart are in the zone bounds. For now this only supports sphere
+function NACT_Territory:RefreshCoverPoints()
+    local selectedCoverPoints = {}
+    local coverPointsPosition = {}
+    for i, coverPoint in ipairs(NACT.GetMapCoverPoints()) do
+        local distanceFromOrigin = self.zoneBounds.pos:Distance(coverPoint.pos)
+        Console.Log("Distance from origin : "..distanceFromOrigin)
+        if (distanceFromOrigin <= self.zoneBounds.radius) then
+            selectedCoverPoints[#selectedCoverPoints+1] = coverPoint
+            coverPointsPosition[#coverPointsPosition+1] = coverPoint.pos
+        else
+            -- Console.Log("Cover point was not selected "..NanosTable.Dump(coverPoint))
+        end
+    end
+    self.coverPoints = selectedCoverPoints
+    self.coverPointsPositions = coverPointsPosition
 end
 
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTerritoryID, tViabilityResult)
