@@ -23,6 +23,9 @@ function NACT_Territory:Constructor(tTerritoryConfig)
 
     self.authorityPlayer = nil
 
+    -- Stores all the players that had an authority at one point, and already had territory config sent to them
+    self.authorityPlayerHistory = {}
+
     Console.Log("Territory team : "..self.team)
 
     -- TODO: Ce serait mieux d'avoir surement le trigger sur le joueur et que ce soit lui
@@ -50,7 +53,7 @@ function NACT_Territory:Constructor(tTerritoryConfig)
             return
         end
         -- TODO: There is also no need to resend cover positions each time, this is dumb. Just send it once while getting into the zone
-        Events.CallRemote("NACT:TRACE:COVER:VIABILITY:QUERY", self.authorityPlayer, _self:GetID(), allCfocused, _self.coverPointsPositions)
+        Events.CallRemote("NACT:TRACE:COVER:VIABILITY:QUERY", self.authorityPlayer, _self:GetID(), allCfocused)
     end, 500)
 
     self.authorityPlayerHandleTimer = Timer.SetInterval(function()
@@ -112,6 +115,10 @@ function NACT_Territory:SwitchNetworkAuthority()
     if (#reachablePlayers ~= 0) then
         local reachablePlayerIndex = math.random(1, #reachablePlayers)
         self.authorityPlayer = reachablePlayers[reachablePlayerIndex]
+        if (not self.authorityPlayerHistory[self.authorityPlayer]) then
+            self.authorityPlayerHistory[self.authorityPlayer] = true
+            Events.CallRemote("NACT:TRACE:QUERY:VIABILITY:POSITIONS", self.authorityPlayer, self:GetID(), self.coverPointsPositions)
+        end
     else
         self.authorityPlayer = nil
     end

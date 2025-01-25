@@ -1,8 +1,20 @@
 -- This allows to launch more traces to be more precise in the secure behavior
 -- (For example doing a kind of "box" instead of a mono trace)
 
-Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(iTerritoryID, tAllFocusedEntities, tAllCoverPositions)
+local coverPositionsByTerritoryID = {}
+Events.SubscribeRemote("NACT:TRACE:QUERY:VIABILITY:POSITIONS", function(iTerritoryID, allPositions)
+    coverPositionsByTerritoryID[iTerritoryID] = allPositions
+end)
+
+Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(iTerritoryID, tAllFocusedEntities)
     local tViabilityOfCovers = {}
+
+    local tAllCoverPositions = coverPositionsByTerritoryID[iTerritoryID]
+
+    if (not tAllCoverPositions) then
+        Console.Warn("Positions of territory not received yet, viability scan abandonned")
+        return
+    end
 
     -- TODO: We should also launch a trace towards the player camera for third person combat
     for iCover, coverPos in ipairs(tAllCoverPositions) do
