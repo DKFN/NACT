@@ -4,6 +4,8 @@ local DEFAULT_INTERVAL_TIME = 500
 local DEFAULT_MAX_TIME_SEEKING = 5000
 local DEFAULT_SEEK_RADIUS = 5000
 local DEFAULT_MAX_TIME_HOLD = 3000
+local DEFAULT_GAIT_SEEKING = GaitMode.Sprinting
+local DEFAULT_GAIT_INITIAL = GaitMode.Walking
 
 function NACT_Seek:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
@@ -14,6 +16,8 @@ function NACT_Seek:Constructor(NpcInstance, tBehaviorConfig)
     self.maxTimeSeeking = NACT.ValueOrDefault(tBehaviorConfig.maxTimeSeeking, DEFAULT_MAX_TIME_SEEKING)
     self.seekRadius = NACT.ValueOrDefault(tBehaviorConfig.seekRadius, DEFAULT_SEEK_RADIUS)
     self.maxTimeHold = NACT.ValueOrDefault(tBehaviorConfig.maxTimeHold, DEFAULT_MAX_TIME_HOLD)
+    self.gaitSeeking = NACT.ValueOrDefault(tBehaviorConfig.gaitSeeking, DEFAULT_GAIT_SEEKING)
+    self.gaitInitial = NACT.ValueOrDefault(tBehaviorConfig.gaitInitial, DEFAULT_GAIT_SEEKING)
 
     -- TODO: Make Utility function to create them
     self.timerHandle = Timer.SetInterval(function()
@@ -35,6 +39,7 @@ function NACT_Seek:Main()
     if (self.seekAttemps == 0) then
         self.movingToPoint = true
         self.seekAttemps = self.seekAttemps + 1
+        self.npc.character:SetGaitMode(self.gaitSeeking)
         self.npc:MoveToFocused()
     end
 
@@ -53,11 +58,13 @@ function NACT_Seek:Main()
 
     if (not self.movingToPoint) then
         self.movingToPoint = true
+        self.npc.character:SetGaitMode(self.gaitSeeking)
         self.npc:RandomPointToFocusedQuery(self.seekRadius)
     end
 end
 
 function NACT_Seek:OnMoveComplete()
+    self.npc.character:SetGaitMode(self.gaitInitial)
     self.movingToPoint = false
 end
 
@@ -86,5 +93,6 @@ end
 
 function NACT_Seek:Destructor()
     Console.Log("Destroying seek with "..NanosTable.Dump(self.timerHandle))
+    self.npc.character:SetGaitMode(self.gaitInitial)
     Timer.ClearInterval(self.timerHandle)
 end

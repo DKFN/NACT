@@ -50,7 +50,7 @@ function NACT_Territory:Constructor(tTerritoryConfig)
         end
 
         if (not self.authorityPlayer) then
-            Console.Log("No reachable players in range, not scanning viability of covers")
+            -- Console.Log("No reachable players in range, not scanning viability of covers")
             return
         end
         -- TODO: There is also no need to resend cover positions each time, this is dumb. Just send it once while getting into the zone
@@ -132,7 +132,7 @@ function NACT_Territory:RefreshCoverPoints()
     local coverPointsPosition = {}
     for i, coverPoint in ipairs(NACT.GetMapCoverPoints()) do
         local distanceFromOrigin = self.zoneBounds.pos:Distance(coverPoint.pos)
-        Console.Log("Distance from origin : "..distanceFromOrigin)
+        -- Console.Log("Distance from origin : "..distanceFromOrigin)
         if (distanceFromOrigin <= self.zoneBounds.radius) then
             selectedCoverPoints[#selectedCoverPoints+1] = coverPoint
             coverPointsPosition[#coverPointsPosition+1] = coverPoint.pos

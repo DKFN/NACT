@@ -16,9 +16,8 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - All cover points are being exhausted after Seek will call Alert instead of NACT_Combat
 
 ### Features
-- Store all cover points of map globally and get all the cover points in range when creating the territory or updating the territory in case of roaming npc
-- CoverViability positions are send every refresh tick, this is not useful you can send covers once and for all
-- Passer tous les NACT_PROVISORY en valeur configurable => Ok behaviors
+- Avoid the NPC to try to go to cover if the last time he tried was less than 5s ago to avoid the NACT_Combat -> NACT_Cover -> Nact_Combat -> NACT_Cover infinite stuff
+- When no cover point found, reload on place
 - Add events for focus changed etc
 - Make the Functions with standard naming for nanos (ex: MoveToPoint should be renamed MoveToLocation)
 - Cleanups en cas d'abandon du combat par le joueur

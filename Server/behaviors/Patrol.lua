@@ -10,10 +10,13 @@ function NACT_Patrol:Constructor(NpcInstance, tBehaviorConfig)
     self:Super().Constructor(self, NpcInstance, tBehaviorConfig)
     Console.Log("Instance a "..self.heat)
 
-    self.patrolPath = "gateFront"
+    if (not tBehaviorConfig.patrolPath) then
+        Console.Error("No patrol point was defined !")
+    end
+    self.patrolPath = tBehaviorConfig.patrolPath
     self.targetPatrolPointIndex = 1
     -- TODO: Make patrol point configurable
-    self.patrolRoute = self.npc.territory.patrolRoutes["gateFront"]
+    self.patrolRoute = self.npc.territory.patrolRoutes[self.patrolPath]
     self.patrolPoints = self.patrolRoute.points
     self.maxPatrolPointIndex = #self.patrolRoute.points
     self.moveCompleteCallback = nil
@@ -29,6 +32,8 @@ end
 function NACT_Patrol:WalkToNextPoint()
     self.npc:MoveToPoint(self.patrolPoints[self.targetPatrolPointIndex])
     if (self.targetPatrolPointIndex == self.maxPatrolPointIndex) then
+        Console.Log("Patrol point index "..self.targetPatrolPointIndex)
+        Console.Log("Patrol point max "..self.maxPatrolPointIndex)
         -- TODO : Check if circling or not
         if (self.patrolRoute.walkMethod == "circle") then
             self.targetPatrolPointIndex = 1

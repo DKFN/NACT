@@ -29,7 +29,7 @@ function NACT_Combat:Main()
     self.npc:Log("Combat")
 
     if (self.npc:ShouldReload() or rng == self.rngCoverValue) then
-        Console.Log("Combat: go to cover")
+        -- Console.Log("Combat: go to cover")
         self.npc:SetBehavior(self.coverBehavior)
     else
         if (#self.npc.territory:GetEnemiesInZone() == 0) then

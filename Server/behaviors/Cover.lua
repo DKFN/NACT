@@ -79,6 +79,7 @@ function NACT_Cover:OnMoveComplete()
     end
     Timer.SetTimeout(function()
         self.shouldExitCover = true
+        self.nearestCoverPoint.taken = false
     end, math.random(self.coverHoldMin, self.coverHoldMax))
 end
 
@@ -122,6 +123,9 @@ end
 function NACT_Cover:OnTakeDamage(_, damage, bone, type, from_direction, instigator, causer)
     local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
     if (causerCharacter) then
+        if (self.nearestCoverPoint) then
+            self.nearestCoverPoint.taken = false
+        end
         self.npc:SetFocused(causerCharacter)
         self.npc:SetBehavior(NACT_Combat)
     end

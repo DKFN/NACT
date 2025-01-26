@@ -25,6 +25,48 @@ local PatrollingNpc = {behaviors = {
     { class = NACT_Cover},
 }}
 
+
+local PatrollingNpcGatefront = {behaviors = {
+    { class = NACT_Idle },
+    { class = NACT_Patrol, config = {
+        patrolPath = "gateFront"
+    }},
+    { class = NACT_Alert},
+    { class = NACT_Combat},
+    { class = NACT_Engage},
+    { class = NACT_Seek},
+    { class = NACT_Cover},
+}}
+
+
+local PatrollingNpcFrontCamp = {behaviors = {
+    { class = NACT_Idle },
+    { class = NACT_Patrol, config = {
+        patrolPath = "frontCamp",
+        waitForMin = 2000,
+        waitForMax = 2000
+    }},
+    { class = NACT_Alert},
+    { class = NACT_Combat},
+    { class = NACT_Engage},
+    { class = NACT_Seek},
+    { class = NACT_Cover},
+}}
+
+local PatrollingNpcFrontDatacenter = {behaviors = {
+    { class = NACT_Idle },
+    { class = NACT_Patrol, config = {
+        patrolPath = "frontDatacenter",
+        waitForMin = 2000,
+        waitForMax = 2000
+    }},
+    { class = NACT_Alert},
+    { class = NACT_Combat},
+    { class = NACT_Engage},
+    { class = NACT_Seek},
+    { class = NACT_Cover},
+}}
+
 local ZombieNpc = {}
 
 -- ZombieNpc:AddBehavior(NACT_Idle, {timerTime = 1000})
@@ -692,6 +734,343 @@ Package.Subscribe("Load", function()
                     pos = Vector(-5763.4441486684, 16718.308859794, 256.15000600524),
                     stance = 2
                    },
+                   {
+                    pos = Vector(-19497.901272341, 917.04903813433, 166.15000753155),
+                    stance = 2
+                   },{
+                    pos = Vector(-19644.205187321, 949.50538920559, 166.84276736633),
+                    stance = 2
+                   },{
+                    pos = Vector(-19992.774184257, 1648.3462206378, 166.14999864907),
+                    stance = 2
+                   },{
+                    pos = Vector(-20139.004375422, 1623.6213460774, 166.15000822715),
+                    stance = 2
+                   },{
+                    pos = Vector(-21361.826108456, 1301.6781525074, 166.14999841368),
+                    stance = 2
+                   },{
+                    pos = Vector(-21428.553529972, 1168.4786179888, 166.42505343054),
+                    stance = 2
+                   },{
+                    pos = Vector(-21869.005214492, 1805.1632539538, 166.1500025292),
+                    stance = 2
+                   },{
+                    pos = Vector(-21713.18274043, 1802.4980259705, 166.14999978572),
+                    stance = 2
+                   },{
+                    pos = Vector(-21220.284995635, 3144.9974432357, 230.14999475933),
+                    stance = 2
+                   },{
+                    pos = Vector(-21546.084977634, 3144.7502705784, 230.14999025668),
+                    stance = 2
+                   },{
+                    pos = Vector(-21595.110942598, 2899.7506817584, 262.15099214371),
+                    stance = 1
+                   },{
+                    pos = Vector(-21216.145022547, 2899.9561987035, 262.14999695242),
+                    stance = 1
+                   },{
+                    pos = Vector(-21907.879408132, 2899.9978513681, 230.15000192792),
+                    stance = 2
+                   },{
+                    pos = Vector(-22166.899294873, 2510.7885665666, 230.14998574505),
+                    stance = 2
+                   },{
+                    pos = Vector(-21826.524363041, 2096.0181248647, 230.14999361116),
+                    stance = 2
+                   },{
+                    pos = Vector(-21351.518594737, 2096.1198491817, 262.15099723162),
+                    stance = 1
+                   },{
+                    pos = Vector(-20934.397079932, 2096.0121261556, 262.15000907198),
+                    stance = 1
+                   },{
+                    pos = Vector(-20613.055580294, 2519.8760793371, 230.14998919277),
+                    stance = 2
+                   },{
+                    pos = Vector(-21771.297125611, 4193.2035803405, 230.1499975774),
+                    stance = 2
+                   },{
+                    pos = Vector(-21469.58672996, 4191.0052783624, 230.15001243235),
+                    stance = 2
+                   },{
+                    pos = Vector(-21408.510576565, 4436.0094997832, 262.15099477608),
+                    stance = 1
+                   },{
+                    pos = Vector(-21794.228201725, 4436.0072851867, 262.14999010723),
+                    stance = 1
+                   },{
+                    pos = Vector(-22117.129496697, 4436.1004856819, 230.14999010723),
+                    stance = 2
+                   },{
+                    pos = Vector(-22387.995725458, 4844.8337907307, 230.15001457217),
+                    stance = 2
+                   },{
+                    pos = Vector(-22096.300011292, 5239.9003055707, 230.14998798765),
+                    stance = 2
+                   },{
+                    pos = Vector(-21651.547580459, 5239.9684335139, 262.14998737801),
+                    stance = 1
+                   },{
+                    pos = Vector(-21147.236092774, 5239.9052947334, 230.14998934454),
+                    stance = 2
+                   },{
+                    pos = Vector(-20834.028280356, 4826.8990667133, 230.15001007145),
+                    stance = 2
+                   },{
+                    pos = Vector(-21147.798308232, 4436.0270914835, 230.14999296449),
+                    stance = 2
+                   },{
+                    pos = Vector(-22239.992801531, 3720.3194845904, 166.15000156453),
+                    stance = 2
+                   },{
+                    pos = Vector(-22391.779322996, 3674.0805820468, 166.19309341516),
+                    stance = 2
+                   },{
+                    pos = Vector(-20788.002656845, 3700.7053978621, 166.14999985833),
+                    stance = 2
+                   },{
+                    pos = Vector(-20641.757364096, 3679.8878824833, 166.15000154415),
+                    stance = 2
+                   },{
+                    pos = Vector(-20193.030115369, 3698.5655145894, 166.15000054237),
+                    stance = 2
+                   },{
+                    pos = Vector(-20046.997210458, 3698.8458521432, 166.14999761242),
+                    stance = 2
+                   },{
+                    pos = Vector(-19590.291743703, 3141.9904285087, 230.14997574318),
+                    stance = 2
+                   },{
+                    pos = Vector(-19267.186289532, 3141.9964396886, 230.1499925119),
+                    stance = 2
+                   },{
+                    pos = Vector(-19597.029194797, 2896.9845804829, 262.15099196259),
+                    stance = 1
+                   },{
+                    pos = Vector(-19203.67518319, 2896.9704477171, 262.15000508806),
+                    stance = 1
+                   },{
+                    pos = Vector(-19925.742978386, 2896.8750403259, 230.15000207314),
+                    stance = 2
+                   },{
+                    pos = Vector(-20187.899863823, 2486.0678668189, 230.14999930089),
+                    stance = 2
+                   },{
+                    pos = Vector(-19852.797406548, 2093.0107017017, 230.15000323394),
+                    stance = 2
+                   },{
+                    pos = Vector(-19364.820022148, 2093.1817854896, 230.15000323394),
+                    stance = 2
+                   },{
+                    pos = Vector(-18946.662512911, 2093.0008351228, 230.14998704383),
+                    stance = 2
+                   },{
+                    pos = Vector(-18634.100484747, 2494.5467303941, 230.1499938675),
+                    stance = 2
+                   },{
+                    pos = Vector(-18900.941176693, 2896.9060705678, 230.14999907972),
+                    stance = 2
+                   },{
+                    pos = Vector(-18714.019863356, 3698.5418034476, 166.15000653695),
+                    stance = 2
+                   },{
+                    pos = Vector(-18567.990039651, 3683.3357779164, 166.14999508459),
+                    stance = 2
+                   },{
+                    pos = Vector(-18958.154410959, 4191.2499630149, 230.1500063497),
+                    stance = 2
+                   },{
+                    pos = Vector(-19281.248340441, 4191.0248201117, 230.15000030431),
+                    stance = 2
+                   },{
+                    pos = Vector(-19380.969885674, 4436.0352728399, 262.15001380455),
+                    stance = 1
+                   },{
+                    pos = Vector(-18948.001254779, 4436.0090549014, 262.15001380455),
+                    stance = 1
+                   },{
+                    pos = Vector(-18638.384589541, 4436.001400914, 230.15000051229),
+                    stance = 2
+                   },{
+                    pos = Vector(-18408.001576806, 4852.7938244125, 230.15000340291),
+                    stance = 2
+                   },{
+                    pos = Vector(-18648.12572523, 5239.8756892822, 230.14999991455),
+                    stance = 2
+                   },{
+                    pos = Vector(-19234.663129505, 5239.9726384418, 230.15099936523),
+                    stance = 2
+                   },{
+                    pos = Vector(-19625.184231495, 5239.9003054049, 230.14999735027),
+                    stance = 2
+                   },{
+                    pos = Vector(-19961.900660953, 4843.4232801057, 230.1499993168),
+                    stance = 2
+                   },{
+                    pos = Vector(-19636.170241646, 4436.1002888741, 230.14999767661),
+                    stance = 2
+                   },{
+                    pos = Vector(-20391.167094608, 4331.7566273331, 166.14999447828),
+                    stance = 2
+                   },{
+                    pos = Vector(-20395.538155459, 4478.0059422946, 166.14999720755),
+                    stance = 2
+                   },{
+                    pos = Vector(-20779.427011911, 5898.5582014727, 166.15000469709),
+                    stance = 2
+                   },{
+                    pos = Vector(-20726.174987269, 6036.5488137181, 166.15000296085),
+                    stance = 2
+                   },{
+                    pos = Vector(-20787.188758418, 6423.1632709546, 166.14999937692),
+                    stance = 2
+                   },{
+                    pos = Vector(-20722.105226361, 6554.2091975382, 166.14999901358),
+                    stance = 2
+                   },{
+                    pos = Vector(-21538.176593481, 6554.919857831, 166.15000184203),
+                    stance = 2
+                   },{
+                    pos = Vector(-21607.31564997, 6426.1278822443, 166.1499973455),
+                    stance = 2
+                   },{
+                    pos = Vector(-21546.963195625, 6039.9547011892, 166.15000055053),
+                    stance = 2
+                   },{
+                    pos = Vector(-21617.8112705, 5912.054161752, 166.14999645019),
+                    stance = 2
+                   },{
+                    pos = Vector(-19722.106667868, 6029.4548733322, 166.14999880966),
+                    stance = 2
+                   },{
+                    pos = Vector(-19639.093192489, 5908.7720712995, 166.1500019155),
+                    stance = 2
+                   },{
+                    pos = Vector(-19644.32343171, 6425.7558599739, 166.15000386054),
+                    stance = 2
+                   },{
+                    pos = Vector(-19736.70422122, 6541.043451351, 166.14999894487),
+                    stance = 2
+                   },{
+                    pos = Vector(-18815.529960635, 6554.4474870781, 166.14999807699),
+                    stance = 2
+                   },{
+                    pos = Vector(-18744.239141223, 6426.9619910761, 166.14999952115),
+                    stance = 2
+                   },{
+                    pos = Vector(-18786.652753414, 6051.1606403627, 166.14999470467),
+                    stance = 2
+                   },{
+                    pos = Vector(-18733.553385518, 5913.1296616725, 166.15000000715),
+                    stance = 2
+                   },{
+                    pos = Vector(-18010.621044117, 7209.3134588296, 166.15000215952),
+                    stance = 2
+                   },{
+                    pos = Vector(-18102.403705396, 7325.0279339958, 166.15000143149),
+                    stance = 2
+                   },{
+                    pos = Vector(-18005.948705634, 7731.9619149429, 166.15000162755),
+                    stance = 2
+                   },{
+                    pos = Vector(-18083.033406789, 7856.1152868356, 166.14999818347),
+                    stance = 2
+                   },{
+                    pos = Vector(-22335.248396294, 8169.03141908, 166.14999830122),
+                    stance = 2
+                   },{
+                    pos = Vector(-22387.163547037, 8030.3405585594, 166.14999704841),
+                    stance = 2
+                   },{
+                    pos = Vector(-22345.003263232, 7654.6126702798, 166.15000599401),
+                    stance = 2
+                   },{
+                    pos = Vector(-22422.375904136, 7530.6682711327, 166.68484321508),
+                    stance = 2
+                   },{
+                    pos = Vector(-21490.046125624, 7214.1854353122, 206.14999144686),
+                    stance = 2
+                   },{
+                    pos = Vector(-21143.031239399, 7233.5621050405, 206.15001246904),
+                    stance = 2
+                   },{
+                    pos = Vector(-20847.022864761, 7045.0105588821, 206.14999431369),
+                    stance = 2
+                   },{
+                    pos = Vector(-20398.328022034, 7045.147624503, 206.15000684921),
+                    stance = 2
+                   },{
+                    pos = Vector(-19904.99676804, 7045.1008228077, 206.15000745837),
+                    stance = 2
+                   },{
+                    pos = Vector(-19483.995925087, 7283.1268866994, 206.14999104967),
+                    stance = 2
+                   },{
+                    pos = Vector(-19187.942025227, 7271.3584013846, 206.14998920151),
+                    stance = 2
+                   },{
+                    pos = Vector(-18701.010756107, 7045.1007478228, 206.14998536532),
+                    stance = 2
+                   },{
+                    pos = Vector(-19904.999952711, 8387.5381823749, 206.14999388742),
+                    stance = 2
+                   },{
+                    pos = Vector(-19507.99642034, 8291.4705306116, 206.15000335904),
+                    stance = 2
+                   },{
+                    pos = Vector(-19211.968457952, 8201.694980195, 206.15000128737),
+                    stance = 2
+                   },{
+                    pos = Vector(-18865.999988121, 8245.8088381495, 206.15001168308),
+                    stance = 2
+                   },{
+                    pos = Vector(-20362.100371353, 7770.0158182348, 223.14999247081),
+                    stance = 1
+                   },{
+                    pos = Vector(-20819.0197373, 7555.4699866268, 730.93695588082),
+                    stance = 2
+                   },{
+                    pos = Vector(-20819.070233971, 7118.1523326649, 730.93695588082),
+                    stance = 2
+                   },{
+                    pos = Vector(-19692.511820886, 7730.9322543215, 731.14999727875),
+                    stance = 2
+                   },{
+                    pos = Vector(-19303.999954032, 7753.1260858658, 731.15000143281),
+                    stance = 2
+                   },{
+                    pos = Vector(-18848.96752796, 7755.1622769381, 731.14999963075),
+                    stance = 2
+                   },{
+                    pos = Vector(-21287.847028977, 7629.9851650444, 731.15000160133),
+                    stance = 2
+                   },{
+                    pos = Vector(-21288.478374351, -1465.8621410624, 209.1499963959),
+                    stance = 1
+                   },{
+                    pos = Vector(-21170.450278129, -1141.6698005486, 209.1500016822),
+                    stance = 1
+                   },{
+                    pos = Vector(-20417.488684873, -1407.0068252078, 198.73988718402),
+                    stance = 1
+                   },{
+                    pos = Vector(-20762.807297012, -1655.3071164232, 198.06444367825),
+                    stance = 1
+                   },{
+                    pos = Vector(-20317.607841791, -1824.2552389655, 198.16877159336),
+                    stance = 1
+                   },{
+                    pos = Vector(-20156.917323021, -1957.4619485058, 198.16877159336),
+                    stance = 1
+                   },{
+                    pos = Vector(-19795.940629505, -1720.4009383634, 198.76528066028),
+                    stance = 1
+                   },{
+                    pos = Vector(-19725.538027422, -2164.3673556851, 198.24664395679),
+                    stance = 1
+                   }
                    -- Snipe towers
                    -- {
                    -- pos = Vector(-3511.5757605439, 13100.655554854, 866.1500135608),
@@ -728,7 +1107,7 @@ Package.Subscribe("Load", function()
         local cDebugNPC = Character(Vector(-6246.35, 13107.7, 198.14), Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
         cDebugNPC:PickUp(wAk47)
         cDebugNPC:SetTeam(NACT_NPC_TEAMS)
-        NACT.RegisterNpc(cDebugNPC, "TankBataillonSmall", PatrollingNpc)
+        NACT.RegisterNpc(cDebugNPC, "TankBataillonSmall", PatrollingNpcGatefront)
         -- end
 
         local wAk472 = AK47(Vector(3350.32, 9236.51, 188.45), Rotator())
@@ -840,8 +1219,305 @@ Package.Subscribe("Load", function()
         cDebugNPC15:SetTeam(NACT_NPC_TEAMS)
         NACT.RegisterNpc(cDebugNPC15, "TankBataillonSmall", StillNpc)
         -- end
+
+
+
+        local datacenter = NACT.RegisterTerritory("Datacenter", {
+            zoneBounds = {
+                pos = Vector(-20461.71, 4215.02, 198.15),
+                radius = 7000
+            },
+            team = NACT_NPC_TEAMS,
+            patrolRoutes = {
+                frontCamp = {
+                    points = {
+                        Vector(-20417.73, 4071.38, 198.1),
+                        Vector(-18437.47, 3902.86, 198.1),
+                        Vector(-18685.67, 1708.65, 198.1),
+                        Vector(-20263.24, 1713.28, 198.3)
+                    },
+                    walkMethod = "circle"
+                },
+                frontDatacenter = {
+                    points = {
+                        Vector(-20470.18, 5574.34, 198.1),
+                        Vector(-18956.80, 5598.01, 198.15),
+                        Vector(-19032.64, 6649.92, 198.1),
+                        Vector(-21786.70, 6764.08, 198.15),
+                        Vector(-21990.64, 5685.85, 198.15)
+                    },
+                    walkMethod = "circle"
+                }
+            }
+        })
+
+        -- Front camp still
+        
+        createNpc(
+            Vector(-19422.69, 732, 209.11),
+            "Datacenter",
+            StillNpc,
+            32
+        )
+
+        createNpc(
+            Vector(-19428.62, 1045.73, 198),
+            "Datacenter",
+            StillNpc,
+            32
+        )
+
+        
+        createNpc(
+            Vector(-19150.44, 994.46, 198),
+            "Datacenter",
+            StillNpc,
+            180
+        )
+        -- Front of the camp patrol 
+        createNpc(
+            Vector(-20572, 3381, 198.14),
+            "Datacenter",
+            PatrollingNpcFrontCamp)
+    
+        createNpc(
+            Vector(-20782.60, 3271.27, 198.14),
+            "Datacenter",
+            PatrollingNpcFrontCamp)
+        
+        createNpc(
+            Vector(-20828.22, 3450.78, 198.14),
+            "Datacenter",
+            PatrollingNpcFrontCamp)
+        
+        createNpc(
+            Vector(-21068.89, 3353.80, 198.14),
+            "Datacenter",
+            PatrollingNpcFrontCamp)
+        
+            
+        createNpc(
+            Vector(-21034.03, 3497.95, 198.14),
+            "Datacenter",
+            PatrollingNpcFrontCamp)
+        
+        -- Front datacenter patrol
+
+        createNpc(
+            Vector(-22220, 5713.35, 198.14),
+            "Datacenter",
+            PatrollingNpcFrontDatacenter)
+
+        createNpc(
+            Vector(-22201, 5982.13, 198.14),
+            "Datacenter",
+            PatrollingNpcFrontDatacenter)
+
+        createNpc(
+            Vector(-22201, 6223.13, 198.14),
+            "Datacenter",
+            PatrollingNpcFrontDatacenter)
+
+        createNpc(
+            Vector(-22521.72, 5587.45, 201),
+            "Datacenter",
+            PatrollingNpcFrontDatacenter)
+        createNpc(
+            Vector(-22534.61, 5885.02, 208),
+            "Datacenter",
+            PatrollingNpcFrontDatacenter)
+    
+            
+        createNpc(
+            Vector(-18285.59, 5708.36, 201),
+            "Datacenter",
+            PatrollingNpcFrontDatacenter)
+            
+        createNpc(
+            Vector(-18274.88, 6127.55, 198),
+            "Datacenter",
+            PatrollingNpcFrontDatacenter)
+    
+            createNpc(
+                Vector(-17978.54, 6214.51, 228.52),
+                "Datacenter",
+                PatrollingNpcFrontDatacenter)
+
+        -- Inside barracks
+
+        createNpc(
+            Vector(-20820.94, 2096, 262.15),
+            "Datacenter",
+            StillNpc,
+            -51
+        )
+
+        
+        createNpc(
+            Vector(-20710.91, 2498.84, 262.15),
+            "Datacenter",
+            StillNpc,
+            136
+        )
+
+        
+        createNpc(
+            Vector(-21147.08, 2524.08, 262.15),
+            "Datacenter",
+            StillNpc,
+            -29
+        )
+
+        
+        createNpc(
+            Vector(-21891.32, 2173.25, 262.15),
+            "Datacenter",
+            StillNpc,
+            122
+        )
+        
+        createNpc(
+            Vector(-22360.21, 2600.15, 198.12),
+            "Datacenter",
+            StillNpc,
+            122
+        )
+
+        createNpc(
+            Vector(-20137.31, 2500, 262.15),
+            "Datacenter",
+            StillNpc
+        )
+
+        createNpc(
+            Vector(-19733.85, 2487, 262.15),
+            "Datacenter",
+            StillNpc,
+            160
+        )
+
+        createNpc(
+            Vector(-19401.52, 2093, 262.15),
+            "Datacenter",
+            StillNpc,
+            100
+        )
+
+        createNpc(
+            Vector(-19132.30, 2530.75, 262.15),
+            "Datacenter",
+            StillNpc
+        )
+
+        
+        createNpc(
+            Vector(-18635.43, 2500, 262.15),
+            "Datacenter",
+            StillNpc,
+            160
+        )
+
+        createNpc(
+            Vector(-18921.44, 4885.45, 262.15),
+            "Datacenter",
+            StillNpc,
+            160
+        )
+        
+        createNpc(
+            Vector(-19184.24, 4624.71, 262.15),
+            "Datacenter",
+            StillNpc,
+            100
+        )
+
+        createNpc(
+            Vector(-19381.06, 4840.34, 262.15),
+            "Datacenter",
+            StillNpc
+        )
+
+        
+        createNpc(
+            Vector(-18417.34, 4867.61, 262.15),
+            "Datacenter",
+            StillNpc,
+            180
+        )
+
+        createNpc(
+            Vector(-18647.91, 4586, 262.15),
+            "Datacenter",
+            StillNpc,
+            180
+        )
+        
+        createNpc(
+            Vector(-18646.53, 5070.16, 262.15),
+            "Datacenter",
+            StillNpc,
+            180
+        )
+
+        createNpc(
+            Vector(-21468.96, 5054.09, 262.15),
+            "Datacenter",
+            StillNpc,
+            -100
+        )
+        createNpc(
+            Vector(-21637.05, 5016.84, 262.15),
+            "Datacenter",
+            StillNpc,
+            -100
+        )
+        createNpc(
+            Vector(-21839.53, 5027.27, 262.15),
+            "Datacenter",
+            StillNpc,
+            -100
+        )
+        
+        createNpc(
+            Vector(-21835.30, 4835.48, 262.15),
+            "Datacenter",
+            StillNpc,
+            100
+        )
+        createNpc(
+            Vector(-21516.70, 4799.38, 262.15),
+            "Datacenter",
+            StillNpc,
+            100
+        )
+
+        local jeffBezos = createNpc(
+            Vector(-20486.08, 7139.81, 763.14),
+            "Datacenter",
+            StillNpc,
+            100
+        )
+
+        jeffBezos.character:SetHealth(800)
+        jeffBezos.character:SetScale(Vector(2,2, 2))
+        jeffBezos.character:SetSpeedMultiplier(2)
+        jeffBezos.character:SetFootstepVolumeMultiplier(20)
+        jeffBezos.character:SetMesh("nanos-world::SK_PostApocalyptic")
+        
+        jeffBezos.character:PickUp(wAk4715)
     end
 end)
+
+
+function createNpc(vInitialPosition, sNpcTerritory, tNpcConfig, tMaybeYaw)
+    local wAk4715 = AK47(Vector(6931.17, 11625.8, 198.14), Rotator())
+    wAk4715:SetAutoReload(false)
+    local cDebugNPC15 = Character(vInitialPosition, Rotator(0, NACT.ValueOrDefault(tMaybeYaw, 0), 0), "nanos-world::SK_Mannequin")
+    cDebugNPC15:PickUp(wAk4715)
+    cDebugNPC15:SetTeam(NACT_NPC_TEAMS)
+    Console.Log("Jeff bezos "..NanosTable.Dump(cDebugNPC15))
+    return NACT.RegisterNpc(cDebugNPC15, sNpcTerritory, tNpcConfig)
+end
 
 Player.Subscribe("Spawn", function(player)
     --player:GetCharacter():SetTeam(1)
