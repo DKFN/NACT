@@ -1,3 +1,10 @@
+---Creates a trigger box for NACT while keeping track of all the allies and enemies that enter or leave the trigger box
+---@param vTriggerLocation Vector Location to spawn the trigger
+---@param linkedTerritoryOrNpc NACT_NPC | NACT_Territory The NACT entity to attach the trigger to
+---@param eTriggerType TriggerType The trigger type to create
+---@param nRadius number Radius of the trigger
+---@param eDebugColor Color the debug color when debugging triggers
+---@return table Trigger table
 function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerType, nRadius, eDebugColor)
     local tTriggerData = {
         trigger = Trigger(vTriggerLocation, Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor),
@@ -43,6 +50,10 @@ function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerT
     return tTriggerData
 end
 
+---Gets the trigger population of the trigger in parameter
+---@param tTrigger table TriggerTable to scan
+---@param sPopulationType "enemies" | "allies"
+---@return table Array array of characters that populates the trigger
 function NACT.GetTriggerPopulation(tTrigger, sPopulationType)
     local triggerPopulation = tTrigger[sPopulationType]
     if (triggerPopulation == nil) then

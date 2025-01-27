@@ -33,7 +33,7 @@ end
 
 --- Gets the entities that populates a trigger, enemies or allies. Given they are valid and alive
 ---@param sPopulationType "allies" | "enemies" 
----@return number Number of population in the trigger
+---@return table Characters array of population in the trigger
 function NACT_NPC:GetTriggerPopulation(sTriggerName, sPopulationType)
     -- Console.Log("Self triggers : "..NanosTable.Dump(self.triggers))
     local trigger = self.triggers[sTriggerName]
@@ -47,14 +47,14 @@ end
 
 --- Get the number of enemies in the given trigger of the NPC
 ---@param sTriggerName string "detection" "midrProximity" "closeProximity" "melee"
----@return number Number of enemies in the trigger
+---@return table Array Characters array of enemies in the trigger
 function NACT_NPC:GetEnemiesInTrigger(sTriggerName)
     return self:GetTriggerPopulation(sTriggerName, "enemies")
 end
 
 --- Get the number of allies in the given trigger of the NPC
 ---@param sTriggerName string "detection" "midrProximity" "closeProximity" "melee"
----@return number Number of allies in the trigger
+---@return table Array Characters array of allies in the trigger
 function NACT_NPC:GetAlliesInTrigger(sTriggerName)
     return self:GetTriggerPopulation(sTriggerName, "allies")
 end
