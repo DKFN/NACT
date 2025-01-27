@@ -1,5 +1,8 @@
 NACT_Territory = BaseClass.Inherit("NACT_Territory")
 
+local NACT_PROVISORY_COVER_VIABILITY_REFRESH_TIME = 500
+local NACT_PROVISORY_PLAYER_AUTHORITY_REFRESH_TIME = 10000
+
 --- Territory is a zone controlled by NPCs and contains the configuration of
 --- cover points and patrol routes 
 ---@param tTerritoryConfig TerritoryConfig territory config map
@@ -26,18 +29,17 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     -- Stores all the players that had an authority at one point, and already had territory config sent to them
     self.authorityPlayerHistory = {}
 
-    Console.Log("Territory team : "..self.team)
+--     Console.Log("Territory team : "..self.team)
     -- Console.Log("Territory cover points : "..NanosTable.Dump(self.coverPoints))
 
-    -- TODO: Ce serait mieux d'avoir surement le trigger sur le joueur et que ce soit lui
-    -- TODO: Qui reveille les npc. Bg Timmy
     local _self = self
 
-    -- TODO: It should be much better to get a player within the zone bounds instead
-    -- TODO: Of relying on only focused entities, wich may not always be a player
-    -- TODO: and will stop viability checks until a player is focused again
-    -- TODO: And finding one random will cost much less because not looping all seconds
     self.coverViabilityHandleTimer = Timer.SetInterval(function()
+        if (not self.authorityPlayer) then
+            -- Console.Log("No reachable players in range, not scanning viability of covers")
+            return
+        end
+
         local allCfocused = {}
         for iNpc, npc in ipairs(self.npcs) do
             if (npc.cFocused) then
@@ -45,21 +47,12 @@ function NACT_Territory:Constructor(tTerritoryConfig)
             end
         end
     
-        if (NACT_DEBUG_COVERS) then
-            Console.Log("Authority player : "..NanosTable.Dump(self.authorityPlayer))
-        end
-
-        if (not self.authorityPlayer) then
-            -- Console.Log("No reachable players in range, not scanning viability of covers")
-            return
-        end
-        -- TODO: There is also no need to resend cover positions each time, this is dumb. Just send it once while getting into the zone
         Events.CallRemote("NACT:TRACE:COVER:VIABILITY:QUERY", self.authorityPlayer, _self:GetID(), allCfocused)
-    end, 500)
+    end, NACT_PROVISORY_COVER_VIABILITY_REFRESH_TIME)
 
     self.authorityPlayerHandleTimer = Timer.SetInterval(function()
         self:SwitchNetworkAuthority()
-    end, 10000)
+    end, NACT_PROVISORY_PLAYER_AUTHORITY_REFRESH_TIME)
 
     if (NACT_DEBUG_EDITOR_MODE) then
         self:DebugDisplayCoverPoints()
@@ -79,16 +72,19 @@ function NACT_Territory:UpdateCoverViability(tViabilityResult)
     end
 end
 
---- 
----@param nactNpc any
+--- INTERNAL. Adds an NPC handled by the territory
+---@param nactNpc NACT_NPC
 function NACT_Territory:AddNPC(nactNpc)
     table.insert(self.npcs, nactNpc)
 end
 
+--- INTERNAL. Removes an NPC from the territory
+---@param nactNpc NACT_NPC
 function NACT_Territory:RemoveNPC(nactNpc)
     table_remove_by_value(self.npcs, nactNpc)
 end
 
+--- INTERNAL. Used by the editor mode. This will create a trigger for each cover point. Usage in production not good.
 function NACT_Territory:DebugDisplayCoverPoints()
     for iCover, coverPoint in ipairs(self.coverPointsPositions) do
         Trigger(coverPoint, Rotator(), Vector(50), TriggerType.Sphere, true, Color.RED)
@@ -96,14 +92,20 @@ function NACT_Territory:DebugDisplayCoverPoints()
     end
 end
 
+--- Gets all the enemies thare are in the territory
+---@return table Array of enemies in the territory
 function NACT_Territory:GetEnemiesInZone()
     return NACT.GetTriggerPopulation(self.zone, "enemies")
 end
 
+
+--- Gets all the enemies thare are in the territory
+---@return table Array of enemies in the territory
 function NACT_Territory:GetAlliesInZone()
     return NACT.GetTriggerPopulation(self.zone, "allies")
 end
 
+--- INTERNAL. Switches the network authority of the player that will handle all client ops of the territory
 function NACT_Territory:SwitchNetworkAuthority()
     local reachablePlayers = {}
     

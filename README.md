@@ -12,17 +12,18 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 
 ## Alpha
 
-### Bugs
-- All cover points are being exhausted after Seek will call Alert instead of NACT_Combat
-
 ### Features
 - Avoid the NPC to try to go to cover if the last time he tried was less than 5s ago to avoid the NACT_Combat -> NACT_Cover -> Nact_Combat -> NACT_Cover infinite stuff
+- Make NPC configurable, some NACT_PROVISORY left there
 - When no cover point found, reload on place
 - Add events for focus changed etc
 - Make the Functions with standard naming for nanos (ex: MoveToPoint should be renamed MoveToLocation)
 - Cleanups en cas d'abandon du combat par le joueur
 - Cleanups en cas de deconnexion du joueur en combat
 - Faire en sorte que les NPCs ils sortent jamais du territoire
+- Documenter les configurations
+- Faire la documentation sur gitbook avec les tutos etc
+- Ajouter des fontions de setter pour des trucs qui seraient pas passés directement via la config
 
 
 ## Beta

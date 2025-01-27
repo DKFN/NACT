@@ -55,18 +55,19 @@ end
 
 
 function NACT_Engage:OnTakeDamage(_, damage, bone, type, from_direction, instigator, causer)
-    local decision = math.random(0, 2)
+    local decision = math.random(0, 10)
     local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
     if (causerCharacter) then
         self.npc:SetFocused(causerCharacter)
     end
-    if (decision == 1) then
+    if (decision > 5) then
         self.npc.character:SetStanceMode(StanceMode.Crouching)
         Timer.SetTimeout(function()
             self.npc.character:SetStanceMode(StanceMode.Standing)
         end, 1000)
     end
     if (decision == 2) then
+        -- TODO: Should go to cover
         self.npc:SetBehavior(self.mainBehavior)
     end
 end

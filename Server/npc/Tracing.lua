@@ -7,6 +7,8 @@ local NACT_PROVISORY_LOOKAROUND_THROTTLE = 1000
 ---
 --- Tracing and Vision
 ---
+
+--- INTERNAL. Stop the tracing for the vision logic
 function NACT_NPC:StopTracing()
     if (self.tracingLaunched) then
         Console.Log("Calling stop event for traces")
@@ -15,6 +17,7 @@ function NACT_NPC:StopTracing()
     end
 end
 
+--- INTERNAL. Starts the tracing for the vision logic
 function NACT_NPC:StartTracing()
     if (self:GetFocused() ~= nil) then
         -- TODO Find best player to send the trace, nearest player in range
@@ -30,8 +33,9 @@ function NACT_NPC:StartTracing()
 end
 
 
---- This function attemps to change focused entity, if once is hit in the look range and 
----  
+--- This function attemps to change focused entity. If there is an enemy in the detection trigger of the NACT_NPC
+--- and there the enemy is in the vision range of the player.
+--- You can call this function like there is no tommorrow, it is throttled and will NOT trigger each time it is called
 function NACT_NPC:LookForFocused()
     -- self:Log("Attempt "..NanosTable.Dump(#self:GetEnemiesInTrigger("detection") > 0).." scan launched ? "..NanosTable.Dump(self.launchedScanAround))
     if (not self.launchedScanAround) then
@@ -61,10 +65,15 @@ function NACT_NPC:LookForFocused()
         end
     end
 end
-
+--- INTERNAL. Releases the scan lock of the "LookForFocused" query.
 function NACT_NPC:ReleaseScanLock()
     self.launchedScanAround = false
 end
+
+--- Checks if the character in parameter is in the vision angle of the NPC
+--- This function is not enough to check if the entity is really visible. You must use vision traces for that
+---@param cEntity Character the character to check for vision range
+---@return boolean if the character is in vision angle.
 function NACT_NPC:IsInVisionAngle(cEntity)
     if (cEntity == nil) then
         -- Console.Error("N.A.C.T. Called IsInVisionAngle with Nil entity")
@@ -77,10 +86,17 @@ function NACT_NPC:IsInVisionAngle(cEntity)
     return angleVersion > PROVISORY_NACT_ANGLE_DETECTION
 end
 
+--- Returns if the focused entity is currently visible.
+---@return boolean Is the focused entity is currently visible.
 function NACT_NPC:IsFocusedVisible()
     return self:GetFocused() ~= nil and self.cFocusedTraceHit and self:IsInVisionAngle(self:GetFocused())
 end
 
+-- TODO: Below should be moved to navigation
+
+--- Turns the NPC towards the focused entity.
+--- Remember to specify an innacuracyFactor if you intend to shoot right after, or your NPC will quickly kill opponents.
+---@param nInaccuracyFactor number Innacuracy to apply to the NPC when shooting
 function NACT_NPC:TurnToFocused(nInaccuracyFactor)
     local vFocusedLocation = self:GetFocusedLocation()
     if vFocusedLocation == nil then
@@ -89,6 +105,9 @@ function NACT_NPC:TurnToFocused(nInaccuracyFactor)
     self:TurnTo(vFocusedLocation, nInaccuracyFactor)
 end
 
+--- Makes the NPC turn towards a location
+---@param vLocation Vector location to turn towards
+---@param nInaccuracyFactor number Innacuracy factor fo turn to
 function NACT_NPC:TurnTo(vLocation, nInaccuracyFactor)
     local vInaccurayVector
     if (nInaccuracyFactor) then
@@ -104,15 +123,19 @@ function NACT_NPC:TurnTo(vLocation, nInaccuracyFactor)
     self.character:RotateTo(Rotator(0, (vLocation - self.character:GetLocation()):Rotation().Yaw, 0), 0.5)
 end
 
+--- Distance to the focused entity
+---@return number Distance to the focused entity
 function NACT_NPC:GetDistanceToFocused()
     local focusedLocation = self:GetFocusedLocation()
     if (focusedLocation) then
         return self.character:GetLocation():Distance(focusedLocation)
     else
-        return 0
+        return 0 -- This should never be zero in real life. Maybe this will cause problems one day.
     end
 end
 
+--- Returns the focused location. This will return nothing if the focused entity becomes out of sight
+---@return Vector Focused location
 function NACT_NPC:GetFocusedLocation()
     if (self:GetFocused()) then
         return self.cFocused:GetLocation()
@@ -134,7 +157,7 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID
                     npcSubscribedToTraces:Log("Player lost")
                     npcSubscribedToTraces:SetFocused(nil)
                 end
-            end, 1000, npcSubscribedToTraces)
+            end, 1000, npcSubscribedToTraces) -- TODO: 1s to loose track seems like a lot
         else
             
         end

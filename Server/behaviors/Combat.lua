@@ -5,6 +5,7 @@ local DEFAULT_RNG_COVER_VALUE = 10
 
 function NACT_Combat:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
+    self.timeoutHandle = nil
 
     -- TODO: Combat should take all the NACT behavior that you want to give the NPC for combat
 
@@ -18,7 +19,7 @@ function NACT_Combat:Constructor(NpcInstance, tBehaviorConfig)
     self.attackBehavior = NACT.ValueOrDefault(tBehaviorConfig.attackBehavior, NACT_Engage)
 
     -- Should not need a timer
-    Timer.SetTimeout(function()
+    self.timeoutHandle = Timer.SetTimeout(function()
         self:Main()
     end)
     
@@ -30,7 +31,10 @@ function NACT_Combat:Main()
 
     if (self.npc:ShouldReload() or rng == self.rngCoverValue) then
         -- Console.Log("Combat: go to cover")
-        self.npc:SetBehavior(self.coverBehavior)
+        Timer.SetTimeout(function()
+            self.npc:SetBehavior(self.coverBehavior)
+        end, 200)
+        return
     else
         if (#self.npc.territory:GetEnemiesInZone() == 0) then
              Console.Log("Setting back to idle")
@@ -42,5 +46,14 @@ function NACT_Combat:Main()
             return
         end
         self.npc:SetBehavior(self.attackBehavior)
+        return
     end
+    Console.Error("NACT_Combat was not able to switch, this should not happend but I will retry in 3s")
+    self.timeoutHandle = Timer.SetTimeout(function()
+        self:Main()
+    end, 3000)
+end
+
+function NACT_Combat:Destructor()
+    Timer.ClearTimeout(self.timeoutHandle)
 end

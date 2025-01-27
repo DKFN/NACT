@@ -7,6 +7,12 @@ NACT_PROVISORY_REGISTERED_EVENTS = {
 
 -- PROVISORY_NACT_ANGLE_DETECTION = 90
 PROVISORY_NACT_ANGLE_DETECTION = 110
+
+--- /!\ INTERNAL /!\
+--- NACT_NPC constructor. You should call NACT.RegisterNPC instead of this function directly
+---@param cNpcToHandle Character Nanos world character to be controlled
+---@param sTerritoryName string Territory to tie this NPC
+---@param tNpcConfig table To be defined, quite unused for now
 function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.character = cNpcToHandle
     self.territory = NACT.territories[sTerritoryName]
@@ -22,16 +28,18 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     -- TODO: Add 
     self.currentBehaviorIndex = 1
     
-    self.debugTextBehavior = TextRender(
-        Vector(0, 300, 0),
-        Rotator(),
-        "Initializing",
-        Vector(0.5, 0.5, 0.5), -- Scale
-        Color(1, 0, 0), -- Red Color
-        FontType.OpenSans,
-        TextRenderAlignCamera.FaceCamera
-    )
-    self.debugTextBehavior:AttachTo(cNpcToHandle, AttachmentRule.KeepRelative, "head")
+    if (false) then
+        self.debugTextBehavior = TextRender(
+            Vector(0, 300, 0),
+            Rotator(),
+            "Initializing",
+            Vector(0.5, 0.5, 0.5), -- Scale
+            Color(1, 0, 0), -- Red Color
+            FontType.OpenSans,
+            TextRenderAlignCamera.FaceCamera
+        )
+    end
+    -- self.debugTextBehavior:AttachTo(cNpcToHandle, AttachmentRule.KeepRelative, "head")
 
     if (#self.behaviorConfig > 0) then
         self:SetBehaviorIndex(1)
@@ -76,6 +84,8 @@ function NACT_NPC:GetWeapon()
     return self.character:GetPicked()
 end
 
+--- Checks if the NPC has no more ammo left to fire
+--- @return boolean If the npc should reload
 function NACT_NPC:ShouldReload()
     local weapon = self:GetWeapon()
     if (weapon --[[and weapon:GetAmmoBag() > 0]]) then
@@ -84,6 +94,8 @@ function NACT_NPC:ShouldReload()
     return false
 end
 
+--- Makes the NPC reload its weapon
+--- If the NPC has no weapon it will be a no op
 function NACT_NPC:Reload()
     -- Console.Log("Called reload event")
     local weapon = self:GetWeapon()
@@ -111,6 +123,7 @@ function NACT_NPC:SetFocusedEntity(cEntity)
     end
 end
 
+--- Will make the NPC move to the location of the focused character or it's last known position
 function NACT_NPC:MoveToFocused()
     local focusedEntity = self:GetFocused()
     if (focusedEntity ~= nil) then
@@ -125,9 +138,11 @@ function NACT_NPC:MoveToFocused()
     end
 end
 
+--- Get the currently focused character if the NPC has one
+--- @return Character|nil
 function NACT_NPC:GetFocused()
     if not self or not self:IsValid() then
-        return
+        return nil
     end
     if (self.cFocused and self.cFocused:IsValid()) then
         return self.cFocused
@@ -137,6 +152,8 @@ function NACT_NPC:GetFocused()
     end
 end
 
+--- Sets the character the NPC will focus
+--- @param newFocused Character the character to focus
 function NACT_NPC:SetFocused(newFocused)
     self:Log("Now focusing : "..NanosTable.Dump(newFocused))
     self:SetFocusedEntity(newFocused)
@@ -177,6 +194,10 @@ function NACT_NPC:Error(sMessage)
     Console.Error("NACT NPC #"..self:GetID().. " : "..sMessage)
 end
 
+--- Gets the NACT_NPC instance tied to this character
+--- Will return nil if this Character is not controlled by NACT
+---@param character Character the nanos world character
+---@return NACT_NPC | nil NACT_NPC that is controlled by NACT or nil
 function NACT_NPC.GetFromCharacter(character)
     local iMaybeNactNpcId = character:GetValue("NACT_NPC_ID")
     if (iMaybeNactNpcId) then

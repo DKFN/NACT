@@ -1,6 +1,9 @@
 ---
 --- Triggers
 ---
+
+--- INTERNAL. Register the trigger boxes for a NACT_NPC
+--- I mean you can use if you want, but, why ?
 function NACT_NPC:_registerTriggerBoxes()
     self.triggers = {
         detection = self:createTriggerBox(TriggerType.Sphere, 5000, Color.RED),
@@ -11,6 +14,11 @@ function NACT_NPC:_registerTriggerBoxes()
 
 end
 
+--- INTERNAL. Creates a typical trigger box attached to a NACT Entity
+---@param eTriggerType TriggerType
+---@param nRadius number Radius of the sphere
+---@param eDebugColor Color Debug color when NACT_DEBUG_TRIGGERS is true
+---@return table Created trigger box
 function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
     local tTriggerData = NACT.createTriggerBox(
         Vector(self.character:GetLocation()),
@@ -24,7 +32,8 @@ function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
 end
 
 --- Gets the entities that populates a trigger, enemies or allies. Given they are valid and alive
----@param sPopulationType any
+---@param sPopulationType "allies" | "enemies" 
+---@return number Number of population in the trigger
 function NACT_NPC:GetTriggerPopulation(sTriggerName, sPopulationType)
     -- Console.Log("Self triggers : "..NanosTable.Dump(self.triggers))
     local trigger = self.triggers[sTriggerName]
@@ -36,15 +45,21 @@ function NACT_NPC:GetTriggerPopulation(sTriggerName, sPopulationType)
     return NACT.GetTriggerPopulation(trigger, sPopulationType)
 end
 
+--- Get the number of enemies in the given trigger of the NPC
+---@param sTriggerName string "detection" "midrProximity" "closeProximity" "melee"
+---@return number Number of enemies in the trigger
 function NACT_NPC:GetEnemiesInTrigger(sTriggerName)
     return self:GetTriggerPopulation(sTriggerName, "enemies")
 end
 
-
+--- Get the number of allies in the given trigger of the NPC
+---@param sTriggerName string "detection" "midrProximity" "closeProximity" "melee"
+---@return number Number of allies in the trigger
 function NACT_NPC:GetAlliesInTrigger(sTriggerName)
     return self:GetTriggerPopulation(sTriggerName, "allies")
 end
 
+--- INTERNAL. This will flood
 function NACT_NPC:Debug_PrintTriggerStates()
     if (NACT_DEBUG_TRIGGERS) then
         Console.Log("N.A.C.T. Npc ".. self:GetID() .. " Trigger states : ".. NanosTable.Dump(self.triggers))

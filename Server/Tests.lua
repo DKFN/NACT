@@ -1498,13 +1498,12 @@ Package.Subscribe("Load", function()
             100
         )
 
-        jeffBezos.character:SetHealth(800)
-        jeffBezos.character:SetScale(Vector(2,2, 2))
+        jeffBezos.character:SetHealth(4000)
+        -- jeffBezos.character:SetScale(Vector(2,2, 2))
         jeffBezos.character:SetSpeedMultiplier(2)
         jeffBezos.character:SetFootstepVolumeMultiplier(20)
         jeffBezos.character:SetMesh("nanos-world::SK_PostApocalyptic")
-        
-        jeffBezos.character:PickUp(wAk4715)
+        jeffBezos.character:SetHighlightEnabled(true)
     end
 end)
 

@@ -17,7 +17,7 @@ function NACT_Cover:Constructor(NpcInstance, tBehaviorConfig)
 
     self.coverHoldMin = NACT.ValueOrDefault(tBehaviorConfig.coverHoldMin, DEFAULT_COVER_HOLD_MIN)
     self.coverHoldMax = NACT.ValueOrDefault(tBehaviorConfig.coverHoldMax, DEFAULT_COVER_HOLD_MAX)
-    self.minCoverDistance = NACT.ValueOrDefault(tBehaviorConfig.timerHandle, DEFAULT_MIN_COVER_DISTANCE)
+    self.minCoverDistance = NACT.ValueOrDefault(tBehaviorConfig.minCoverDistance, DEFAULT_MIN_COVER_DISTANCE)
 
     -- TODO: Does not really need a timer.
     -- TODO: It should work relying only on events instead of polling
