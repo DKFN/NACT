@@ -1,5 +1,3 @@
--- This allows to launch more traces to be more precise in the secure behavior
--- (For example doing a kind of "box" instead of a mono trace)
 
 local coverPositionsByTerritoryID = {}
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:POSITIONS", function(iTerritoryID, allPositions)

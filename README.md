@@ -13,7 +13,6 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 ## Alpha
 
 ### Features
-- Avoid the NPC to try to go to cover if the last time he tried was less than 5s ago to avoid the NACT_Combat -> NACT_Cover -> Nact_Combat -> NACT_Cover infinite stuff
 - Make NPC configurable, some NACT_PROVISORY left there
 - When no cover point found, reload on place
 - Add events for focus changed etc

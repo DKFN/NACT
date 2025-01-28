@@ -6,6 +6,9 @@ local DEFAULT_COVER_HOLD_MIN = 2000
 local DEFAULT_COVER_HOLD_MAX = 3000
 local DEFAULT_MIN_COVER_DISTANCE = 10
 
+--- Behavior that makes the NPC go to cover. Will find the closest secure and non taken cover point to reload or chill
+---@param NpcInstance NACT_NPC npc that is tied to this behacior
+---@param tBehaviorConfig {coverHoldMin: number, coverHoldMax: number, minCoverDistance: number} Optional behavior config
 function NACT_Cover:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
     self.nearestCoverPoint = nil
@@ -51,7 +54,8 @@ function NACT_Cover:Main()
     end
 end
 
---- Go to the nearest cover point
+--- Move to the nearest cover point if one is available
+---@return boolean If the operation was successful
 function NACT_Cover:MoveToNearestCoverPoint()
     self.nearestCoverPoint = self:FindNearestCoverPoint()
     if (self.nearestCoverPoint) then
@@ -64,6 +68,7 @@ function NACT_Cover:MoveToNearestCoverPoint()
     return false
 end
 
+--- Callback for the "MoveComplete" event
 function NACT_Cover:OnMoveComplete()
     if (not self.nearestCoverPoint) then
         Console.Warn("Cover points exhausted the NPC will be dumb")
@@ -83,8 +88,8 @@ function NACT_Cover:OnMoveComplete()
     end, math.random(self.coverHoldMin, self.coverHoldMax))
 end
 
---- Gets to the nearest safe and not taken cover point
----@return nil | coverPoint
+--- Attempt to find the nearest safe and not taken cover point
+---@return nil | coverPoint Nearest cover point or nil if not found
 function NACT_Cover:FindNearestCoverPoint()
     -- Console.Log("All territory "..NanosTable.Dump(self.npc))
     local allTerritoryCoverPoints = self.npc.territory.coverPoints
@@ -139,8 +144,7 @@ end
 
 function NACT_Cover:Destructor()
     if (self.nearestCoverPoint) then
-        self.nearestCoverPoint.taken = false
-        self.npc.character:SetStanceMode(StanceMode.Standing)
+        self:LeaveCover()
     end
     Timer.ClearInterval(self.timerMain)
 end
