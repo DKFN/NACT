@@ -28,7 +28,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     -- TODO: Add 
     self.currentBehaviorIndex = 1
     
-    if (false) then
+    if (true) then
         self.debugTextBehavior = TextRender(
             Vector(0, 300, 0),
             Rotator(),
@@ -39,7 +39,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
             TextRenderAlignCamera.FaceCamera
         )
     end
-    -- self.debugTextBehavior:AttachTo(cNpcToHandle, AttachmentRule.KeepRelative, "head")
+    self.debugTextBehavior:AttachTo(cNpcToHandle, AttachmentRule.KeepRelative, "head")
 
     if (#self.behaviorConfig > 0) then
         self:SetBehaviorIndex(1)
@@ -176,6 +176,19 @@ function NACT_NPC:Destructor()
     self.triggers = nil
     self.cFocused = nil
     self:Log(" reporting death, bye :(")
+end
+
+---Clean-ups a character if it is currently focused by this NPC (death of disconnect for example)
+---@param cToCleanUp Character the character to cleanup if necessary
+function NACT_NPC:CleanupCharacter(cToCleanUp)
+    if (self.cFocused == cToCleanUp) then
+        self.cFocused = nil
+    end
+
+    if (self.tracingAuthority == cToCleanUp) then
+        self:StopTracing()
+        self:StartTracing()
+    end
 end
 
 function NACT_NPC:Log(sMessage)

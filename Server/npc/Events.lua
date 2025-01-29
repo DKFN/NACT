@@ -1,6 +1,24 @@
--- Player.Subscribe("Death", function(player)
-    
--- end)
+Character.Subscribe("Death", function(character)
+    NACT.CharacterCleanup(character)
+end)
+
+Player.Subscribe("Destroy", function(self)
+    local character = self:GetControlledCharacter()
+    if (character) then
+        NACT.CharacterCleanup(character)
+    end
+end)
+
+function NACT.CharacterCleanup(character)
+    local territoryID = character:GetValue("NACT_TERRITORY_ID")
+    if (territoryID) then
+        local territory = NACT_Territory.GetByID(territoryID)
+        if (territory) then
+            Console.Log("Cleaning up !")
+            territory:CleanupCharacter(territory)
+        end
+    end
+end
 
 ---Registers an event on this NPC and delegates it on the behavior via the "On" callback
 ---@param cNpcToHandle NACT_NPC to delegate the event to

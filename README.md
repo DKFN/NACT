@@ -23,6 +23,7 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - Documenter les configurations
 - Faire la documentation sur gitbook avec les tutos etc
 - Ajouter des fontions de setter pour des trucs qui seraient pas passés directement via la config
+- Distribute trace calculations because calculating all the traces at the same frame can be aweful for my pc
 
 
 ## Beta

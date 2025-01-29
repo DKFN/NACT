@@ -29,6 +29,9 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     -- Stores all the players that had an authority at one point, and already had territory config sent to them
     self.authorityPlayerHistory = {}
 
+
+    self.lastAlertRaisedAt = 0
+
 --     Console.Log("Territory team : "..self.team)
     -- Console.Log("Territory cover points : "..NanosTable.Dump(self.coverPoints))
 
@@ -144,6 +147,16 @@ function NACT_Territory:RefreshCoverPoints()
     end
     self.coverPoints = selectedCoverPoints
     self.coverPointsPositions = coverPointsPosition
+end
+
+function NACT_Territory:CleanupCharacter(character)
+    for i, v in ipairs(self.npcs) do
+        v:CleanupCharacter(character)
+    end
+
+    if (self.authorityPlayer == character) then
+        self:SwitchNetworkAuthority()
+    end
 end
 
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTerritoryID, tViabilityResult)

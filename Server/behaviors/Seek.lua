@@ -1,7 +1,7 @@
 NACT_Seek = BaseClass.Inherit("NACT_Seek")
 
 local DEFAULT_INTERVAL_TIME = 500
-local DEFAULT_MAX_TIME_SEEKING = 5000
+local DEFAULT_MAX_TIME_SEEKING = 30000
 local DEFAULT_SEEK_RADIUS = 5000
 local DEFAULT_MAX_TIME_HOLD = 3000
 local DEFAULT_GAIT_SEEKING = GaitMode.Sprinting
@@ -17,7 +17,7 @@ function NACT_Seek:Constructor(NpcInstance, tBehaviorConfig)
     self.seekRadius = NACT.ValueOrDefault(tBehaviorConfig.seekRadius, DEFAULT_SEEK_RADIUS)
     self.maxTimeHold = NACT.ValueOrDefault(tBehaviorConfig.maxTimeHold, DEFAULT_MAX_TIME_HOLD)
     self.gaitSeeking = NACT.ValueOrDefault(tBehaviorConfig.gaitSeeking, DEFAULT_GAIT_SEEKING)
-    self.gaitInitial = NACT.ValueOrDefault(tBehaviorConfig.gaitInitial, DEFAULT_GAIT_SEEKING)
+    self.gaitInitial = NACT.ValueOrDefault(tBehaviorConfig.gaitInitial, DEFAULT_GAIT_INITIAL)
 
     -- TODO: Make Utility function to create them
     self.timerHandle = Timer.SetInterval(function()
@@ -31,8 +31,13 @@ function NACT_Seek:Main()
     -- Console.Log("Inside thing with timer handle : "..NanosTable.Dump(self.timerHandle))
     self.npc:LookForFocused()
     -- Finish tomorrow and plug it in NACT_Combat
-    if (self.npc:GetFocused() or #self.npc.territory:GetEnemiesInZone("detection") == 0) then
-        self.npc:SetBehavior(NACT_Alert)
+    if (self.npc:IsFocusedVisible()) then
+        local timeElapsedSinceLastAlert = os.clock() - self.npc.territory.lastAlertRaisedAt
+        if (timeElapsedSinceLastAlert > 10) then
+            self.npc:SetBehavior(NACT_Alert)
+        else
+            self.npc:SetBehavior(NACT_Combat)
+        end
     end
 
     -- Console.Log("Moving to focused ? "..NanosTable.Dump(self.movingToPoint))
@@ -73,7 +78,9 @@ function NACT_Seek:OnRandomPointResult(vTargetPoint)
     -- TODO: Should not happend in real life, but not ideal nonetheless
     if (vTargetPoint:IsZero()) then
         Console.Log("Zero result, returning to combat for decision")
-        self.npc:SetBehavior(NACT_Combat)
+        Timer.SetTimeout(function()
+            self.npc:SetBehavior(NACT_Combat)
+        end, 2000)
         return
     end
     -- Console.Log("Random point result : "..NanosTable.Dump(vTargetPoint))

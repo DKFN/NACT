@@ -1,7 +1,7 @@
 NACT_Engage = BaseClass.Inherit("NACT_Engage")
 -- NACT_PROVISORY_INNACURACY = 200
 -- NACT_PROVISORY_MAX_TIME_ENGAGED_SEC = 30
-local MAX_TIME_ENGAGED_SEC_DEFAULT = 30
+local MAX_TIME_ENGAGED_SEC_DEFAULT = 60
 local DEFAULT_INNACURACY = 350
 local DEFAULT_MAIN_BEHAVIOR = NACT_Combat
 local DEFAULT_INTERVAL_TIME = 25
@@ -34,6 +34,7 @@ function NACT_Engage:Main()
         -- Console.Log("Main behavior : "..NanosTable.Dump(self.mainBehavior))
         -- Console.Log("Main behavior : "..NanosTable.Dump(DEFAULT_MAIN_BEHAVIOR))
         self.npc:SetBehavior(self.mainBehavior)
+        return
     end
 
     self.npc:MoveToFocused()
@@ -46,7 +47,12 @@ function NACT_Engage:Main()
         end
     end
 
-    if (not bFocusedVisible or self:TimeElapsed() > self.maxTimeEngaged) then
+    if (not bFocusedVisible) then
+        self.npc:SetBehavior(self.mainBehavior)
+    end
+
+    if (self:TimeElapsed() > self.maxTimeEngaged) then
+        Console.Log("Time elapsed"..self:TimeElapsed())
         -- Console.Log("Main behavior : "..NanosTable.Dump(self.mainBehavior))
         -- Console.Log("Main behavior : "..NanosTable.Dump(DEFAULT_MAIN_BEHAVIOR))
         self.npc:SetBehavior(self.mainBehavior)
@@ -68,6 +74,7 @@ function NACT_Engage:OnTakeDamage(_, damage, bone, type, from_direction, instiga
     end
     if (decision == 2) then
         -- TODO: Should go to cover
+        Console.Log("Going back to combat for decision")
         self.npc:SetBehavior(self.mainBehavior)
     end
 end

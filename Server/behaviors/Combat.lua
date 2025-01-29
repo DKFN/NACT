@@ -1,7 +1,7 @@
 NACT_Combat = BaseClass.Inherit("NACT_Combat", false)
 
-local DEFAULT_RNG_MAX = 30
-local DEFAULT_RNG_COVER_VALUE = 10
+local DEFAULT_RNG_MAX = 5
+local DEFAULT_RNG_COVER_VALUE = 2
 
 function NACT_Combat:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
@@ -27,6 +27,7 @@ end
 
 function NACT_Combat:Main()
     local rng = math.random(0, self.rngMax)
+    Console.Log(self.npc:GetID().."Combat RNG "..rng.."From id : "..self:GetID())
     self.npc:Log("Combat")
 
     if (self.npc:ShouldReload() or rng == self.rngCoverValue) then
@@ -41,19 +42,17 @@ function NACT_Combat:Main()
              self.npc:SetBehavior(self.idleBehavior)
              return
         end
-        if (self.npc:GetFocused() == nil) then
+        if (self.npc:IsFocusedVisible() == false) then
             self.npc:SetBehavior(self.seekBehavior)
             return
+        else
+            self.npc:SetBehavior(self.attackBehavior)
+            return
         end
-        self.npc:SetBehavior(self.attackBehavior)
-        return
     end
-    Console.Error("NACT_Combat was not able to switch, this should not happend but I will retry in 3s")
-    self.timeoutHandle = Timer.SetTimeout(function()
-        self:Main()
-    end, 3000)
 end
 
 function NACT_Combat:Destructor()
+    Console.Log("Destructing combat")
     Timer.ClearTimeout(self.timeoutHandle)
 end

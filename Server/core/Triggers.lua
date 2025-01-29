@@ -34,6 +34,12 @@ function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerT
             else
                 table.insert(tTriggerData.enemies, entity)
             end
+
+            if (linkedClass == NACT_Territory) then
+                Console.Log("Player entered territory"..NanosTable.Dump(linkedClass))
+                entity:SetValue("NACT_TERRITORY_ID", self:GetID())
+            end
+            
         end
     end)
 
@@ -43,6 +49,12 @@ function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerT
                 table_remove_by_value(tTriggerData.allies, entity)
             else
                 table_remove_by_value(tTriggerData.enemies, entity)
+            end
+
+            
+            if (linkedClass == NACT_Territory) then
+                Console.Log("Player left territory")
+                entity:SetValue("NACT_TERRITORY_ID", self:GetID())
             end
         end
     end)
