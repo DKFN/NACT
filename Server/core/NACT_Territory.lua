@@ -44,16 +44,16 @@ function NACT_Territory:Constructor(tTerritoryConfig)
             return
         end
 
-        local indexedAlreadyFocusedEntity = {}
+        local indexedSelectedEntity = {}
         local allCfocused = {}
         local i = 1
 
         -- TODO: This duplicates the same character if it is focused by multiple NPCS.
         -- TODO: This is useless, we can only add one time
         for iNpc, npc in ipairs(self.npcs) do
-            if (npc.cFocused and npc.cFocused:IsValid() and not indexedAlreadyFocusedEntity[npc.cFocused:GetID()]) then
+            if (npc.cFocused and npc.cFocused:IsValid() and not indexedSelectedEntity[npc.cFocused:GetID()]) then
                 allCfocused[i] = npc.cFocused
-                indexedAlreadyFocusedEntity[npc.cFocused:GetID()] = true
+                indexedSelectedEntity[npc.cFocused:GetID()] = true
                 i = i + 1
             end
         end
@@ -96,6 +96,7 @@ end
 --- INTERNAL. Removes an NPC from the territory
 ---@param nactNpc NACT_NPC
 function NACT_Territory:RemoveNPC(nactNpc)
+    Console.Log("Called remove NPC"..#self.npcs)
     table_remove_by_value(self.npcs, nactNpc)
 end
 
@@ -179,7 +180,7 @@ end
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTerritoryID, tViabilityResult)
     local territoryOfResult = NACT_Territory.GetByID(iTerritoryID)
     if (territoryOfResult) then
-        Console.Log("Result of cover viability "..NanosTable.Dump(tViabilityResult))
+        -- Console.Log("Result of cover viability "..NanosTable.Dump(tViabilityResult))
         territoryOfResult:UpdateCoverViability(tViabilityResult)
     end
 end)

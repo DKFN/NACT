@@ -2,7 +2,8 @@ NACT_Engage = BaseClass.Inherit("NACT_Engage")
 -- NACT_PROVISORY_INNACURACY = 200
 NACT_PROVISORY_MAX_TIME_ENGAGED_SEC = 10
 local MAX_TIME_ENGAGED_SEC_DEFAULT = 8
-local DEFAULT_INNACURACY = 250
+-- local DEFAULT_INNACURACY = 250
+local DEFAULT_INNACURACY = 25000
 local DEFAULT_MAIN_BEHAVIOR = NACT_Combat
 local DEFAULT_INTERVAL_TIME = 25
 
@@ -89,5 +90,4 @@ function NACT_Engage:Destructor()
     if (weapon) then
         weapon:ReleaseUse()
     end
-    -- self.npc:StopTracing()
 end

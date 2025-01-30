@@ -60,7 +60,10 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
 
     cNpcToHandle:Subscribe("Death", function()
         self:Log("Death called")
+
+        -- TODO: Make this configurable atleast( callback ? )
         self.character:Destroy()
+        self.territory:RemoveNPC(self)
         self:Destroy()
     end)
 
@@ -169,6 +172,7 @@ end
 
 function NACT_NPC:Destructor()
     -- self:Log2("Destroying behavior is : "..NanosTable.Dump(self.behavior))
+    self:StopTracing()
     self.behavior:Destroy()
     self.territory:RemoveNPC(self)
     for k, t in pairs(self.triggers) do

@@ -53,7 +53,7 @@ function NACT_Seek:Main()
         local allAlliesNpc = self.npc.territory:GetAlliesInZone("detection")
         if (#allAlliesNpc > 0) then
             local randomIndexOfAlly = math.random(1, #allAlliesNpc)
-            self.npc:Log("Going to ally for help "..NanosTable.Dump(randomIndexOfAlly))
+            -- self.npc:Log("Going to ally for help "..NanosTable.Dump(randomIndexOfAlly))
             local maybeFoundAlly = allAlliesNpc[randomIndexOfAlly]
             if (maybeFoundAlly and maybeFoundAlly.character) then
                 self.npc:RandomPointToQuery(maybeFoundAlly.character:GetLocation())

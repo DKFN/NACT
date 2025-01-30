@@ -3,15 +3,8 @@ local coverPositionsByTerritoryID = {}
 local tViabilityOfCovers = {}
 local tAllFocusedEntities = {}
 
-local NACT_TICK_COVER_TIME = 1000
-local NACT_TICK_COVER_TO_SCAN = 10
-local currentTickStartIndex = 1
-local currentTickStopIndex = NACT_TICK_COVER_TO_SCAN
 local coverRefreshInterval = nil
-local scanCompletedOnce = false
-
 local iTerritoryID = nil
-
 local currentTickIndex = 1
 
 --- 
@@ -21,7 +14,7 @@ local currentTickIndex = 1
 local function ScanCoverPoint(coverPos, iCover, iTerritoryID)
 
     --Console.Log("Scan cover point territory id :"..iTerritoryID)
-    Console.Log("All focused : "..NanosTable.Dump(tAllFocusedEntities))
+    -- Console.Log("All focused : "..NanosTable.Dump(tAllFocusedEntities))
     for iEntity, entity in ipairs(tAllFocusedEntities) do
         local coverViable = true
         local finalLoc
@@ -32,7 +25,7 @@ local function ScanCoverPoint(coverPos, iCover, iTerritoryID)
             finalLoc = entity:GetLocation()
         end
 
-        Console.Log("Cover : "..NanosTable.Dump(coverPos))
+        -- Console.Log("Cover : "..NanosTable.Dump(coverPos))
 
         local traceResultToHead = Trace.LineSingle(
             coverPos,
@@ -57,7 +50,7 @@ local function ScanCoverPoint(coverPos, iCover, iTerritoryID)
                     TraceMode.ReturnEntity
                 )
 
-                Console.Log(iCover.." Cover status "..NanosTable.Dump(coverViable))
+                -- Console.Log(iCover.." Cover status "..NanosTable.Dump(coverViable))
                 coverViable = coverViable and traceResultToCamera.Success
                 tViabilityOfCovers[iTerritoryID][iCover] = coverViable
             end
@@ -89,20 +82,11 @@ Client.Subscribe("Tick", function()
     end
 end)
 
--- TODO Traces here should be distributed ASAP because they are very costly
-
--- TODO: Store in an array the state by the cover point index
--- TODO: And each tick only try a few traces and every tick move along the array
--- TODO: To update the cover point viability
--- TODO: Also store in the array 
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(_iTerritoryID, tQueryAllFocusedEntities)
     local tAllCoverPositions = coverPositionsByTerritoryID[iTerritoryID]
     tAllFocusedEntities = tQueryAllFocusedEntities
     iTerritoryID = _iTerritoryID
 
-    Console.Log("Query for territory Id : "..iTerritoryID)
-
-    Console.Log("Query for territory Id : "..NanosTable.Dump(tViabilityOfCovers))
     if (not tAllCoverPositions) then
         Console.Warn("Positions of territory not received yet, viability scan abandonned")
         return

@@ -1503,7 +1503,7 @@ Package.Subscribe("Load", function()
         jeffBezos.character:SetSpeedMultiplier(2)
         jeffBezos.character:SetFootstepVolumeMultiplier(20)
         jeffBezos.character:SetMesh("nanos-world::SK_PostApocalyptic")
-        jeffBezos.character:SetTeam(3)
+        -- jeffBezos.character:SetTeam(3)
         -- jeffBezos.character:SetHighlightEnabled(true)
     end
 end)

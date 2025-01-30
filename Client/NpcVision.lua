@@ -57,7 +57,11 @@ end)
 ---@param iNpcID NACT_NPC_ID The ID of the requestor NPC
 ---@param tTargetBones table Array of bones to scan
 Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", function(sourceNpc, tAllEnemies, iNpcID, tTargetBones)
+    
     local tEnnemyLookupResult = {}
+    local closestTargetDistance = 9999999999999
+    local closestTarget = nil
+    local sourceLocation = sourceNpc:GetLocation()
     -- Console.Log("Attemp trace hit of : "..NanosTable.Dump(tAllEnemies))
     for i, ennemy in ipairs(tAllEnemies) do
         local traceResultEntity = GetTraceResultFromListOfBones(
@@ -66,13 +70,18 @@ Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", function(sourceNpc, t
             tTargetBones,
             {sourceNpc}
         )
-        -- Console.Log("Trace result for "..NanosTable.Dump(ennemy)..NanosTable.Dump(traceResultEntity))
+        Console.Log(iNpcID.."Trace result for "..NanosTable.Dump(ennemy)..NanosTable.Dump(traceResultEntity))
         if (traceResultEntity) then
-            Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", iNpcID, tAllEnemies[i])
-            return
+            local distanceToEntity = ennemy:GetLocation():Distance(sourceLocation)
+            Console.Log(iNpcID.."Distance to entity"..distanceToEntity)
+            if (distanceToEntity < closestTargetDistance) then
+                closestTargetDistance = distanceToEntity
+                closestTarget = tAllEnemies[i]
+            end
         end
     end
-    Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", iNpcID, nil)
+    Console.Log("Closest target : "..NanosTable.Dump(closestTarget))
+    Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", iNpcID, closestTarget)
 end)
 
 --- INTERNAL. Vision trace line single

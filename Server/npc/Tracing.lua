@@ -3,7 +3,6 @@ local NACT_PROVISORY_VISION_LOOKUP_BONES = {
 }
 
 local NACT_PROVISORY_LOOKAROUND_THROTTLE = 1000
-local NACT_PROVISORY
 
 ---
 --- Tracing and Vision
