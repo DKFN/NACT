@@ -13,6 +13,7 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 ## Alpha
 
 ### Features
+- Rajouter une fonction si un joueur est a proximité d'un NPC meme si il a un autre focused, qu'il puisse switch pour eviter de passer en ignorant le joueur
 - Make NPC configurable, some NACT_PROVISORY left there
 - When no cover point found, reload on place
 - Add events for focus changed etc
@@ -20,10 +21,10 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - Cleanups en cas d'abandon du combat par le joueur
 - Cleanups en cas de deconnexion du joueur en combat
 - Faire en sorte que les NPCs ils sortent jamais du territoire
+- Les cleanups de NPC dans le territoire sont incomplets
 - Documenter les configurations
 - Faire la documentation sur gitbook avec les tutos etc
 - Ajouter des fontions de setter pour des trucs qui seraient pas passés directement via la config
-- Distribute trace calculations because calculating all the traces at the same frame can be aweful for my pc
 
 
 ## Beta

@@ -47,6 +47,7 @@ function NACT_Cover:Main()
             if (not (self.inCover or self.movingToCover) or (self.nearestCoverPoint and not self.nearestCoverPoint.secure)) then
                 local success = self:MoveToNearestCoverPoint()
                 if (not success) then
+                    Console.Warn("Nearest cover point search was not successful. Switching back to combat")
                     self.npc:SetBehavior(NACT_Combat)
                 end
             end
@@ -129,7 +130,7 @@ function NACT_Cover:OnTakeDamage(_, damage, bone, type, from_direction, instigat
     local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
     if (causerCharacter) then
         if (self.nearestCoverPoint) then
-            self.nearestCoverPoint.taken = false
+            self:LeaveCover()
         end
         self.npc:SetFocused(causerCharacter)
         self.npc:SetBehavior(NACT_Combat)

@@ -3,6 +3,7 @@ local NACT_PROVISORY_VISION_LOOKUP_BONES = {
 }
 
 local NACT_PROVISORY_LOOKAROUND_THROTTLE = 1000
+local NACT_PROVISORY
 
 ---
 --- Tracing and Vision
@@ -10,7 +11,7 @@ local NACT_PROVISORY_LOOKAROUND_THROTTLE = 1000
 
 --- INTERNAL. Stop the tracing for the vision logic
 function NACT_NPC:StopTracing()
-    if (self.tracingLaunched) then
+    if (self.tracingLaunched and self.tracingAuthority:IsValid()) then
         Console.Log("Calling stop event for traces")
         Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", self.tracingAuthority, self:GetID()) --, self.npc.character, self.npc.cFocused)
         self.tracingLaunched = false

@@ -60,6 +60,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
 
     cNpcToHandle:Subscribe("Death", function()
         self:Log("Death called")
+        self.character:Destroy()
         self:Destroy()
     end)
 

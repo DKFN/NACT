@@ -1,6 +1,7 @@
 NACT_Territory = BaseClass.Inherit("NACT_Territory")
 
 local NACT_PROVISORY_COVER_VIABILITY_REFRESH_TIME = 500
+-- local NACT_PROVISORY_COVER_VIABILITY_REFRESH_TIME = 5000
 local NACT_PROVISORY_PLAYER_AUTHORITY_REFRESH_TIME = 10000
 
 --- Territory is a zone controlled by NPCs and contains the configuration of
@@ -43,14 +44,25 @@ function NACT_Territory:Constructor(tTerritoryConfig)
             return
         end
 
+        local indexedAlreadyFocusedEntity = {}
         local allCfocused = {}
+        local i = 1
+
+        -- TODO: This duplicates the same character if it is focused by multiple NPCS.
+        -- TODO: This is useless, we can only add one time
         for iNpc, npc in ipairs(self.npcs) do
-            if (npc.cFocused) then
-                table.insert(allCfocused, npc.cFocused)
+            if (npc.cFocused and npc.cFocused:IsValid() and not indexedAlreadyFocusedEntity[npc.cFocused:GetID()]) then
+                allCfocused[i] = npc.cFocused
+                indexedAlreadyFocusedEntity[npc.cFocused:GetID()] = true
+                i = i + 1
             end
         end
     
-        Events.CallRemote("NACT:TRACE:COVER:VIABILITY:QUERY", self.authorityPlayer, _self:GetID(), allCfocused)
+        if (self.authorityPlayer and self.authorityPlayer:IsValid()) then
+            Events.CallRemote("NACT:TRACE:COVER:VIABILITY:QUERY", self.authorityPlayer, _self:GetID(), allCfocused)
+        else
+            self:SwitchNetworkAuthority()
+        end
     end, NACT_PROVISORY_COVER_VIABILITY_REFRESH_TIME)
 
     self.authorityPlayerHandleTimer = Timer.SetInterval(function()
@@ -111,9 +123,14 @@ end
 --- INTERNAL. Switches the network authority of the player that will handle all client ops of the territory
 function NACT_Territory:SwitchNetworkAuthority()
     local reachablePlayers = {}
+
+    if (self.authorityPlayer and self.authorityPlayer:IsValid()) then
+        Events.CallRemote("NACT:TRACE:COVER_VIABILITY:STOP", self.authorityPlayer)
+    end
     
     for iEnemy, enemy in ipairs(self:GetEnemiesInZone()) do
-        if (enemy:GetPlayer()) then
+        local pMaybePlayer = enemy:GetPlayer()
+        if (pMaybePlayer and pMaybePlayer:IsValid()) then
             table.insert(reachablePlayers, enemy:GetPlayer())
         end
     end
@@ -154,7 +171,7 @@ function NACT_Territory:CleanupCharacter(character)
         v:CleanupCharacter(character)
     end
 
-    if (self.authorityPlayer == character) then
+    if (self.authorityPlayer and self.authorityPlayer:GetControlledCharacter() == character) then
         self:SwitchNetworkAuthority()
     end
 end
@@ -162,7 +179,7 @@ end
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTerritoryID, tViabilityResult)
     local territoryOfResult = NACT_Territory.GetByID(iTerritoryID)
     if (territoryOfResult) then
-        -- Console.Log("Result of cover viability "..NanosTable.Dump(tViabilityResult))
+        Console.Log("Result of cover viability "..NanosTable.Dump(tViabilityResult))
         territoryOfResult:UpdateCoverViability(tViabilityResult)
     end
 end)

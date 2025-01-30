@@ -1,6 +1,6 @@
 NACT_Combat = BaseClass.Inherit("NACT_Combat", false)
 
-local DEFAULT_RNG_MAX = 5
+local DEFAULT_RNG_MAX = 3
 local DEFAULT_RNG_COVER_VALUE = 2
 
 function NACT_Combat:Constructor(NpcInstance, tBehaviorConfig)
@@ -31,10 +31,7 @@ function NACT_Combat:Main()
     self.npc:Log("Combat")
 
     if (self.npc:ShouldReload() or rng == self.rngCoverValue) then
-        -- Console.Log("Combat: go to cover")
-        Timer.SetTimeout(function()
-            self.npc:SetBehavior(self.coverBehavior)
-        end, 200)
+        self.npc:SetBehavior(self.coverBehavior)
         return
     else
         if (#self.npc.territory:GetEnemiesInZone() == 0) then
@@ -46,6 +43,7 @@ function NACT_Combat:Main()
             self.npc:SetBehavior(self.seekBehavior)
             return
         else
+            self.npc:TurnToFocused()
             self.npc:SetBehavior(self.attackBehavior)
             return
         end

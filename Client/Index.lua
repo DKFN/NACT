@@ -15,3 +15,15 @@ Character.Subscribe("Death", function(self, last_damage_taken, last_bone_damaged
     end
     Chat.AddMessage(sMsg)
 end)
+
+local function possessOutline(char)
+    char:SetOutlineEnabled(true, 0)
+end
+Player.Subscribe("Possess", function(self, character)
+    possessOutline(character)
+end)
+for _, v in ipairs(Character.GetAll()) do
+    if v:GetPlayer() then
+        possessOutline(v)
+    end
+end
