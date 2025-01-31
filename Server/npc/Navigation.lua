@@ -1,3 +1,10 @@
+--- Move but also look towards point
+---@param vPoint Vector point to go
+function NACT_NPC:MoveToPoint(vPoint)
+    self.character:MoveTo(vPoint, 1)
+    self.character:LookAt(vPoint)
+end
+
 --- Query the player that has the network authority on the territory for a random point to the focused location
 --- or it's last known position
 ---@param radius number for the search to the random point

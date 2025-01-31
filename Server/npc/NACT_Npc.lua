@@ -163,13 +163,6 @@ function NACT_NPC:SetFocused(newFocused)
     self:SetFocusedEntity(newFocused)
 end
 
---- Move but also look towards point
----@param vPoint Vector point to go
-function NACT_NPC:MoveToPoint(vPoint)
-    self.character:MoveTo(vPoint, 1)
-    self.character:LookAt(vPoint)
-end
-
 function NACT_NPC:Destructor()
     -- self:Log2("Destroying behavior is : "..NanosTable.Dump(self.behavior))
     self:StopTracing()
@@ -190,7 +183,7 @@ function NACT_NPC:CleanupCharacter(cToCleanUp)
         self.cFocused = nil
     end
 
-    if (self.tracingAuthority == cToCleanUp) then
+    if (self.tracingLaunched and self.tracingAuthority and self.tracingAuthority:GetControlledCharacter() == cToCleanUp) then
         self:StopTracing()
         self:StartTracing()
     end
