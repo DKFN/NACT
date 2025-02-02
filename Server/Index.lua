@@ -17,6 +17,7 @@ Package.Export("NACT_Combat", NACT_Combat)
 Package.Export("NACT_Engage", NACT_Engage)
 Package.Export("NACT_Seek", NACT_Seek)
 Package.Export("NACT_Cover", NACT_Cover)
+Package.Export("NACT_Melee", NACT_Melee)
 
 -- Uncomment thoose lines if you want to develop or debug
 -- Package.Require("./Tests.lua")

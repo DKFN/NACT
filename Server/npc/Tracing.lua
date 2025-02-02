@@ -2,8 +2,6 @@ local NACT_PROVISORY_VISION_LOOKUP_BONES = {
     "head", "lowerarm_l", "lowerarm_r", "foot_l", "foot_r"
 }
 
-local NACT_PROVISORY_LOOKAROUND_THROTTLE = 1000
-
 ---
 --- Tracing and Vision
 ---
@@ -82,8 +80,8 @@ function NACT_NPC:IsInVisionAngle(cEntity)
 
     local tAnglePlayerNpc = (self.character:GetLocation() - cEntity:GetLocation()):Rotation()
     local angleVersion =  math.abs(self.character:GetRotation().Yaw - tAnglePlayerNpc.Yaw)
-    -- Console.Log("Angle "..NanosTable.Dump(angleVersion))
-    return angleVersion > PROVISORY_NACT_ANGLE_DETECTION
+    Console.Log("Angle "..NanosTable.Dump(angleVersion))
+    return angleVersion > self.visionAngle
 end
 
 --- Returns if the focused entity is currently visible.

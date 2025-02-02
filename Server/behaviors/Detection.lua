@@ -30,6 +30,11 @@ function NACT_Detection:Main()
         Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
     end
 
+    -- Allows the behavior to be compatible with animal like behaviors
+    if (not self.npc.autoVision and not self.npc.tracingLaunched) then
+        self.npc:StartTracing()
+    end
+
     -- Console.Log("Detection focused : "..NanosTable.Dump(self.npc:GetFocused()))
     if (self.npc:GetFocused() == nil) then
         self.npc:LookForFocused()
@@ -79,12 +84,15 @@ function NACT_Detection:OnTakeDamage(_, damage, bone, type, from_direction, inst
     if (causerCharacter) then
         Console.Log("Causer is character")
         self.npc:TurnTo(causerCharacter:GetLocation())
-        self.heat = self.heat + 50
+        self.heat = self.heat + self.heatTurnTo
     end
 end
 
 function NACT_Detection:Destructor()
-    -- self.npc:StopTracing()
+    -- Allows the behavior to be compatible with animal like behaviors
+    if (not self.npc.autoVision) then
+        self.npc:StopTracing()
+    end 
     Timer.ClearInterval(self.timerHandle)
 end
 

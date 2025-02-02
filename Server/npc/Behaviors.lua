@@ -26,11 +26,6 @@ end
 ---@param iBehaviorIndex number Index of the behavior to switch to
 function NACT_NPC:SetBehaviorIndex(iBehaviorIndex)
     if (self:IsValid() and not self:IsBeingDestroyed()) then
-        if (NACT_DEBUG_BEHAVIORS) then
-            Console.Log("Behavior configs : "..NanosTable.Dump(self.behaviorConfig))
-            Console.Log("Switching to Behavior index ".. iBehaviorIndex)
-        end
-
         if (self.behavior and self.behavior:IsValid()) then
             self.behavior:Destroy()
         end

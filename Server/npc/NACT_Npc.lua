@@ -8,6 +8,12 @@ NACT_PROVISORY_REGISTERED_EVENTS = {
 -- PROVISORY_NACT_ANGLE_DETECTION = 90
 PROVISORY_NACT_ANGLE_DETECTION = 110
 
+local NACT_DEFAULT_VISION_ANGLE = 110
+
+-- TODO: If enabled, this is the whole human "vision" logic instead of relying on the behaviors to handle it
+local NACT_DEFAULT_ENABLE_AUTO_VISION = true
+local NACT_DEFAULT_LOOKAROUND_THROTTLE = 1000
+
 --- /!\ INTERNAL /!\
 --- NACT_NPC constructor. You should call NACT.RegisterNPC instead of this function directly
 ---@param cNpcToHandle Character Nanos world character to be controlled
@@ -19,16 +25,21 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.afInrangeEntities = {}
     self.cFocused = nil -- When someone gets noticed by the NPC and it takes actions against it
     self.cFocusedTraceHit = false
-    self.cFocusedLastPosition = Vector()
+    self.cFocusedLastPosition = nil
     self.tracingAuthority = nil
 
      -- IDLE | DETECT | COVER | PUSH | FLANK | ENGAGE | SUPRESS | HEAL etc... see Server/behaviors
     self.behaviorConfig = tNpcConfig.behaviors
 
+    -- Vision config
+    self.autoVision = NACT.ValueOrDefault(tNpcConfig.autoVision, NACT_DEFAULT_ENABLE_AUTO_VISION)
+    self.visionAngle = NACT.ValueOrDefault(tNpcConfig.visionAngle, NACT_DEFAULT_VISION_ANGLE)
+    self.lookAroundThrottle = NACT.ValueOrDefault(tNpcConfig.lookAroundThrottle, NACT_DEFAULT_LOOKAROUND_THROTTLE)
+
     -- TODO: Add 
     self.currentBehaviorIndex = 1
     
-    if (true) then
+    if (NACT_DEBUG_BEHAVIORS) then
         self.debugTextBehavior = TextRender(
             Vector(0, 300, 0),
             Rotator(),
@@ -38,8 +49,8 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
             FontType.OpenSans,
             TextRenderAlignCamera.FaceCamera
         )
+        self.debugTextBehavior:AttachTo(cNpcToHandle, AttachmentRule.KeepRelative, "head")
     end
-    self.debugTextBehavior:AttachTo(cNpcToHandle, AttachmentRule.KeepRelative, "head")
 
     if (#self.behaviorConfig > 0) then
         self:SetBehaviorIndex(1)
@@ -66,15 +77,6 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
         self.territory:RemoveNPC(self)
         self:Destroy()
     end)
-
-    -- DEBUG
-    if (NACT_DEBUG_BEHAVIORS) then
-        Timer.SetInterval(function()
-            if (self.currentBehaviorIndex) then
-                Chat.BroadcastMessage("Behavior index ".. self.currentBehaviorIndex)
-            end
-        end, 2000, self)
-    end
 end
 
 ---
@@ -112,9 +114,11 @@ end
 --- @param cEntity Character | nil Character or nil to be focused by the NPC  
 function NACT_NPC:SetFocusedEntity(cEntity)
     if (cEntity ~= self.cFocused) then
-        self:StopTracing()
+        if (self.autoVision) then
+            self:StopTracing()
+        end
         self.cFocused = cEntity
-        if (cEntity) then
+        if (cEntity and self.autoVision) then
             self:StartTracing()
         end
         -- If no authority at the territory level and npc has focused. Start calculations on the territory
@@ -122,7 +126,7 @@ function NACT_NPC:SetFocusedEntity(cEntity)
             self.territory:SwitchNetworkAuthority()
         end
     end
-    if (cEntity == nil) then
+    if (cEntity == nil and self.autoVision) then
         self:StopTracing()
     end
 end

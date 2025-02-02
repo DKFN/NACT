@@ -6,6 +6,8 @@ local DEFAULT_SEEK_RADIUS = 5000
 local DEFAULT_MAX_TIME_HOLD = 3000
 local DEFAULT_GAIT_SEEKING = GaitMode.Sprinting
 local DEFAULT_GAIT_INITIAL = GaitMode.Walking
+local DEFAULT_MAIN_BEHAVIOR = NACT_Combat
+local DEFAULT_ALERT_BEHAVIOR = NACT_Alert -- TODO: Maybe by default the NPC should not have an alert behavior ?
 
 function NACT_Seek:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
@@ -18,6 +20,8 @@ function NACT_Seek:Constructor(NpcInstance, tBehaviorConfig)
     self.maxTimeHold = NACT.ValueOrDefault(tBehaviorConfig.maxTimeHold, DEFAULT_MAX_TIME_HOLD)
     self.gaitSeeking = NACT.ValueOrDefault(tBehaviorConfig.gaitSeeking, DEFAULT_GAIT_SEEKING)
     self.gaitInitial = NACT.ValueOrDefault(tBehaviorConfig.gaitInitial, DEFAULT_GAIT_INITIAL)
+    self.mainBehavior = NACT.ValueOrDefault(tBehaviorConfig.mainBehavior, DEFAULT_MAIN_BEHAVIOR)
+    self.alertBehavior = (tBehaviorConfig or {}).alertBehavior
 
     -- TODO: Make Utility function to create them
     self.timerHandle = Timer.SetInterval(function()
@@ -33,10 +37,10 @@ function NACT_Seek:Main()
     -- Finish tomorrow and plug it in NACT_Combat
     if (self.npc:IsFocusedVisible()) then
         local timeElapsedSinceLastAlert = os.clock() - self.npc.territory.lastAlertRaisedAt
-        if (timeElapsedSinceLastAlert > 10) then
-            self.npc:SetBehavior(NACT_Alert)
+        if (timeElapsedSinceLastAlert > 10 and self.alertBehavior) then
+            self.npc:SetBehavior(self.alertBehavior)
         else
-            self.npc:SetBehavior(NACT_Combat)
+            self.npc:SetBehavior(self.mainBehavior)
         end
     end
 
@@ -56,7 +60,7 @@ function NACT_Seek:Main()
             -- self.npc:Log("Going to ally for help "..NanosTable.Dump(randomIndexOfAlly))
             local maybeFoundAlly = allAlliesNpc[randomIndexOfAlly]
             if (maybeFoundAlly and maybeFoundAlly.character) then
-                self.npc:RandomPointToQuery(maybeFoundAlly.character:GetLocation())
+                self.npc:RandomPointToQuery(maybeFoundAlly.character:GetLocation(), 200) -- TODO: Add config key for ally search ?
             end
         end
     end
@@ -76,10 +80,11 @@ end
 function NACT_Seek:OnRandomPointResult(vTargetPoint)
     -- TODO: This creates way too much instance creation and destruction when you noclip somewhere not reachable
     -- TODO: Should not happend in real life, but not ideal nonetheless
+    Console.Log("Random pt result : "..NanosTable.Dump(vTargetPoint))
     if (vTargetPoint:IsZero()) then
         Console.Log("Zero result, returning to combat for decision")
         Timer.SetTimeout(function()
-            self.npc:SetBehavior(NACT_Combat)
+            self.npc:SetBehavior(self.mainBehavior)
         end, 2000)
         return
     end
@@ -94,7 +99,7 @@ function NACT_Seek:OnTakeDamage(_, damage, bone, type, from_direction, instigato
     local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
     if (causerCharacter) then
         self.npc:SetFocused(causerCharacter)
-        self.npc:SetBehavior(NACT_Combat)
+        self.npc:SetBehavior(self.mainBehavior)
     end
 end
 

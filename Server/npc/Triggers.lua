@@ -9,7 +9,7 @@ function NACT_NPC:_registerTriggerBoxes()
         detection = self:createTriggerBox(TriggerType.Sphere, 5000, Color.RED),
         midProximity = self:createTriggerBox(TriggerType.Sphere, 2000, TriggerType.Sphere, Color.ORANGE),
         closeProximity = self:createTriggerBox(TriggerType.Sphere, 1000, Color.BLUE),
-        melee = self:createTriggerBox(TriggerType.Box, 100, Color.YELLOW)
+        melee = self:createTriggerBox(TriggerType.Sphere, 120, Color.YELLOW)
     }
 
 end

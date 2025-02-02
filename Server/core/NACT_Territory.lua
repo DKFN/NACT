@@ -154,6 +154,7 @@ function NACT_Territory:RefreshCoverPoints()
     local selectedCoverPoints = {}
     local coverPointsPosition = {}
     for i, coverPoint in ipairs(NACT.GetMapCoverPoints()) do
+        Console.Log("Scanning cover point : "..NanosTable.Dump(coverPoint))
         local distanceFromOrigin = self.zoneBounds.pos:Distance(coverPoint.pos)
         -- Console.Log("Distance from origin : "..distanceFromOrigin)
         if (distanceFromOrigin <= self.zoneBounds.radius) then

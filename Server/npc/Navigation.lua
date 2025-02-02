@@ -29,7 +29,7 @@ end
 function NACT_NPC:RandomPointToQuery(vLocation, radius)
     local authorityPlayer = self.territory.authorityPlayer
     if (authorityPlayer) then
-        Events.CallRemote("NACT:NAVIGATION:RANDOM_QUERY", authorityPlayer, self:GetID(), vLocation, radius)    
+        Events.CallRemote("NACT:NAVIGATION:RANDOM_QUERY", authorityPlayer, self:GetID(), vLocation, radius)
     end
 end
 

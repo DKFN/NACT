@@ -13,12 +13,18 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 ## Alpha
 
 ### Features
+- Rajouter une fonction pour trouver le plus proche (truc que je fais souvent dans les behaviors du coup) et remplacer par ca dans les behjaviors ou on fait souvent ca
 - Rajouter dans l'event delegation les BeginOverlap / EndOverlap des differents triggers pour que les behavior
   puissent l'utiliser (nottament pour declencher le clako pour le behavior de mellee)
 - Les zombies doivent avoir une notion de vision a 360 et qui detecte instantanement le joueur
   Pour eviter qu'ils sentent (voient) a travers les murs
 - Finir de nettoyer le code des tests fourré dans la lib vers le gamemode de test
 - Rajouter une fonction si un joueur est a proximité d'un NPC meme si il a un autre focused, qu'il puisse switch pour eviter de passer en ignorant le joueur (Ca devrait etre OK mais a test)
+- Renomer les NACT_<BehaviorName> en NACT.<BehaviorName> dans l'export
+
+- 1 aller classique (pv normaux, vitesse normaux), 1 sprinter (pv un peu bas mais il te trace et il te tatane), 1 tank (gros pv gros tatane mais lent)
+- Les zombies devraient alerter leur potes qui sont très proches
+
 - Make NPC configurable, some NACT_PROVISORY left there
 - When no cover point found, reload on place
 - Add events for focus changed etc
