@@ -2,7 +2,7 @@ NACT_Melee = BaseClass.Inherit("NACT_Melee")
 
 -- TODO: It's more of an "animal" melee than human melee.
 -- TODO: Once your ass is targeted, it will not be loosed
-local NACT_PROVISORY_MIN_DISTANCE = 1000
+-- TODO: It's the zombie behavior maybe only ?
 function NACT_Melee:Constructor(NpcInstance)
     self.npc = NpcInstance
 
@@ -10,11 +10,15 @@ function NACT_Melee:Constructor(NpcInstance)
         self:Main()
     end, 100)
 
+    self.alertTimerHandle = Timer.SetInterval(function()
+        self:AlertAlliesInRange()
+    end, 1000)
+
 end
 
 function NACT_Melee:Main()
     local cFocused = self.npc:GetFocused()
-    if (cFocused) then
+    if (cFocused and cFocused:GetHealth() > 0) then
         self.npc.character:SetGaitMode(GaitMode.Sprinting)
         self.npc:MoveToFocused()
         if (#self.npc:GetEnemiesInTrigger("melee") > 0) then
@@ -38,6 +42,21 @@ function NACT_Melee:Main()
             self.npc:SetFocusedEntity(closestEnemy)
         else
             self.npc:SetBehavior(NACT_Idle)
+        end
+    end
+end
+
+function NACT_Melee:AlertAlliesInRange()
+    if (not self.npc:GetFocused()) then
+        return
+    end
+    local alliesInRange = self.npc:GetAlliesInTrigger("closeProximity")
+    for k, v in ipairs(alliesInRange) do
+        local nactNpcOfAlly = NACT_NPC.GetFromCharacter(v)
+        -- Console.Log("NACT NPC OF ALly "..NanosTable.Dump(nactNpcOfAlly.behavior:GetClass()))
+        if (nactNpcOfAlly and nactNpcOfAlly.behavior:GetClass() == NACT_Detection) then
+            nactNpcOfAlly:SetFocusedEntity(self.npc:GetFocused())
+            nactNpcOfAlly:SetBehavior(NACT_Melee)
         end
     end
 end

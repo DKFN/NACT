@@ -69,7 +69,7 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:POSITIONS", function(_iTerrit
 end)
 
 Client.Subscribe("Tick", function()
-    if (not iTerritoryID) then
+    if (not iTerritoryID or not coverPositionsByTerritoryID[iTerritoryID][currentTickIndex]) then
         return
     end
 

@@ -80,7 +80,7 @@ function NACT_NPC:IsInVisionAngle(cEntity)
 
     local tAnglePlayerNpc = (self.character:GetLocation() - cEntity:GetLocation()):Rotation()
     local angleVersion =  math.abs(self.character:GetRotation().Yaw - tAnglePlayerNpc.Yaw)
-    Console.Log("Angle "..NanosTable.Dump(angleVersion))
+    -- Console.Log("Angle "..NanosTable.Dump(angleVersion))
     return angleVersion > self.visionAngle
 end
 
