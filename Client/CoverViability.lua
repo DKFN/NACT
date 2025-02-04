@@ -62,7 +62,7 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:POSITIONS", function(_iTerrit
     iTerritoryID = _iTerritoryID
     coverPositionsByTerritoryID[iTerritoryID] = allPositions
     tViabilityOfCovers[iTerritoryID] = {}
-    Console.Log("Received positions :"..NanosTable.Dump(coverPositionsByTerritoryID[iTerritoryID]))
+    -- Console.Log("Received positions :"..NanosTable.Dump(coverPositionsByTerritoryID[iTerritoryID]))
 
 
     -- TODO: This sucks it seems to not really iterate on all cover points 
@@ -88,14 +88,14 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(_iTerritoryI
     iTerritoryID = _iTerritoryID
 
     if (not tAllCoverPositions) then
-        Console.Warn("Positions of territory not received yet, viability scan abandonned")
+        -- Console.Warn("Positions of territory not received yet, viability scan abandonned")
         return
     end
     Events.CallRemote("NACT:TRACE:COVER:VIABILITY:RESULT", iTerritoryID, tViabilityOfCovers[iTerritoryID])
 end)
 
 Events.Subscribe("NACT:TRACE:COVER_VIABILITY:STOP", function()
-    Console.Log("Trace viability is stopping")
+    -- Console.Log("Trace viability is stopping")
     if (coverRefreshInterval) then
         Timer.ClearInterval(coverRefreshInterval)
     end

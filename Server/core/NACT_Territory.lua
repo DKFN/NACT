@@ -170,7 +170,11 @@ end
 
 function NACT_Territory:CleanupCharacter(character)
     for i, v in ipairs(self.npcs) do
+        Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(v.character))
         v:CleanupCharacter(character)
+        if (v.character == character) then
+            v:Destroy()
+        end
     end
 
     if (self.authorityPlayer and self.authorityPlayer:GetControlledCharacter() == character) then

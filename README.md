@@ -23,6 +23,7 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 #### P1
 - Bouger les calculs de triggers sur l'entité qui a l'authorité
 - Ne faire spawn les triggers que lorsque le territoire deviens actif
+- Remplacer le trigger de melee par un calcul de distance. Aucun interet a garder en trigger ca.
 - Rajouter une fonction pour trouver le plus proche (truc que je fais souvent dans les behaviors du coup) et remplacer par ca dans les behjaviors ou on fait souvent ca
 - Faire en sorte que les NPCs ils sortent jamais du territoire
 - Documenter les configurations

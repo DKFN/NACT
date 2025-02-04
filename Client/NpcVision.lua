@@ -70,17 +70,17 @@ Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", function(sourceNpc, t
             tTargetBones,
             {sourceNpc}
         )
-        Console.Log(iNpcID.."Trace result for "..NanosTable.Dump(ennemy)..NanosTable.Dump(traceResultEntity))
+        -- Console.Log(iNpcID.."Trace result for "..NanosTable.Dump(ennemy)..NanosTable.Dump(traceResultEntity))
         if (traceResultEntity) then
             local distanceToEntity = ennemy:GetLocation():Distance(sourceLocation)
-            Console.Log(iNpcID.."Distance to entity"..distanceToEntity)
+            -- Console.Log(iNpcID.."Distance to entity"..distanceToEntity)
             if (distanceToEntity < closestTargetDistance) then
                 closestTargetDistance = distanceToEntity
                 closestTarget = tAllEnemies[i]
             end
         end
     end
-    Console.Log("Closest target : "..NanosTable.Dump(closestTarget))
+    -- Console.Log("Closest target : "..NanosTable.Dump(closestTarget))
     Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", iNpcID, closestTarget)
 end)
 
@@ -94,8 +94,8 @@ function ClientsideVisionTrace(vSourceLocation, vTargetLocation, entitiesToIgnor
         vSourceLocation,
         vTargetLocation,
         CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
-        TraceMode.DrawDebug | TraceMode.ReturnEntity,
-        -- TraceMode.ReturnEntity,
+        -- TraceMode.DrawDebug | TraceMode.ReturnEntity,
+        TraceMode.ReturnEntity,
         entitiesToIgnore
     )
 end

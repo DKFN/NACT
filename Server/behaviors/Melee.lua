@@ -6,6 +6,7 @@ NACT_Melee = BaseClass.Inherit("NACT_Melee")
 function NACT_Melee:Constructor(NpcInstance)
     self.npc = NpcInstance
 
+    self.tick = 1
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
     end, 100)
@@ -18,7 +19,14 @@ end
 
 function NACT_Melee:Main()
     local cFocused = self.npc:GetFocused()
-    if (cFocused and cFocused:GetHealth() > 0) then
+    self.tick = self.tick + 1
+
+    if (not self.npc:IsValid() or not self.npc.character:IsValid()) then
+        Console.Log(self.npc:GetID().."I am dead I should not be called !")
+        return
+    end
+    if (cFocused and cFocused:GetHealth() > 0 and self.tick < 20) then
+        -- Console.Log("Focus tick "..self.tick)
         self.npc.character:SetGaitMode(GaitMode.Sprinting)
         self.npc:MoveToFocused()
         if (#self.npc:GetEnemiesInTrigger("melee") > 0) then
@@ -29,14 +37,19 @@ function NACT_Melee:Main()
             end
         end
     else
+        Console.Log("Search tick "..self.tick)
+        self.tick = 1
         local allEnemiesNearNpc = self.npc.territory:GetEnemiesInZone()
         local closestEnemy = nil
+        Console.Log("Enemies result : "..NanosTable.Dump(allEnemiesNearNpc))
         if (#allEnemiesNearNpc > 0) then
             local nearestDistance = 99999999
-            for i, enemy in ipairs(allEnemiesNearNpc) do
+            for i, enemy in ipairs(allEnemiesNearNpc) do 
                 local distanceToEnemy = self.npc.character:GetLocation():Distance(enemy:GetLocation())
                 if (distanceToEnemy < nearestDistance) then
+                    nearestDistance = distanceToEnemy
                     closestEnemy = enemy
+                    Console.Log("Closest enemy result !")
                 end
             end
             self.npc:SetFocusedEntity(closestEnemy)
@@ -64,4 +77,5 @@ end
 
 function NACT_Melee:Destructor()
     Timer.ClearInterval(self.timerHandle)
+    Timer.ClearInterval(self.alertTimerHandle)
 end

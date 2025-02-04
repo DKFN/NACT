@@ -36,7 +36,7 @@ function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerT
             end
 
             if (linkedClass == NACT_Territory) then
-                entity:SetValue("NACT_TERRITORY_ID", self:GetID())
+                entity:SetValue("NACT_TERRITORY_ID", linkedTerritoryOrNpc:GetID())
                 if (not linkedTerritoryOrNpc.authorityPlayer and entity.GetPlayer and entity:GetPlayer()) then
                     Console.Log("Player entered in territory without network authority. Switching authority")
                     linkedTerritoryOrNpc:SwitchNetworkAuthority()
@@ -82,7 +82,7 @@ function NACT.GetTriggerPopulation(tTrigger, sPopulationType)
 
     local acc = {}
     for i, entity in ipairs(triggerPopulation) do
-        if (entity:IsValid() and entity:GetHealth() > 0) then
+        if (entity:IsValid() and not entity:IsBeingDestroyed() and entity:GetHealth() > 0) then
             table.insert(acc, entity)
         end
     end

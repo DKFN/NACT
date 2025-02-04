@@ -20,6 +20,7 @@
     # packages requirements
     packages_requirements = [
                             "classlib",
+                            "clientside-synced-traces",
     ]
     # asset packs requirements
     assets_requirements = [
