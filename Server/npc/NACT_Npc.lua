@@ -13,6 +13,12 @@ local NACT_DEFAULT_VISION_ANGLE = 110
 -- TODO: If enabled, this is the whole human "vision" logic instead of relying on the behaviors to handle it
 local NACT_DEFAULT_ENABLE_AUTO_VISION = true
 local NACT_DEFAULT_LOOKAROUND_THROTTLE = 1000
+local NACT_DEFAULT_TRIGGERS = {
+    detection = true,
+    midProximity = true,
+    closeProximity = true,
+    melee = true
+}
 
 --- /!\ INTERNAL /!\
 --- NACT_NPC constructor. You should call NACT.RegisterNPC instead of this function directly
@@ -55,7 +61,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     if (#self.behaviorConfig > 0) then
         self:SetBehaviorIndex(1)
     end
-    self:_registerTriggerBoxes()
+    self:_registerTriggerBoxes(NACT.ValueOrDefault(tNpcConfig.triggers, NACT_DEFAULT_TRIGGERS))
 
     self.tracingLaunched = false
     self.launchedScanAround = false
@@ -231,9 +237,10 @@ function table_findIndex_by_value(tCollection, entity)
     end
 end
 
+local table_remove = table.remove
 function table_remove_by_value(tCollection, entity)
    -- Console.Log("RM bv "..NanosTable.Dump(entity).."  col : "..NanosTable.Dump(entity))
-    table.remove(tCollection, table_findIndex_by_value(tCollection, entity))
+    table_remove(tCollection, table_findIndex_by_value(tCollection, entity))
 end
 
 Package.Require("./Behaviors.lua")

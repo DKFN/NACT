@@ -1,3 +1,5 @@
+local table_insert = table.insert
+
 ---Creates a trigger box for NACT while keeping track of all the allies and enemies that enter or leave the trigger box
 ---@param vTriggerLocation Vector Location to spawn the trigger
 ---@param linkedTerritoryOrNpc NACT_NPC | NACT_Territory The NACT entity to attach the trigger to
@@ -5,9 +7,17 @@
 ---@param nRadius number Radius of the trigger
 ---@param eDebugColor Color the debug color when debugging triggers
 ---@return table Trigger table
-function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerType, nRadius, eDebugColor)
+function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerType, nRadius, eDebugColor, bServerTrigger)
+
+    local triggerHandler
+    if (bServerTrigger) then
+        triggerHandler = Trigger
+    else
+        triggerHandler = CSST
+    end
+
     local tTriggerData = {
-        trigger = Trigger(vTriggerLocation, Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor),
+        trigger = triggerHandler(vTriggerLocation, Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor),
         enemies = {},
         allies = {}
     }

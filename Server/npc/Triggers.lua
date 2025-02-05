@@ -4,14 +4,24 @@
 
 --- INTERNAL. Register the trigger boxes for a NACT_NPC
 --- I mean you can use if you want, but, why ?
-function NACT_NPC:_registerTriggerBoxes()
-    self.triggers = {
-        detection = self:createTriggerBox(TriggerType.Sphere, 5000, Color.RED),
-        midProximity = self:createTriggerBox(TriggerType.Sphere, 2000, TriggerType.Sphere, Color.ORANGE),
-        closeProximity = self:createTriggerBox(TriggerType.Sphere, 1000, Color.BLUE),
-        melee = self:createTriggerBox(TriggerType.Sphere, 120, Color.YELLOW)
-    }
-
+function NACT_NPC:_registerTriggerBoxes(tNpcTriggerConfig)
+    Console.Log("NPC CONFIG : "..NanosTable.Dump(tNpcTriggerConfig))
+    self.triggers = {}
+    if (tNpcTriggerConfig.detection) then
+        self.triggers.detection = self:createTriggerBox(TriggerType.Sphere, 3000, Color.RED)
+    end
+    if (tNpcTriggerConfig.midProximity) then
+        self.triggers.midProximity = self:createTriggerBox(TriggerType.Sphere, 1500, TriggerType.Sphere, Color.ORANGE)
+    end
+    
+    if (tNpcTriggerConfig.closeProximity) then
+        self.triggers.closeProximity = self:createTriggerBox(TriggerType.Sphere, 1000, Color.BLUE)
+    end
+    
+    if (tNpcTriggerConfig.melee) then
+        self.triggers.melee = self:createTriggerBox(TriggerType.Sphere, 120, Color.YELLOW)    
+    end
+    -- Console.Log("AFT : "..NanosTable.Dump(self.triggers))
 end
 
 --- INTERNAL. Creates a typical trigger box attached to a NACT Entity
@@ -27,6 +37,7 @@ function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
         nRadius,
         eDebugColor
     )
+    -- Console.Log("Created trigger box "..NanosTable.Dump(tTriggerData.trigger))
     tTriggerData.trigger:AttachTo(self.character)
     return tTriggerData
 end

@@ -21,9 +21,10 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - Les cleanups de NPC dans le territoire sont incomplets (ca devrait etre ok ?)
 
 #### P1
-- Bouger les calculs de triggers sur l'entité qui a l'authorité
-- Ne faire spawn les triggers que lorsque le territoire deviens actif
-- Remplacer le trigger de melee par un calcul de distance. Aucun interet a garder en trigger ca.
+- Faire en sorte que le boss spawn des NPC si il n'a plus d'alliés et qu'il est en vie, et derriere le joueur
+
+- Remplacer les triggers clientside par des Traces Sphere pour pouvoir sauter des ticks sur cetains "triggers". Rajouter dans CSST un trype de trigger en SphereTrace qui prends en parametre le modulo de tick sur lequel executer les traces, pour les distribuer. Timmy sort encore une fois vainceur du bench.
+
 - Rajouter une fonction pour trouver le plus proche (truc que je fais souvent dans les behaviors du coup) et remplacer par ca dans les behjaviors ou on fait souvent ca
 - Faire en sorte que les NPCs ils sortent jamais du territoire
 - Documenter les configurations
@@ -42,6 +43,8 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 #### P3
 - Transformer l'editeur avec des Gizmos a la place des triggers pour pouvoir deplacer via le jeu les coverpoints directement
 
+#### Blocked
+- Entities Tick warning in big missions when entering/leaving territory, this is because mostly because of the big BeginOverlap/EndOverlap Events being sent on awakening the territory. And enemies/allies count uses inneficient table functions
 
 ## Beta
 - Pouvoir definir quels triggers pour quel NPC

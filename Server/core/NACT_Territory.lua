@@ -22,7 +22,8 @@ function NACT_Territory:Constructor(tTerritoryConfig)
         self,
         TriggerType.Sphere,
         tTerritoryConfig.zoneBounds.radius,
-        Color.GREEN
+        Color.GREEN,
+        true
     )
 
     self.authorityPlayer = nil
@@ -146,6 +147,17 @@ function NACT_Territory:SwitchNetworkAuthority()
     else
         self.authorityPlayer = nil
     end
+    self:UpdateCSSTAuthority()
+end
+
+function NACT_Territory:UpdateCSSTAuthority()
+    for k, npc in ipairs(self.npcs) do
+        
+        -- Console.Log("Uppdate CSST "..NanosTable.Dump(self.npcs.triggers))
+        for j, triggerData in pairs(npc.triggers) do
+            triggerData.trigger:SetNetworkAuthority(self.authorityPlayer)
+        end
+    end
 end
 
 --- This function will refresh the cover points of the territory by getting the map cover points
@@ -178,6 +190,7 @@ function NACT_Territory:CleanupCharacter(character)
     end
 
     if (self.authorityPlayer and self.authorityPlayer:GetControlledCharacter() == character) then
+        Console.Log("Was authority, switching ")
         self:SwitchNetworkAuthority()
     end
 end
