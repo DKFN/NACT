@@ -5,7 +5,7 @@
 --- INTERNAL. Register the trigger boxes for a NACT_NPC
 --- I mean you can use if you want, but, why ?
 function NACT_NPC:_registerTriggerBoxes(tNpcTriggerConfig)
-    Console.Log("NPC CONFIG : "..NanosTable.Dump(tNpcTriggerConfig))
+    -- Console.Log("NPC CONFIG : "..NanosTable.Dump(tNpcTriggerConfig))
     self.triggers = {}
     if (tNpcTriggerConfig.detection) then
         self.triggers.detection = self:createTriggerBox(TriggerType.Sphere, 3000, Color.RED)
@@ -19,7 +19,7 @@ function NACT_NPC:_registerTriggerBoxes(tNpcTriggerConfig)
     end
     
     if (tNpcTriggerConfig.melee) then
-        self.triggers.melee = self:createTriggerBox(TriggerType.Sphere, 120, Color.YELLOW)    
+        self.triggers.melee = self:createTriggerBox(TriggerType.Sphere, 120, Color.YELLOW)
     end
     -- Console.Log("AFT : "..NanosTable.Dump(self.triggers))
 end

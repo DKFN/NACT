@@ -44,7 +44,7 @@ Special thanks to olivato and voltaism for open sourcing Isolados and VZombies c
 - Transformer l'editeur avec des Gizmos a la place des triggers pour pouvoir deplacer via le jeu les coverpoints directement
 
 #### Blocked
-- Entities Tick warning in big missions when entering/leaving territory, this is because mostly because of the big BeginOverlap/EndOverlap Events being sent on awakening the territory. And enemies/allies count uses inneficient table functions
+- Entities Tick warning in big missions when entering/leaving territory, this is because mostly because of the big BeginOverlap/EndOverlap Events being sent on awakening the territory. Benching showed it's the number of events sent that causes the issue mostly
 
 ## Beta
 - Pouvoir definir quels triggers pour quel NPC

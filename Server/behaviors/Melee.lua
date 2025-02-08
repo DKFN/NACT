@@ -64,6 +64,7 @@ function NACT_Melee:AlertAlliesInRange()
         return
     end
     local alliesInRange = self.npc:GetAlliesInTrigger("closeProximity")
+    Console.Log("Alerting in : "..NanosTable.Dump(alliesInRange))
     for k, v in ipairs(alliesInRange) do
         local nactNpcOfAlly = NACT_NPC.GetFromCharacter(v)
         -- Console.Log("NACT NPC OF ALly "..NanosTable.Dump(nactNpcOfAlly.behavior:GetClass()))

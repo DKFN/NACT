@@ -9,19 +9,21 @@ local table_insert = table.insert
 ---@return table Trigger table
 function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerType, nRadius, eDebugColor, bServerTrigger)
 
-    local triggerHandler
+    local trigger
     if (bServerTrigger) then
-        triggerHandler = Trigger
+        trigger = Trigger(vTriggerLocation, Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor)
+        trigger:SetOverlapOnlyClasses({ "Character", "CharacterSimple" })
     else
-        triggerHandler = CSST
+        -- trigger = CSSTT(eTriggerType, vTriggerLocation, nRadius, CollisionChannel.Pawn, {}, 20)
+        trigger = CSST(vTriggerLocation, Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor)
+        trigger:SetOverlapOnlyClasses({ "Character", "CharacterSimple" })
     end
 
     local tTriggerData = {
-        trigger = triggerHandler(vTriggerLocation, Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor),
+        trigger = trigger,
         enemies = {},
         allies = {}
     }
-    tTriggerData.trigger:SetOverlapOnlyClasses({ "Character", "CharacterSimple" })
 
     local linkedClass = linkedTerritoryOrNpc:GetClass()
     local linkedTeam
@@ -54,6 +56,10 @@ function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerT
             end
             
         end
+
+        --Console.Log("After b overlap enemies : "..(#tTriggerData.enemies))
+        --Console.Log("After b overlap allies : "..(#tTriggerData.allies))
+        
     end)
 
     tTriggerData.trigger:Subscribe("EndOverlap", function(self, entity)
@@ -74,7 +80,13 @@ function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerT
                 end
             end
         end
+
+        
+        -- Console.Log("After e overlap enemies : "..(#tTriggerData.enemies))
+        -- Console.Log("After e overlap allies : "..(#tTriggerData.allies))
     end)
+
+    -- Console.Log("CSST Value "..NanosTable.Dump(tTriggerData.trigger))
     
     return tTriggerData
 end

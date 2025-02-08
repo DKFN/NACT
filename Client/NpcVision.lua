@@ -94,8 +94,8 @@ function ClientsideVisionTrace(vSourceLocation, vTargetLocation, entitiesToIgnor
         vSourceLocation,
         vTargetLocation,
         CollisionChannel.Mesh | CollisionChannel.WorldStatic | CollisionChannel.WorldDynamic | CollisionChannel.PhysicsBody | CollisionChannel.Vehicle,
-        -- TraceMode.DrawDebug | TraceMode.ReturnEntity,
-        TraceMode.ReturnEntity,
+        TraceMode.DrawDebug | TraceMode.ReturnEntity,
+        -- TraceMode.ReturnEntity,
         entitiesToIgnore
     )
 end

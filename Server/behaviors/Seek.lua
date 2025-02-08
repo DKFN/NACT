@@ -52,7 +52,7 @@ function NACT_Seek:Main()
         self.npc:MoveToFocused()
     end
 
-    if (self.npc.cFocusedLastPosition:IsZero()) then
+    if (not self.npc.cFocusedLastPosition) then
         self.movingToPoint = true
         local allAlliesNpc = self.npc.territory:GetAlliesInZone("detection")
         if (#allAlliesNpc > 0) then
