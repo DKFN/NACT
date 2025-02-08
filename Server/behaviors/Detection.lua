@@ -26,15 +26,16 @@ end
 function NACT_Detection:Main()
     -- Console.Log("Main self of parent : "..NanosTable.Dump(self:GetNpc()))
     local enemiesInZone = self.npc.territory:GetEnemiesInZone()
-    -- Console.Log("Enemies in Zone deteciton : "..NanosTable.Dump(enemiesInZone))
+    Console.Log("Enemies in Zone deteciton : "..NanosTable.Dump(enemiesInZone))
     local bHasEnemyDetectable = #enemiesInZone > 0
-    -- Console.Log("enemy detectable "..NanosTable.Dump(bHasEnemyDetectable))
+    Console.Log(self.npc:GetID().." enemy detectable "..NanosTable.Dump(bHasEnemyDetectable))
     if (NACT_DEBUG_DETECTION) then
         Chat.BroadcastMessage("N.A.C.T. (#".. self.npc:GetID() ..") Detection heat".. self.heat)
     end
 
     -- Allows the behavior to be compatible with animal like behaviors
     if (not self.npc.autoVision and not self.npc.tracingLaunched) then
+        Console.Log(self.npc:GetID().." Starting tracing")
         self.npc:StartTracing()
     end
 

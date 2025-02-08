@@ -6,17 +6,27 @@ local table_insert = table.insert
 ---@param eTriggerType TriggerType The trigger type to create
 ---@param nRadius number Radius of the trigger
 ---@param eDebugColor Color the debug color when debugging triggers
+---@param bServerTrigger Boolean either this trigger is serverside or clientside (CSSTT)
+---@param checkEvery Number Every ticks to check. 1 will check every tick, 20 will check every 20 ticks
 ---@return table Trigger table
-function NACT.createTriggerBox(vTriggerLocation, linkedTerritoryOrNpc, eTriggerType, nRadius, eDebugColor, bServerTrigger)
+function NACT.createTriggerBox(
+        vTriggerLocation,
+        linkedTerritoryOrNpc,
+        eTriggerType,
+        nRadius,
+        eDebugColor,
+        bServerTrigger,
+        checkEvery
+    )
 
     local trigger
     if (bServerTrigger) then
         trigger = Trigger(vTriggerLocation, Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor)
         trigger:SetOverlapOnlyClasses({ "Character", "CharacterSimple" })
     else
-        -- trigger = CSSTT(eTriggerType, vTriggerLocation, nRadius, CollisionChannel.Pawn, {}, 20)
-        trigger = CSST(vTriggerLocation, Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor)
-        trigger:SetOverlapOnlyClasses({ "Character", "CharacterSimple" })
+        trigger = CSSTT(eTriggerType, vTriggerLocation, nRadius, CollisionChannel.Pawn, {}, checkEvery)
+        -- trigger = CSST(vTriggerLocation, Rotator(), Vector(nRadius), eTriggerType, NACT_DEBUG_TRIGGERS, eDebugColor)
+        -- trigger:SetOverlapOnlyClasses({ "Character", "CharacterSimple" })
     end
 
     local tTriggerData = {

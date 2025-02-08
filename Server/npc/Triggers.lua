@@ -8,18 +8,18 @@ function NACT_NPC:_registerTriggerBoxes(tNpcTriggerConfig)
     -- Console.Log("NPC CONFIG : "..NanosTable.Dump(tNpcTriggerConfig))
     self.triggers = {}
     if (tNpcTriggerConfig.detection) then
-        self.triggers.detection = self:createTriggerBox(TriggerType.Sphere, 3000, Color.RED)
+        self.triggers.detection = self:createTriggerBox(TriggerType.Sphere, 3000, Color.RED, 60)
     end
     if (tNpcTriggerConfig.midProximity) then
-        self.triggers.midProximity = self:createTriggerBox(TriggerType.Sphere, 1500, TriggerType.Sphere, Color.ORANGE)
+        self.triggers.midProximity = self:createTriggerBox(TriggerType.Sphere, 1500, TriggerType.Sphere, Color.ORANGE, 40)
     end
     
     if (tNpcTriggerConfig.closeProximity) then
-        self.triggers.closeProximity = self:createTriggerBox(TriggerType.Sphere, 1000, Color.BLUE)
+        self.triggers.closeProximity = self:createTriggerBox(TriggerType.Sphere, 1000, Color.BLUE, 20)
     end
     
     if (tNpcTriggerConfig.melee) then
-        self.triggers.melee = self:createTriggerBox(TriggerType.Sphere, 120, Color.YELLOW)
+        self.triggers.melee = self:createTriggerBox(TriggerType.Sphere, 120, Color.YELLOW, 10)
     end
     -- Console.Log("AFT : "..NanosTable.Dump(self.triggers))
 end
@@ -28,14 +28,17 @@ end
 ---@param eTriggerType TriggerType
 ---@param nRadius number Radius of the sphere
 ---@param eDebugColor Color Debug color when NACT_DEBUG_TRIGGERS is true
+---@param nCheckEvery Number Check every n ticks
 ---@return table Created trigger box
-function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor)
+function NACT_NPC:createTriggerBox(eTriggerType, nRadius, eDebugColor, checkEvery)
     local tTriggerData = NACT.createTriggerBox(
         Vector(self.character:GetLocation()),
         self,
         eTriggerType,
         nRadius,
-        eDebugColor
+        eDebugColor,
+        false,
+        checkEvery
     )
     -- Console.Log("Created trigger box "..NanosTable.Dump(tTriggerData.trigger))
     tTriggerData.trigger:AttachTo(self.character)
