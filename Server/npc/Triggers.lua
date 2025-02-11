@@ -11,7 +11,7 @@ function NACT_NPC:_registerTriggerBoxes(tNpcTriggerConfig)
         self.triggers.detection = self:createTriggerBox(TriggerType.Sphere, 3000, Color.RED, 60)
     end
     if (tNpcTriggerConfig.midProximity) then
-        self.triggers.midProximity = self:createTriggerBox(TriggerType.Sphere, 1500, TriggerType.Sphere, Color.ORANGE, 40)
+        self.triggers.midProximity = self:createTriggerBox(TriggerType.Sphere, 1500, Color.ORANGE, 40)
     end
     
     if (tNpcTriggerConfig.closeProximity) then

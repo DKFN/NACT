@@ -91,6 +91,10 @@ end
 ---@param tMapCoverPoints table TO BE DOCUMENTED
 function NACT.SetMapCoverPoints(tMapCoverPoints)
     NACT.mapCoverPoints = tMapCoverPoints
+    for k, v in pairs(NACT.territories) do
+        Console.Log("Refreshing cover points for "..k)
+        v:RefreshCoverPoints(NACT.mapCoverPoints)
+    end
 end
 
 --- Returns all the defined cover points of the territory

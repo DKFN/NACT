@@ -27,15 +27,11 @@ end
 
 function NACT_Combat:Main()
     local rng = math.random(0, self.rngMax)
-    Console.Log(self.npc:GetID().."Combat RNG "..rng.."From id : "..self:GetID())
-    self.npc:Log("Combat")
-
     if (self.npc:ShouldReload() or rng == self.rngCoverValue) then
         self.npc:SetBehavior(self.coverBehavior)
         return
     else
         if (#self.npc.territory:GetEnemiesInZone() == 0) then
-             Console.Log("Setting back to idle")
              self.npc:SetBehavior(self.idleBehavior)
              return
         end
