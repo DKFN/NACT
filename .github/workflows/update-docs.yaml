@@ -33,5 +33,5 @@ jobs:
           token: ${{ secrets.DOCS_TOKEN }}
       - name: Generate markdown from json
         run: |
-          node ./nact/.github/scripts/docgen.js ./doc_result/doc.json ./doc_markdown
-          ls -la ./nacts-docs/api
+          node ./nact/.github/scripts/docgen.js ./doc_result/doc.json ./nact-docs/api
+          ls -la ./nact-docs/api
