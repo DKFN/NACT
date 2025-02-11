@@ -1,0 +1,19 @@
+name: "Update documentation"
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: "Clone NACT"
+        with:
+          path: 'nact'
+      - name: Install LuaLS
+        run: |
+          wget https://github.com/LuaLS/lua-language-server/releases/download/3.13.6/lua-language-server-3.13.6-linux-x64.tar.gz
+          tar -xvf lua-language-server-3.13.6-linux-x64.tar.gz
+          ls -la
