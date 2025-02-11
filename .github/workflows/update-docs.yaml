@@ -26,7 +26,12 @@ jobs:
           ./bin/lua-language-server --doc ./nact --doc_out_path ./doc_result
           cat ./doc_result/doc.json
           mkdir ./doc_markdown
+      - uses: actions/checkout@v4
+        name: "Clone NACT-docs"
+        with:
+          path: 'nact-docs'
+          token: ${{ secrets.DOCS_TOKEN }}
       - name: Generate markdown from json
         run: |
           node ./nact/.github/scripts/docgen.js ./doc_result/doc.json ./doc_markdown
-          ls -la ./doc_markdown
+          ls -la ./nacts-docs/api
