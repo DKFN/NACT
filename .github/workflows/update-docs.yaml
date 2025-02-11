@@ -17,3 +17,8 @@ jobs:
           wget https://github.com/LuaLS/lua-language-server/releases/download/3.13.6/lua-language-server-3.13.6-linux-x64.tar.gz
           tar -xvf lua-language-server-3.13.6-linux-x64.tar.gz
           ls -la
+          mkdir doc_result
+      - name: Run LuaLS docgen
+        run: |
+          ./bin/lua-language-server --doc ./nact --doc_out_path ./doc_result
+          cat ./doc_result doc.json
