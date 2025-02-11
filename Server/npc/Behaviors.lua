@@ -67,8 +67,8 @@ function NACT_NPC:SetBehavior(cBehaviorClass)
 end
 
 --- Add a behavior
---- @param cBehaviorClass Class Class of the behavior to add in the list
----@param tMaybeBehaviorConfig BehaviorConfigTable (optional) The config of the behavior
+--- @param cBehaviorClass Class @Class of the behavior to add in the list
+--- @param tMaybeBehaviorConfig BehaviorConfigTable @(optional) The config of the behavior
 function NACT_NPC:AddBehavior(cBehaviorClass, tMaybeBehaviorConfig)
     self.behaviorConfig[#self.behaviorConfig+1] = {
         class = cBehaviorClass,

@@ -64,8 +64,8 @@ function NACT.RegisterTerritory(sTerritoryName, tZoneConfigTable)
 end
 
 --- Get the character from the causer in some events of nanos
----@param causer Weapon | Character causer sent by nanos world events
----@return Character the real causer
+---@param causer Weapon | Character @causer sent by nanos world events
+---@return Character @the real causer
 function NACT.GetCharacterFromCauserEntity(causer)
     if (causer:IsA(Character)) then
         return causer

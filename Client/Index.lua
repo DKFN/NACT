@@ -3,6 +3,8 @@ Package.Require("./CoverViability.lua")
 Package.Require("./EditorGhetto.lua")
 Package.Require("./Navigation.lua")
 
+
+-- TODO: Move to gamemode
 local tKills = {}
 
 Character.Subscribe("Death", function(self, last_damage_taken, last_bone_damaged, damage_type_reason, hit_from_direction, instigator, causer)

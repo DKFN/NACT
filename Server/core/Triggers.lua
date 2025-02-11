@@ -1,14 +1,14 @@
 local table_insert = table.insert
 
 ---Creates a trigger box for NACT while keeping track of all the allies and enemies that enter or leave the trigger box
----@param vTriggerLocation Vector Location to spawn the trigger
----@param linkedTerritoryOrNpc NACT_NPC | NACT_Territory The NACT entity to attach the trigger to
----@param eTriggerType TriggerType The trigger type to create
----@param nRadius number Radius of the trigger
----@param eDebugColor Color the debug color when debugging triggers
----@param bServerTrigger Boolean either this trigger is serverside or clientside (CSSTT)
----@param checkEvery Number Every ticks to check. 1 will check every tick, 20 will check every 20 ticks
----@return table Trigger table
+---@param vTriggerLocation Vector @Location to spawn the trigger
+---@param linkedTerritoryOrNpc NACT_NPC | NACT_Territory @The NACT entity to attach the trigger to
+---@param eTriggerType TriggerType @The trigger type to create
+---@param nRadius number @Radius of the trigger
+---@param eDebugColor Color @the debug color when debugging triggers
+---@param bServerTrigger Boolean @either this trigger is serverside or clientside (CSSTT)
+---@param checkEvery Number @Every ticks to check. 1 will check every tick, 20 will check every 20 ticks
+---@return table Trigger @resulting table
 function NACT.createTriggerBox(
         vTriggerLocation,
         linkedTerritoryOrNpc,
