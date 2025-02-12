@@ -42,8 +42,8 @@ jobs:
         continue-on-error: true
         run: |
           cd nact-docs
-          git config --global user.name "DKFN [bot]"
-          git config --global user.email "bipboopboopbip@deadlykungfu.ninja"
+          git config user.name "DKFN [bot]"
+          git config user.email "bipboopboopbip@deadlykungfu.ninja"
           git status
           git add .
           git commit -m "Auto gen doc commit ${{ github.sha }}"
