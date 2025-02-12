@@ -43,6 +43,7 @@ jobs:
           cd nact-docs
           git config --global user.name "DKFN [bot]"
           git config --global user.email "bipboopboopbip@deadlykungfu.ninja"
+          git status
           git add .
           git commit -m "Auto gen doc commit ${{ github.sha }}"
           git push origin master
