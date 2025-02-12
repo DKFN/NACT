@@ -60,16 +60,16 @@ function NACT_NPC:GetTriggerPopulation(sTriggerName, sPopulationType)
 end
 
 --- Get the number of enemies in the given trigger of the NPC
----@param sTriggerName string "detection" "midrProximity" "closeProximity" "melee"
----@return table Array Characters array of enemies in the trigger
-function NACT_NPC:GetEnemiesInTrigger(sTriggerName)
+---@param sTriggerName string @"detection" "midrProximity" "closeProximity" "melee"
+---@return table Array @Characters array of enemies in the trigger
+function NACT_NPC:GetEnemiesInZone(sTriggerName)
     return self:GetTriggerPopulation(sTriggerName, "enemies")
 end
 
 --- Get the number of allies in the given trigger of the NPC
----@param sTriggerName string "detection" "midrProximity" "closeProximity" "melee"
----@return table Array Characters array of allies in the trigger
-function NACT_NPC:GetAlliesInTrigger(sTriggerName)
+---@param sTriggerName string @"detection" "midrProximity" "closeProximity" "melee"
+---@return table Array @ Sequential array of characters in the zone
+function NACT_NPC:GetAlliesInZone(sTriggerName)
     return self:GetTriggerPopulation(sTriggerName, "allies")
 end
 

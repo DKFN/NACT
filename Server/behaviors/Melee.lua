@@ -29,7 +29,7 @@ function NACT_Melee:Main()
         -- Console.Log("Focus tick "..self.tick)
         self.npc.character:SetGaitMode(GaitMode.Sprinting)
         self.npc:MoveToFocused()
-        if (#self.npc:GetEnemiesInTrigger("melee") > 0) then
+        if (#self.npc:GetEnemiesInZone("melee") > 0) then
             local weapon = self.npc:GetWeapon()
             -- Console.Log("wpn"..NanosTable.Dump(weapon))
             if (weapon) then
@@ -63,7 +63,7 @@ function NACT_Melee:AlertAlliesInRange()
     if (not self.npc:GetFocused()) then
         return
     end
-    local alliesInRange = self.npc:GetAlliesInTrigger("closeProximity")
+    local alliesInRange = self.npc:GetAlliesInZone("closeProximity")
     Console.Log("Alerting in : "..NanosTable.Dump(alliesInRange))
     for k, v in ipairs(alliesInRange) do
         local nactNpcOfAlly = NACT_NPC.GetFromCharacter(v)

@@ -35,12 +35,9 @@ end
 --- and there the enemy is in the vision range of the player.
 --- You can call this function like there is no tommorrow, it is throttled and will NOT trigger each time it is called
 function NACT_NPC:LookForFocused()
-    -- self:Log("Attempt "..NanosTable.Dump(#self:GetEnemiesInTrigger("detection") > 0).." scan launched ? "..NanosTable.Dump(self.launchedScanAround))
     if (not self.launchedScanAround) then
-        -- self:Log2("Poll from me")
-        local enemiesInDetection = self:GetEnemiesInTrigger("detection")
+        local enemiesInDetection = self:GetEnemiesInZone("detection")
         if (#enemiesInDetection > 0) then
-            -- self:Log("Looking around")
             self.launchedScanAround = true
             local delegatedPlayer = self.character:GetNetworkAuthority()
             local enemiesInVisionAngle = {}

@@ -20,11 +20,11 @@ local NACT_DEFAULT_TRIGGERS = {
     melee = true
 }
 
---- /!\ INTERNAL /!\
+--- INTERNAL
 --- NACT_NPC constructor. You should call NACT.RegisterNPC instead of this function directly
----@param cNpcToHandle Character Nanos world character to be controlled
----@param sTerritoryName string Territory to tie this NPC
----@param tNpcConfig table To be defined, quite unused for now
+---@param cNpcToHandle Character @Nanos world character to be controlled
+---@param sTerritoryName string @Territory to tie this NPC
+---@param tNpcConfig table @To be defined, quite unused for now
 function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.character = cNpcToHandle
     self.territory = NACT.territories[sTerritoryName]
@@ -71,7 +71,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.takenDamageCallback = nil
 
     for i, sEventToRegister in ipairs(NACT_PROVISORY_REGISTERED_EVENTS) do
-        Console.Log("Registered "..sEventToRegister)
+        -- Console.Log("Registered "..sEventToRegister)
         self:RegisterEvent(cNpcToHandle, sEventToRegister)
     end
 
@@ -127,7 +127,7 @@ function NACT_NPC:SetFocusedEntity(cEntity)
         if (cEntity and self.autoVision) then
             self:StartTracing()
         end
-        -- If no authority at the territory level and npc has focused. Start calculations on the territory
+        -- If no authority at the territory level and npc has focused a player. Start calculations on the territory
         if (not self.territory.authorityPlayer and cEntity and cEntity:GetPlayer()) then
             self.territory:SwitchNetworkAuthority()
         end
@@ -205,12 +205,6 @@ function NACT_NPC:Log(sMessage)
     end
 end
 
-
-function NACT_NPC:Log2(sMessage)
-    if true then
-        Console.Log("NACT_NPC #"..self:GetID().." : "..sMessage)
-    end
-end
 function NACT_NPC:Error(sMessage)
     Console.Error("NACT NPC #"..self:GetID().. " : "..sMessage)
 end
