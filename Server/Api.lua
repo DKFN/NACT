@@ -88,7 +88,7 @@ function NACT.ValueOrDefault(maybeValue, default)
 end
 
 --- Set the map cover points that will be used when creating a territory
----@param tMapCoverPoints table TO BE DOCUMENTED
+---@param tMapCoverPoints table @TO BE DOCUMENTED test doc update
 function NACT.SetMapCoverPoints(tMapCoverPoints)
     NACT.mapCoverPoints = tMapCoverPoints
     for k, v in pairs(NACT.territories) do

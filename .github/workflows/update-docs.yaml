@@ -39,6 +39,7 @@ jobs:
           node ./nact/.github/scripts/docgen.js ./doc_result/doc.json ./nact-docs/api
           ls -la ./nact-docs/api
       - name: Push to doc repository
+        continue-on-error: true
         run: |
           cd nact-docs
           git config --global user.name "DKFN [bot]"
