@@ -38,3 +38,11 @@ jobs:
           ls -la ./nact-docs
           node ./nact/.github/scripts/docgen.js ./doc_result/doc.json ./nact-docs/api
           ls -la ./nact-docs/api
+      - name: Push to doc repository
+        run: |
+          git config --global user.name "DKFN [bot]"
+          git config --global user.email "bipboopboopbip@deadlykungfu.ninja"
+          git remote add origin https://DKFN:${{ secrets.DOCS_TOKEN }}@github.com/DKFN/NACT-docs
+          git add .
+          git commit -m "Auto gen doc commit ${{ github.sha }}"
+          git push origin master
