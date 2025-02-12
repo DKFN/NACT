@@ -67,8 +67,8 @@ end
 
 --- Checks if the character in parameter is in the vision angle of the NPC
 --- This function is not enough to check if the entity is really visible. You must use vision traces for that
----@param cEntity Character the character to check for vision range
----@return boolean if the character is in vision angle.
+---@param cEntity Character @The character to check for vision range
+---@return boolean @Ff the character is in vision angle.
 function NACT_NPC:IsInVisionAngle(cEntity)
     if (cEntity == nil) then
         -- Console.Error("N.A.C.T. Called IsInVisionAngle with Nil entity")
@@ -82,7 +82,8 @@ function NACT_NPC:IsInVisionAngle(cEntity)
 end
 
 --- Returns if the focused entity is currently visible.
----@return boolean Is the focused entity is currently visible.
+--- Meaning if it is hit by the vision system and is in the vision angle of the NPC.
+---@return boolean @Is the focused entity is currently visible.
 function NACT_NPC:IsFocusedVisible()
     return self:GetFocused() ~= nil and self.cFocusedTraceHit and self:IsInVisionAngle(self:GetFocused())
 end
@@ -91,7 +92,7 @@ end
 
 --- Turns the NPC towards the focused entity.
 --- Remember to specify an innacuracyFactor if you intend to shoot right after, or your NPC will quickly kill opponents.
----@param nInaccuracyFactor number Innacuracy to apply to the NPC when shooting
+---@param nInaccuracyFactor number @Innacuracy to apply to the NPC when shooting
 function NACT_NPC:TurnToFocused(nInaccuracyFactor)
     local vFocusedLocation = self:GetFocusedLocation()
     if vFocusedLocation == nil then
@@ -101,8 +102,8 @@ function NACT_NPC:TurnToFocused(nInaccuracyFactor)
 end
 
 --- Makes the NPC turn towards a location
----@param vLocation Vector location to turn towards
----@param nInaccuracyFactor number Innacuracy factor fo turn to
+---@param vLocation Vector @Location to turn towards
+---@param nInaccuracyFactor number @Innacuracy factor fo turn to
 function NACT_NPC:TurnTo(vLocation, nInaccuracyFactor)
     local vInaccurayVector
     if (nInaccuracyFactor) then
@@ -119,7 +120,7 @@ function NACT_NPC:TurnTo(vLocation, nInaccuracyFactor)
 end
 
 --- Distance to the focused entity
----@return number Distance to the focused entity
+---@return number @Distance to the focused entity. 0 if the entity was not found
 function NACT_NPC:GetDistanceToFocused()
     local focusedLocation = self:GetFocusedLocation()
     if (focusedLocation) then
