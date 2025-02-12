@@ -9,8 +9,6 @@ function NACT:Constructor()
     
 end
 
--- This is all the public functions exposed by the package
-
 --- This functions handles registering a new NPC into the system. It will wrap a Character with a NACT_NPC.
 --- 
 --- NACT provies a few default configurations #LINK MISSING# for you to use, but it's funnier to tweak stuff!
@@ -40,6 +38,8 @@ end
 ---     look
 --- }
 --- ```
+--- 
+--- You can pass any additional value you want if you need them for your behaviors in the config part.
 --- 
 ---@param cNpcToHandle Character @Npc to be controlled NACT
 ---@param sTerritoryName string @The Territory this NPC will use to find it's cover and patrol points
@@ -80,7 +80,38 @@ function NACT.RegisterNpc(cNpcToHandle, sTerritoryName, tNpcConfig)
 
 end
 
---- Add a territory to NACT
+--- Add a territory to NACT.
+--- 
+--- It can take the following table as a configuration:
+--- 
+--- ```lua
+--- {
+---     -- The team number of the territory. Based on [NanosWorld team system](https://docs.nanos.world/docs/scripting-reference/classes/character#function-setteam)
+---     team = 1,
+--- 
+---     -- Bounds of the territory, if provided. NACT_Idle behavior will wake up once an enemy enters the territory.
+---     zoneBounds = {
+---         pos = Vector(-20461.71, 4215.02, 198.15),
+---         radius = 7000
+---     },
+---     
+---     -- All the patrol routes used by NACT_Detection behavior
+---     patrolRoutes = {
+---         frontCamp = {
+---               points = {
+---                   Vector(-20417.73, 4071.38, 198.1),
+---                   Vector(-18437.47, 3902.86, 198.1),
+---                   Vector(-18685.67, 1708.65, 198.1),
+---                   Vector(-20263.24, 1713.28, 198.3)
+---               },
+---               walkMethod = "circle"
+---          },
+---     }
+--- }
+--- ```
+--- 
+--- You can pass any additional value you want if you need them for your behaviors.
+--- 
 ---@param sTerritoryName string Name of the territory
 ---@param tZoneConfigTable table TO BE DOCUMENTED
 function NACT.RegisterTerritory(sTerritoryName, tZoneConfigTable)
@@ -122,7 +153,7 @@ function NACT.SetMapCoverPoints(tMapCoverPoints)
 end
 
 --- Returns all the defined cover points of the territory
----@return table TO BE DOCUMENTED
+---@return table @TO BE DOCUMENTED
 function NACT.GetMapCoverPoints()
     return NACT.mapCoverPoints
 end
