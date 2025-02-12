@@ -17,23 +17,13 @@ function NACT_Alert:Main()
         Console.Log("NPC : "..self.npc:GetID().." alerting zone !!!")
         self.npc.territory.lastAlertRaisedAt = os.clock()
         for i, allyNpc in ipairs(territoryNpcs) do
-            local maybeNactNpcId = allyNpc:GetValue("NACT_NPC_ID")
-
-            -- Console.Log("Ally npc #"..maybeNactNpcId.." : "..NanosTable.Dump(allyNpc))
-            if maybeNactNpcId then
-                local nactNpc = NACT_NPC.GetByID(maybeNactNpcId)
-
-                -- TODO: The alerting mechanism should be smarter and only switch
-                -- TODO: If the current NPC is not in Combat towards someone already
-                -- TODO: So make a list of behavior that if it is the current behavior of the NPC they should not switch back
-                -- TODO: To combat
-                -- if (not nactNpc:GetFocused()) then
+            local nactNpc = NACT_NPC.GetFromCharacter(allyNpc)
+            if (nactNpc) then
                 if (nactNpc.behavior:GetClass() ~= NACT_Combat and nactNpc.behavior:GetClass() ~= NACT_Engage and nactNpc.behavior:GetClass() ~= NACT_Alert) then
                     Console.Log("Setting combat for : "..nactNpc.behavior:GetClassName())
                     nactNpc:SetBehavior(NACT_Combat)
                     nactNpc:SetFocused(self.npc:GetFocused())
                 end
-                -- end
             end
         end
     end

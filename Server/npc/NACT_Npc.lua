@@ -13,6 +13,7 @@ local NACT_DEFAULT_VISION_ANGLE = 110
 -- TODO: If enabled, this is the whole human "vision" logic instead of relying on the behaviors to handle it
 local NACT_DEFAULT_ENABLE_AUTO_VISION = true
 local NACT_DEFAULT_LOOKAROUND_THROTTLE = 1000
+local NACT_DEFAULT_TIME_TO_LOST = 1000
 local NACT_DEFAULT_TRIGGERS = {
     detection = true,
     midProximity = true,
@@ -41,6 +42,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.autoVision = NACT.ValueOrDefault(tNpcConfig.autoVision, NACT_DEFAULT_ENABLE_AUTO_VISION)
     self.visionAngle = NACT.ValueOrDefault(tNpcConfig.visionAngle, NACT_DEFAULT_VISION_ANGLE)
     self.lookAroundThrottle = NACT.ValueOrDefault(tNpcConfig.lookAroundThrottle, NACT_DEFAULT_LOOKAROUND_THROTTLE)
+    self.timeToLost = NACT.ValueOrDefault(tNpcConfig.timeToLost, NACT_DEFAULT_TIME_TO_LOST)
 
     -- TODO: Add 
     self.currentBehaviorIndex = 1

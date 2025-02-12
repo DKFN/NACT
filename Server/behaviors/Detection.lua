@@ -67,7 +67,6 @@ function NACT_Detection:Main()
         end
     end
 end
--- TODO: Vary heat increment and decrement by distance (and possibly angle too)
 
 --- Raises heat level depeing of increment and distance factosr
 function NACT_Detection:IncrementLevel()

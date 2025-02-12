@@ -6,23 +6,24 @@ local NACT_PROVISORY_VISION_LOOKUP_BONES = {
 --- Tracing and Vision
 ---
 
---- INTERNAL. Stop the tracing for the vision logic
+--- Stop the tracing for the vision logic.
+--- 
+--- You don't have to handle it manually if `autoTracing` is set to `true` (default) in the NPC config
 function NACT_NPC:StopTracing()
-    if (self.tracingLaunched and self.tracingAuthority:IsValid()) then
-        Console.Log("Calling stop event for traces")
+    if (self.tracingLaunched and self.tracingAuthority and self.tracingAuthority:IsValid()) then
         Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:STOP", self.tracingAuthority, self:GetID()) --, self.npc.character, self.npc.cFocused)
         self.tracingLaunched = false
     end
 end
 
---- INTERNAL. Starts the tracing for the vision logic
+--- Starts tracing for the vision logic.
+--- If no entity is focused tracing will stat when one is
+--- 
+--- You don't have to handle it manually if `autoTracing` is set to `true` (default) in the NPC config
 function NACT_NPC:StartTracing()
     if (self:GetFocused() ~= nil) then
-        -- TODO Find best player to send the trace, nearest player in range
         self.tracingAuthority = self.character:GetNetworkAuthority()
-        -- Console.Log("Calling remote event")
-        
-        
+
         if (not self.tracingLaunched and self.tracingAuthority) then
             Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", self.tracingAuthority, self.character, self:GetFocused(), self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
             self.tracingLaunched = true
@@ -60,10 +61,6 @@ function NACT_NPC:LookForFocused()
         end
     end
 end
---- INTERNAL. Releases the scan lock of the "LookForFocused" query.
-function NACT_NPC:ReleaseScanLock()
-    self.launchedScanAround = false
-end
 
 --- Checks if the character in parameter is in the vision angle of the NPC
 --- This function is not enough to check if the entity is really visible. You must use vision traces for that
@@ -85,7 +82,8 @@ end
 --- Meaning if it is hit by the vision system and is in the vision angle of the NPC.
 ---@return boolean @Is the focused entity is currently visible.
 function NACT_NPC:IsFocusedVisible()
-    return self:GetFocused() ~= nil and self.cFocusedTraceHit and self:IsInVisionAngle(self:GetFocused())
+    local cFocused = self:GetFocused()
+    return cFocused ~= nil and self.cFocusedTraceHit and self:IsInVisionAngle(cFocused)
 end
 
 -- TODO: Below should be moved to navigation
@@ -153,7 +151,7 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID
                     npcSubscribedToTraces:Log("Player lost")
                     npcSubscribedToTraces:SetFocused(nil)
                 end
-            end, 1000, npcSubscribedToTraces) -- TODO: 1s to loose track seems like a lot
+            end, npcSubscribedToTraces.timeToLost, npcSubscribedToTraces)
         else
             
         end
@@ -162,11 +160,8 @@ end)
 
 Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", function(player, npcID, maybeNewCFocused)
     local npcForResult = NACT_NPC.GetByID(npcID)
-    -- Console.Log("Attempt vision lookup result : "..NanosTable.Dump(maybeNewCFocused).." for npc : "..NanosTable.Dump(npcForResult))
-    
     if (npcForResult) then
         if maybeNewCFocused then
-            -- npcForResult:Log("Looked around, now focusing "..NanosTable.Dump(maybeNewCFocused))
             npcForResult:SetFocused(maybeNewCFocused)
         end
 
