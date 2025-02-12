@@ -59,6 +59,9 @@ ${inputFunctionElement.rawdesc}
 ${inputFunctionElement.extends.view}
 \`\`\`
 
+**Returns**
+\`${inputFunctionElement.extends.returns[0].view}\` ${inputFunctionElement.extends.returns[0].rawdesc}
+
 **Parameters**
 ${formatParameterTable(inputFunctionElement.extends.args)}
 
