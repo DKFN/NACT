@@ -43,7 +43,6 @@ jobs:
           cd nact-docs
           git config --global user.name "DKFN [bot]"
           git config --global user.email "bipboopboopbip@deadlykungfu.ninja"
-          git remote add origin https://DKFN:${{ secrets.DOCS_TOKEN }}@github.com/DKFN/NACT-docs
           git add .
           git commit -m "Auto gen doc commit ${{ github.sha }}"
           git push origin master
