@@ -11,16 +11,40 @@ end
 
 -- This is all the public functions exposed by the package
 
--- This functions handles registering a new NPC into the system. It will transform a Character in a NACT_NPC
--- Parameters:
---   cNpcTohandle : 
---   sTerritoryName    : 
-
----comment
----@param cNpcToHandle Character Npc to be delegated to NACT
----@param sTerritoryName string The Territory this NPC will use to find it's cover and patrol points
----@param tNpcConfig table TO BE DOCUMENTED
----@return NACT_NPC | nil 
+--- This functions handles registering a new NPC into the system. It will wrap a Character with a NACT_NPC.
+--- 
+--- NACT provies a few default configurations #LINK MISSING# for you to use, but it's funnier to tweak stuff!
+--- 
+--- It can take the following table as a configuration:
+--- 
+--- ```lua
+--- {
+---     -- List of all the behaviors. Pass it or use AddBehavior #LINK MISSING# or your NPC will be a static potato
+---     behaviors= {
+---       class = NACT_Idle,
+---     }, {
+---       class = NACT_Detection,
+---       config = {
+---           heatIncrement = 20
+---        }
+---     },
+--- 
+---     -- Does the NPC has a human like vision (auto vision) or behaves like an animal/flesh ?
+---     -- Default to true
+---     autoVision = false,
+--- 
+---     -- Vision "angle", the vision range... Huh kinda, I should make it better before alpha, it's simple to fix maybe I'll forgot let me know!
+---     -- Right now, 0 means 360° vision angle. Defaults to 110 (wich means 90 :D)
+---     visionAngle = 90,
+--- 
+---     look
+--- }
+--- ```
+--- 
+---@param cNpcToHandle Character @Npc to be controlled NACT
+---@param sTerritoryName string @The Territory this NPC will use to find it's cover and patrol points
+---@param tNpcConfig table @See above for tNpcConfig map
+---@return NACT_NPC | nil @NACT_NPC created or nil if operation failed
 function NACT.RegisterNpc(cNpcToHandle, sTerritoryName, tNpcConfig)
 
     if (cNpcToHandle == nil) then

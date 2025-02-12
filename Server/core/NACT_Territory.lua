@@ -77,7 +77,7 @@ function NACT_Territory:Constructor(tTerritoryConfig)
 end
 
 --- Updates the viability of cover points
----@param tViabilityResult array [coverIndex]: <isCoverSafe>
+---@param tViabilityResult array @[coverIndex]: <isCoverSafe>
 function NACT_Territory:UpdateCoverViability(tViabilityResult)
     for iCover, bIsCoverViable in ipairs(tViabilityResult) do
         self.coverPoints[iCover].secure = bIsCoverViable
@@ -110,14 +110,14 @@ function NACT_Territory:DebugDisplayCoverPoints()
 end
 
 --- Gets all the enemies thare are in the territory
----@return table Array of enemies in the territory
+---@return table @Sequential array of enemies in the territory
 function NACT_Territory:GetEnemiesInZone()
     return NACT.GetTriggerPopulation(self.zone, "enemies")
 end
 
 
 --- Gets all the enemies thare are in the territory
----@return table Array of enemies in the territory
+---@return table @Sequential array of allies in the territory
 function NACT_Territory:GetAlliesInZone()
     return NACT.GetTriggerPopulation(self.zone, "allies")
 end
@@ -150,6 +150,7 @@ function NACT_Territory:SwitchNetworkAuthority()
     self:UpdateCSSTAuthority()
 end
 
+--- INTERNAL. Switches authority for all clientside Triggers
 function NACT_Territory:UpdateCSSTAuthority()
     for k, npc in ipairs(self.npcs) do
         
@@ -180,12 +181,14 @@ function NACT_Territory:RefreshCoverPoints()
     self.coverPointsPositions = coverPointsPosition
 end
 
+--- Cleanns up a character from the territory and it's npcs. Switches authority if charcter belonged to player that was authority
+---@param Character @Character to cleanup
 function NACT_Territory:CleanupCharacter(character)
-    for i, v in ipairs(self.npcs) do
-        Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(v.character))
+    for i, nactNpc in ipairs(self.npcs) do
+        Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(nactNpc.character))
         v:CleanupCharacter(character)
-        if (v.character == character) then
-            v:Destroy()
+        if (nactNpc.character == character) then
+            nactNpc:Destroy()
         end
     end
 
