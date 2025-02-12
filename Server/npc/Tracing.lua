@@ -131,7 +131,7 @@ function NACT_NPC:GetDistanceToFocused()
 end
 
 --- Returns the focused location. This will return nothing if the focused entity becomes out of sight
----@return Vector Focused location
+---@return Vector Focused|nil @Location of the focused entity if found, nil ortherwise
 function NACT_NPC:GetFocusedLocation()
     if (self:GetFocused()) then
         return self.cFocused:GetLocation()
@@ -173,6 +173,6 @@ Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", function(player, npc
         Timer.SetTimeout(function(npcForResult)
             npcForResult.launchedScanAround = false
             npcForResult:Log("Looked around, found "..NanosTable.Dump(maybeNewCFocused).." Releasing scan")
-        end, NACT_PROVISORY_LOOKAROUND_THROTTLE, npcForResult)
+        end, npcForResult.lookAroundThrottle, npcForResult)
     end
 end)
