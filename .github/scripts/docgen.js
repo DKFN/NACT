@@ -59,8 +59,7 @@ ${inputFunctionElement.rawdesc}
 ${inputFunctionElement.extends.view}
 \`\`\`
 
-**Returns**
-\`${inputFunctionElement.extends.returns[0].view}\` ${inputFunctionElement.extends.returns[0].rawdesc}
+${formatReturn(inputFunctionElement.extends.returns?.[0])}
 
 **Parameters**
 ${formatParameterTable(inputFunctionElement.extends.args)}
@@ -79,5 +78,15 @@ function formatParameterTable(inputParameterTable) {
         .filter((p) => p.name !== "self")
         .map((param) => `| ${param.name} | ${param.view} | ${param.rawdesc ?? ''} |`).join('\n');
     return paramsPart.length === 0 ? '' : `${header}${paramsPart}`
+}
+
+function formatReturn(inputReturnTable) {
+    if (!inputReturnTable) {
+        return ''
+    }
+    return `
+**Returns**
+\`${inputReturnTable.view}\` ${inputReturnTable.rawdesc}
+`
 }
 
