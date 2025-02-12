@@ -240,7 +240,7 @@ function table_remove_by_value(tCollection, entity)
 end
 
 Package.Require("./Behaviors.lua")
-Package.Require("./Tracing.lua")
+Package.Require("./Vision.lua")
 Package.Require("./Triggers.lua")
 Package.Require("./Events.lua")
 Package.Require("./Navigation.lua")

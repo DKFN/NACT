@@ -76,6 +76,14 @@ function NACT_Territory:Constructor(tTerritoryConfig)
 
 end
 
+--- Gets the network authority of the territory or nil if not defined or valid
+--- @return Player|nil @Current authority if defined and valid
+function NACT_Territory:GetNetworkAuthority()
+    if (self.authorityPlayer and self.authorityPlayer:IsValid()) then
+        return self.authorityPlayer
+    end
+end
+
 --- Updates the viability of cover points
 ---@param tViabilityResult array @[coverIndex]: <isCoverSafe>
 function NACT_Territory:UpdateCoverViability(tViabilityResult)
@@ -185,8 +193,8 @@ end
 ---@param Character @Character to cleanup
 function NACT_Territory:CleanupCharacter(character)
     for i, nactNpc in ipairs(self.npcs) do
-        Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(nactNpc.character))
-        v:CleanupCharacter(character)
+        -- Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(nactNpc.character))
+        nactNpc:CleanupCharacter(character)
         if (nactNpc.character == character) then
             nactNpc:Destroy()
         end

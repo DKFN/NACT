@@ -11,12 +11,9 @@ end)
 
 function NACT.CharacterCleanup(character)
     local territoryID = character:GetValue("NACT_TERRITORY_ID")
-    Console.Log("Bye character : "..NanosTable.Dump(character))
-    Console.Log("Bye character territory : "..NanosTable.Dump(territoryID))
     if (territoryID) then
         local territory = NACT_Territory.GetByID(territoryID)
         if (territory) then
-            Console.Log("Cleaning up !")
             territory:CleanupCharacter(character)
         end
     end

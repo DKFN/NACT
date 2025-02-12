@@ -23,7 +23,7 @@ function NACT_NPC:GoPreviousBehavior()
 end
 
 --- Jumps to the behavior at the specified index
----@param iBehaviorIndex number Index of the behavior to switch to
+---@param iBehaviorIndex number @Index of the behavior to switch to
 function NACT_NPC:SetBehaviorIndex(iBehaviorIndex)
     if (self:IsValid() and not self:IsBeingDestroyed()) then
         if (self.behavior and self.behavior:IsValid()) then
@@ -46,7 +46,7 @@ function NACT_NPC:SetBehaviorIndex(iBehaviorIndex)
 end
 
 --- Sets the behavior by the class
----@param cBehaviorClass Class Class of the behavior to set (eg: NACT_Detection, NACT_Combat)
+---@param cBehaviorClass Class @Class of the behavior to set (eg: NACT_Detection, NACT_Combat)
 function NACT_NPC:SetBehavior(cBehaviorClass)
     local maybeBehaviorIndex = nil
     for i, v in ipairs(self.behaviorConfig) do

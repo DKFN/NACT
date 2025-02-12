@@ -86,8 +86,6 @@ function NACT_NPC:IsFocusedVisible()
     return cFocused ~= nil and self.cFocusedTraceHit and self:IsInVisionAngle(cFocused)
 end
 
--- TODO: Below should be moved to navigation
-
 --- Turns the NPC towards the focused entity.
 --- Remember to specify an innacuracyFactor if you intend to shoot right after, or your NPC will quickly kill opponents.
 ---@param nInaccuracyFactor number @Innacuracy to apply to the NPC when shooting
@@ -115,25 +113,6 @@ function NACT_NPC:TurnTo(vLocation, nInaccuracyFactor)
     end
     self.character:LookAt(vLocation + vInaccurayVector)
     self.character:RotateTo(Rotator(0, (vLocation - self.character:GetLocation()):Rotation().Yaw, 0), 0.5)
-end
-
---- Distance to the focused entity
----@return number @Distance to the focused entity. 0 if the entity was not found
-function NACT_NPC:GetDistanceToFocused()
-    local focusedLocation = self:GetFocusedLocation()
-    if (focusedLocation) then
-        return self.character:GetLocation():Distance(focusedLocation)
-    else
-        return 0 -- This should never be zero in real life. Maybe this will cause problems one day.
-    end
-end
-
---- Returns the focused location. This will return nothing if the focused entity becomes out of sight
----@return Vector Focused|nil @Location of the focused entity if found, nil ortherwise
-function NACT_NPC:GetFocusedLocation()
-    if (self:GetFocused()) then
-        return self.cFocused:GetLocation()
-    end
 end
 
 Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID, entityResult)
