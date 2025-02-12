@@ -1,9 +1,9 @@
-NACT_Melee = BaseClass.Inherit("NACT_Melee")
+NACT_ZombieMelee = BaseClass.Inherit("NACT_ZombieMelee")
 
 -- TODO: It's more of an "animal" melee than human melee.
 -- TODO: Once your ass is targeted, it will not be loosed
 -- TODO: It's the zombie behavior maybe only ?
-function NACT_Melee:Constructor(NpcInstance)
+function NACT_ZombieMelee:Constructor(NpcInstance)
     self.npc = NpcInstance
 
     self.tick = 1
@@ -17,12 +17,12 @@ function NACT_Melee:Constructor(NpcInstance)
 
 end
 
-function NACT_Melee:Main()
+function NACT_ZombieMelee:Main()
     local cFocused = self.npc:GetFocused()
     self.tick = self.tick + 1
 
     if (not self.npc:IsValid() or not self.npc.character:IsValid()) then
-        Console.Log(self.npc:GetID().."I am dead I should not be called !")
+        -- Console.Log(self.npc:GetID().."I am dead I should not be called !")
         return
     end
     if (cFocused and cFocused:GetHealth() > 0 and self.tick < 20) then
@@ -37,11 +37,11 @@ function NACT_Melee:Main()
             end
         end
     else
-        Console.Log("Search tick "..self.tick)
+        -- Console.Log("Search tick "..self.tick)
         self.tick = 1
         local allEnemiesNearNpc = self.npc.territory:GetEnemiesInZone()
         local closestEnemy = nil
-        Console.Log("Enemies result : "..NanosTable.Dump(allEnemiesNearNpc))
+        -- Console.Log("Enemies result : "..NanosTable.Dump(allEnemiesNearNpc))
         if (#allEnemiesNearNpc > 0) then
             local nearestDistance = 99999999
             for i, enemy in ipairs(allEnemiesNearNpc) do 
@@ -49,7 +49,7 @@ function NACT_Melee:Main()
                 if (distanceToEnemy < nearestDistance) then
                     nearestDistance = distanceToEnemy
                     closestEnemy = enemy
-                    Console.Log("Closest enemy result !")
+                    -- Console.Log("Closest enemy result !")
                 end
             end
             self.npc:SetFocusedEntity(closestEnemy)
@@ -59,12 +59,12 @@ function NACT_Melee:Main()
     end
 end
 
-function NACT_Melee:AlertAlliesInRange()
+function NACT_ZombieMelee:AlertAlliesInRange()
     if (not self.npc:GetFocused()) then
         return
     end
     local alliesInRange = self.npc:GetAlliesInZone("closeProximity")
-    Console.Log("Alerting in : "..NanosTable.Dump(alliesInRange))
+    -- Console.Log("Alerting in : "..NanosTable.Dump(alliesInRange))
     for k, v in ipairs(alliesInRange) do
         local nactNpcOfAlly = NACT_NPC.GetFromCharacter(v)
         -- Console.Log("NACT NPC OF ALly "..NanosTable.Dump(nactNpcOfAlly.behavior:GetClass()))
@@ -76,7 +76,7 @@ function NACT_Melee:AlertAlliesInRange()
 end
 
 
-function NACT_Melee:Destructor()
+function NACT_ZombieMelee:Destructor()
     Timer.ClearInterval(self.timerHandle)
     Timer.ClearInterval(self.alertTimerHandle)
 end

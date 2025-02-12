@@ -3,9 +3,7 @@ Console.Log("N.A.C.T. https://github.com/DKFN/NACT")
 
 Package.Require("./core/Index.lua")
 Package.Require("./behaviors/Index.lua")
-Package.Require("./Api.lua")
-
-Package.Require("./npc/NACT_Npc.lua")
+Package.Require("./npc/Index.lua")
 
 
 Package.Export("NACT", NACT)
@@ -17,7 +15,7 @@ Package.Export("NACT_Combat", NACT_Combat)
 Package.Export("NACT_Engage", NACT_Engage)
 Package.Export("NACT_Seek", NACT_Seek)
 Package.Export("NACT_Cover", NACT_Cover)
-Package.Export("NACT_Melee", NACT_Melee)
+Package.Export("NACT_ZombieMelee", NACT_ZombieMelee)
 
 -- Uncomment thoose lines if you want to develop or debug
 -- Package.Require("./Tests.lua")
