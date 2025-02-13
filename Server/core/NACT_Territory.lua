@@ -113,14 +113,6 @@ function NACT_Territory:RemoveNPC(nactNpc)
     table_remove_by_value(self.npcs, nactNpc)
 end
 
---- INTERNAL. Used by the editor mode. This will create a trigger for each cover point. Usage in production not good.
-function NACT_Territory:DebugDisplayCoverPoints()
-    for iCover, coverPoint in ipairs(self.coverPointsPositions) do
-        Trigger(coverPoint, Rotator(), Vector(50), TriggerType.Sphere, true, Color.RED)
-        -- Console.Log("Debugging : "..NanosTable.Dump(t))
-    end
-end
-
 --- Gets all the enemies thare are in the territory
 ---@return table @Sequential array of enemies in the territory
 function NACT_Territory:GetEnemiesInZone()

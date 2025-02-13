@@ -95,7 +95,7 @@ end
 ---         radius = 7000
 ---     },
 ---     
----     -- All the patrol routes used by NACT_Detection behavior
+---     -- All the patrol routes used by NACT_Patrol behavior. You can also call the AddPatrol function
 ---     patrolRoutes = {
 ---         frontCamp = {
 ---               points = {
@@ -149,6 +149,18 @@ function NACT.SetMapCoverPoints(tMapCoverPoints)
     for k, v in pairs(NACT.territories) do
         Console.Log("Refreshing cover points for "..k)
         v:RefreshCoverPoints(NACT.mapCoverPoints)
+    end
+
+    if (NACT_DEBUG_EDITOR_MODE) then
+        NACT.DebugDisplayCoverPoints()
+    end
+end
+
+--- INTERNAL. Used by the editor mode. This will create a trigger for each cover point. Usage in production not good.
+function NACT.DebugDisplayCoverPoints()
+    for iCover, coverPoint in ipairs(NACT.mapCoverPoints) do
+        Trigger(coverPoint.pos, Rotator(), Vector(50), TriggerType.Sphere, true, Color.RED)
+        -- Console.Log("Debugging : "..NanosTable.Dump(t))
     end
 end
 
