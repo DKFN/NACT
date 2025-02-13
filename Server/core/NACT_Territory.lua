@@ -4,9 +4,18 @@ local NACT_PROVISORY_COVER_VIABILITY_REFRESH_TIME = 500
 -- local NACT_PROVISORY_COVER_VIABILITY_REFRESH_TIME = 5000
 local NACT_PROVISORY_PLAYER_AUTHORITY_REFRESH_TIME = 10000
 
---- Territory is a zone controlled by NPCs and contains the configuration of
+--- Territory is a zone controlled by NPCs.
+--- 
+--- It takes a parameter the following table:
+--- 
+--- ```lua
+--- {
+---     team = 1, -- The team of the territory
+---     patrolRoutes = {} -- Optional, the patrol routes of this territory. You can also call AddPatrolRoute
+--- }
+--- ````
 --- cover points and patrol routes 
----@param tTerritoryConfig TerritoryConfig territory config map
+---@param tTerritoryConfig TerritoryConfig @territory config map
 function NACT_Territory:Constructor(tTerritoryConfig)
     self.coverPoints = {}
     self.coverPointsPositions = {}
@@ -40,7 +49,7 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     local _self = self
 
     self.coverViabilityHandleTimer = Timer.SetInterval(function()
-        if (not self.authorityPlayer) then
+        if (not self.authorityPlayer or #self.coverPoints == 0) then
             -- Console.Log("No reachable players in range, not scanning viability of covers")
             return
         end
@@ -69,11 +78,6 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     self.authorityPlayerHandleTimer = Timer.SetInterval(function()
         self:SwitchNetworkAuthority()
     end, NACT_PROVISORY_PLAYER_AUTHORITY_REFRESH_TIME)
-
-    if (NACT_DEBUG_EDITOR_MODE) then
-        self:DebugDisplayCoverPoints()
-    end
-
 end
 
 --- Gets the network authority of the territory or nil if not defined or valid
@@ -105,7 +109,7 @@ end
 --- INTERNAL. Removes an NPC from the territory
 ---@param nactNpc NACT_NPC
 function NACT_Territory:RemoveNPC(nactNpc)
-    Console.Log("Called remove NPC"..#self.npcs)
+    -- Console.Log("Called remove NPC"..#self.npcs)
     table_remove_by_value(self.npcs, nactNpc)
 end
 
@@ -201,9 +205,16 @@ function NACT_Territory:CleanupCharacter(character)
     end
 
     if (self.authorityPlayer and self.authorityPlayer:GetControlledCharacter() == character) then
-        Console.Log("Was authority, switching ")
+        -- Console.Log("Was authority, switching ")
         self:SwitchNetworkAuthority()
     end
+end
+
+--- Adds a patrol route instead of using the config table
+---@param sPatrolRouteName string @The patrol route name to use
+---@param tPatrol table @
+function NACT_Territory:AddPatrolRoute(sPatrolRouteName, tPatrol)
+    self.patrolRoutes[sPatrolRouteName] = tPatrol
 end
 
 Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTerritoryID, tViabilityResult)

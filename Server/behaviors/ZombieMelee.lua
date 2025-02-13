@@ -70,7 +70,7 @@ function NACT_ZombieMelee:AlertAlliesInRange()
         -- Console.Log("NACT NPC OF ALly "..NanosTable.Dump(nactNpcOfAlly.behavior:GetClass()))
         if (nactNpcOfAlly and nactNpcOfAlly.behavior:GetClass() == NACT_Detection) then
             nactNpcOfAlly:SetFocusedEntity(self.npc:GetFocused())
-            nactNpcOfAlly:SetBehavior(NACT_Melee)
+            nactNpcOfAlly:SetBehavior(NACT_ZombieMelee)
         end
     end
 end

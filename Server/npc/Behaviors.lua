@@ -57,7 +57,7 @@ function NACT_NPC:SetBehavior(cBehaviorClass)
     end
 
     if (maybeBehaviorIndex) then
-        if (self.behavior) then
+        if (NACT_DEBUG_BEHAVIORS and self.behavior) then
             Console.Log(self:GetID().." Previous behavior :"..self.behavior:GetClassName().."Next behavior : "..cBehaviorClass:GetClassName())    
         end
         self:SetBehaviorIndex(maybeBehaviorIndex)

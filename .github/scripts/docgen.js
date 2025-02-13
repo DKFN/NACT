@@ -66,6 +66,8 @@ ${formatParameterTable(inputFunctionElement.extends.args)}
 
 
 
+
+
 `
 }
 
@@ -86,6 +88,7 @@ function formatReturn(inputReturnTable) {
     }
     return `
 **Returns**
+
 \`${inputReturnTable.view}\` ${inputReturnTable.rawdesc}
 `
 }
