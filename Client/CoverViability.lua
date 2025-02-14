@@ -52,8 +52,8 @@ local function ScanCoverPoint(coverPos, iCover, iTerritoryID)
 
                 -- Console.Log(iCover.." Cover status "..NanosTable.Dump(coverViable))
                 coverViable = coverViable and traceResultToCamera.Success
-                tViabilityOfCovers[iTerritoryID][iCover] = coverViable
             end
+            tViabilityOfCovers[iTerritoryID][iCover] = coverViable
         end
     end
 end
@@ -62,10 +62,7 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:POSITIONS", function(_iTerrit
     iTerritoryID = _iTerritoryID
     coverPositionsByTerritoryID[iTerritoryID] = allPositions
     tViabilityOfCovers[iTerritoryID] = {}
-    -- Console.Log("Received positions :"..NanosTable.Dump(coverPositionsByTerritoryID[iTerritoryID]))
-
-
-    -- TODO: This sucks it seems to not really iterate on all cover points 
+    currentTickIndex = 1
 end)
 
 Client.Subscribe("Tick", function()
