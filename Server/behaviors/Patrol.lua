@@ -8,7 +8,6 @@ local DEFAULT_WAITFOR_MAX = 5000
 
 function NACT_Patrol:Constructor(NpcInstance, tBehaviorConfig)
     self:Super().Constructor(self, NpcInstance, tBehaviorConfig)
-    Console.Log("Instance a "..self.heat)
 
     if (not tBehaviorConfig.patrolPath) then
         Console.Error("No patrol point was defined !")

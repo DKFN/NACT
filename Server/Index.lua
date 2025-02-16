@@ -4,6 +4,7 @@ Console.Log("N.A.C.T. https://github.com/DKFN/NACT")
 Package.Require("./core/Index.lua")
 Package.Require("./behaviors/Index.lua")
 Package.Require("./npc/Index.lua")
+Package.Require("./Defaults.lua")
 
 
 Package.Export("NACT", NACT)

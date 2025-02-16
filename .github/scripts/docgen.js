@@ -44,7 +44,6 @@ kv.map(([k, v]) => {
 
 function formatToMarkdown(inputElement) {
     const elementType = inputElement.defines[0]?.view;
-    console.log("element type ", elementType)
     if (elementType === "function")
         return formatFunction(inputElement.defines[0])
 

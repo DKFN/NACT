@@ -76,15 +76,6 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
         -- Console.Log("Registered "..sEventToRegister)
         self:RegisterEvent(cNpcToHandle, sEventToRegister)
     end
-
-    cNpcToHandle:Subscribe("Death", function()
-        self:Log("Death called")
-
-        -- TODO: Make this configurable atleast( callback ? )
-        self.character:Destroy()
-        self.territory:RemoveNPC(self)
-        self:Destroy()
-    end)
 end
 
 ---

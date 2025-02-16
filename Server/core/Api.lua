@@ -112,10 +112,12 @@ end
 --- 
 --- You can pass any additional value you want if you need them for your behaviors.
 --- 
----@param sTerritoryName string Name of the territory
----@param tZoneConfigTable table TO BE DOCUMENTED
+---@param sTerritoryName string @Name of the territory
+---@param tZoneConfigTable table @Documented above
+---@return NACT_Territory @The created territory
 function NACT.RegisterTerritory(sTerritoryName, tZoneConfigTable)
     NACT.territories[sTerritoryName] = NACT_Territory(tZoneConfigTable);
+    return NACT.territories[sTerritoryName];
 end
 
 --- Get the character from the causer in some events of nanos
@@ -147,7 +149,6 @@ end
 function NACT.SetMapCoverPoints(tMapCoverPoints)
     NACT.mapCoverPoints = tMapCoverPoints
     for k, v in pairs(NACT.territories) do
-        Console.Log("Refreshing cover points for "..k)
         v:RefreshCoverPoints(NACT.mapCoverPoints)
     end
 

@@ -23,8 +23,8 @@ function NACT_Territory:Constructor(tTerritoryConfig)
     self:RefreshCoverPoints()
 
     self.npcs = {}
-    self.patrolRoutes = tTerritoryConfig.patrolRoutes
-    self.team = tTerritoryConfig.team
+    self.patrolRoutes = NACT.ValueOrDefault(tTerritoryConfig.patrolRoutes, {})
+    self.team = NACT.ValueOrDefault(tTerritoryConfig.team, 0)
     
     self.zone = NACT.createTriggerBox(
         tTerritoryConfig.zoneBounds.pos,
@@ -58,8 +58,6 @@ function NACT_Territory:Constructor(tTerritoryConfig)
         local allCfocused = {}
         local i = 1
 
-        -- TODO: This duplicates the same character if it is focused by multiple NPCS.
-        -- TODO: This is useless, we can only add one time
         for iNpc, npc in ipairs(self.npcs) do
             if (npc.cFocused and npc.cFocused:IsValid() and not indexedSelectedEntity[npc.cFocused:GetID()]) then
                 allCfocused[i] = npc.cFocused
@@ -192,6 +190,7 @@ function NACT_Territory:CleanupCharacter(character)
         -- Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(nactNpc.character))
         nactNpc:CleanupCharacter(character)
         if (nactNpc.character == character) then
+            self:RemoveNPC(nactNpc)
             nactNpc:Destroy()
         end
     end
