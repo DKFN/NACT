@@ -15,8 +15,8 @@ local function ScanCoverPoint(coverPos, iCover, iTerritoryID)
 
     --Console.Log("Scan cover point territory id :"..iTerritoryID)
     -- Console.Log("All focused : "..NanosTable.Dump(tAllFocusedEntities))
+    local coverViable = true
     for iEntity, entity in ipairs(tAllFocusedEntities) do
-        local coverViable = true
         local finalLoc
         local entityPreciseLocation = entity:GetBoneTransform("head")
         if (entityPreciseLocation) then
@@ -39,6 +39,7 @@ local function ScanCoverPoint(coverPos, iCover, iTerritoryID)
 
         if (not coverViable) then
             tViabilityOfCovers[iTerritoryID][iCover] = coverViable
+            break;
         else
             local playerOfEntity = entity:GetPlayer()
             if (playerOfEntity) then        
@@ -88,12 +89,17 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(_iTerritoryI
         -- Console.Warn("Positions of territory not received yet, viability scan abandonned")
         return
     end
-    Events.CallRemote("NACT:TRACE:COVER:VIABILITY:RESULT", iTerritoryID, tViabilityOfCovers[iTerritoryID])
+    local tCoverViabilities = tViabilityOfCovers[iTerritoryID]
+    if (tCoverViabilities) then
+        Events.CallRemote("NACT:TRACE:COVER:VIABILITY:RESULT", iTerritoryID, tViabilityOfCovers[iTerritoryID])
+    end
 end)
 
-Events.Subscribe("NACT:TRACE:COVER_VIABILITY:STOP", function()
-    -- Console.Log("Trace viability is stopping")
-    if (coverRefreshInterval) then
-        Timer.ClearInterval(coverRefreshInterval)
+Events.SubscribeRemote("NACT:TRACE:COVER_VIABILITY:STOP", function()
+    Console.Log("Trace viability is stopping")
+    tAllFocusedEntities = {}
+    if (iTerritoryID) then
+       tViabilityOfCovers[iTerritoryID] = {}
+       iTerritoryID = nil
     end
 end)

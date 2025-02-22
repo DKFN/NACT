@@ -34,10 +34,15 @@ end
 function NACT_Seek:Main()
     -- Console.Log("Inside thing with timer handle : "..NanosTable.Dump(self.timerHandle))
     self.npc:LookForFocused()
+
+    if (#self.npc.territory:GetEnemiesInZone() == 0) then
+        self.npc:SetBehavior(self.mainBehavior)
+    end
+
     -- Finish tomorrow and plug it in NACT_Combat
     if (self.npc:IsFocusedVisible()) then
         local timeElapsedSinceLastAlert = os.clock() - self.npc.territory.lastAlertRaisedAt
-        if (timeElapsedSinceLastAlert > 10 and self.alertBehavior) then
+        if (timeElapsedSinceLastAlert > 5 and self.alertBehavior) then
             self.npc:SetBehavior(self.alertBehavior)
         else
             self.npc:SetBehavior(self.mainBehavior)

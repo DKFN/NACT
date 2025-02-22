@@ -12,7 +12,7 @@ local NACT_DEFAULT_VISION_ANGLE = 110
 
 -- TODO: If enabled, this is the whole human "vision" logic instead of relying on the behaviors to handle it
 local NACT_DEFAULT_ENABLE_AUTO_VISION = true
-local NACT_DEFAULT_LOOKAROUND_THROTTLE = 1000
+local NACT_DEFAULT_LOOKAROUND_THROTTLE = 200
 local NACT_DEFAULT_TIME_TO_LOST = 1000
 local NACT_DEFAULT_TRIGGERS = {
     detection = true,
@@ -170,13 +170,12 @@ function NACT_NPC:Destructor()
     -- self:Log2("Destroying behavior is : "..NanosTable.Dump(self.behavior))
     self:StopTracing()
     self.behavior:Destroy()
-    self.territory:RemoveNPC(self)
     for k, t in pairs(self.triggers) do
         t.trigger:Destroy()
     end
     self.triggers = nil
     self.cFocused = nil
-    self:Log(" reporting death, bye :(")
+    Console.Log(self:GetID().." reporting death, bye :(")
 end
 
 ---Clean-ups a character if it is currently focused by this NPC (death of disconnect for example)

@@ -129,6 +129,7 @@ function NACT_Territory:SwitchNetworkAuthority()
     local reachablePlayers = {}
 
     if (self.authorityPlayer and self.authorityPlayer:IsValid()) then
+        Console.Log("Calling stop cover viability")
         Events.CallRemote("NACT:TRACE:COVER_VIABILITY:STOP", self.authorityPlayer)
     end
     
@@ -149,6 +150,7 @@ function NACT_Territory:SwitchNetworkAuthority()
     else
         self.authorityPlayer = nil
     end
+    Console.Log("New authority "..NanosTable.Dump(self.authorityPlayer))
     self:UpdateCSSTAuthority()
 end
 
@@ -187,7 +189,7 @@ end
 ---@param Character @Character to cleanup
 function NACT_Territory:CleanupCharacter(character)
     for i, nactNpc in ipairs(self.npcs) do
-        -- Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(nactNpc.character))
+        Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(nactNpc.character))
         nactNpc:CleanupCharacter(character)
         if (nactNpc.character == character) then
             self:RemoveNPC(nactNpc)
@@ -196,7 +198,7 @@ function NACT_Territory:CleanupCharacter(character)
     end
 
     if (self.authorityPlayer and self.authorityPlayer:GetControlledCharacter() == character) then
-        -- Console.Log("Was authority, switching ")
+        Console.Log("Was authority, switching ")
         self:SwitchNetworkAuthority()
     end
 end

@@ -1,9 +1,8 @@
 
-NACT_Idle = BaseClass.Inherit("NACT_Idle", false)
+NACT_Idle = BaseClass.Inherit("NACT_Idle")
 
 function NACT_Idle:Constructor(NpcInstance, tBehaviorConfig)
     self.npc = NpcInstance
-    self.playersInRange = 0
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
     end, NACT.ValueOrDefault(tBehaviorConfig.intervalTime, 1000), self)
@@ -12,9 +11,6 @@ end
 
 
 function NACT_Idle:Main()
-    -- Console.Log(NanosTable.Dump(self.npc.triggers))
-    
-    -- Console.Log("enemiesInTerritory"..NanosTable.Dump(enemiesInTerritory))
     if (#self.npc.territory:GetEnemiesInZone() > 0) then
         self.npc:GoNextBehavior()
     else

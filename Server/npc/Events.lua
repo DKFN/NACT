@@ -1,5 +1,8 @@
 Character.Subscribe("Death", function(character)
-    NACT.CharacterCleanup(character)
+    -- Makes sure it is processed next tick so every event registered have time to process before entity is destroyed
+    Timer.SetTimeout(function()
+        NACT.CharacterCleanup(character)
+    end)
 end)
 
 Player.Subscribe("Destroy", function(self)

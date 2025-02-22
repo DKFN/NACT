@@ -8,6 +8,8 @@ Package.Require("./Defaults.lua")
 
 
 Package.Export("NACT", NACT)
+Package.Export("NACT_NPC", NACT_NPC)
+Package.Export("NACT_Territory", NACT_Territory)
 Package.Export("NACT_Idle", NACT_Idle)
 Package.Export("NACT_Detection", NACT_Detection)
 Package.Export("NACT_Patrol", NACT_Patrol)

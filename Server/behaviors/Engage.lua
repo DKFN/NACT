@@ -32,8 +32,6 @@ function NACT_Engage:Main()
     local weapon = self.npc:GetWeapon()
 
     if (self.npc:ShouldReload()) then
-        -- Console.Log("Main behavior : "..NanosTable.Dump(self.mainBehavior))
-        -- Console.Log("Main behavior : "..NanosTable.Dump(DEFAULT_MAIN_BEHAVIOR))
         self.npc:SetBehavior(self.mainBehavior)
         return
     end
@@ -42,9 +40,12 @@ function NACT_Engage:Main()
 
     local bFocusedVisible = self.npc:IsFocusedVisible()
     if (bFocusedVisible) then
-        self.npc:TurnToFocused(self.innacuracy)
-        if (weapon) then
-            weapon:PullUse(0)
+        local focusedChar =  self.npc:GetFocused()
+        if (focusedChar:GetHealth() > 0) then
+            self.npc:TurnToFocused(self.innacuracy)
+            if (weapon) then
+                weapon:PullUse(0)
+            end
         end
     end
 
@@ -53,9 +54,6 @@ function NACT_Engage:Main()
     end
 
     if (self:TimeElapsed() > self.maxTimeEngaged) then
-        Console.Log("Time elapsed"..self:TimeElapsed())
-        -- Console.Log("Main behavior : "..NanosTable.Dump(self.mainBehavior))
-        -- Console.Log("Main behavior : "..NanosTable.Dump(DEFAULT_MAIN_BEHAVIOR))
         self.npc:SetBehavior(self.mainBehavior)
     end
 end
@@ -71,11 +69,9 @@ function NACT_Engage:OnTakeDamage(_, damage, bone, type, from_direction, instiga
         self.npc.character:SetStanceMode(StanceMode.Crouching)
         Timer.SetTimeout(function()
             self.npc.character:SetStanceMode(StanceMode.Standing)
-        end, 1000)
+        end, 500)
     end
     if (decision == 2) then
-        -- TODO: Should go to cover
-        Console.Log("Going back to combat for decision")
         self.npc:SetBehavior(self.mainBehavior)
     end
 end

@@ -18,7 +18,6 @@ function NACT_Combat:Constructor(NpcInstance, tBehaviorConfig)
     self.seekBehavior = NACT.ValueOrDefault(tBehaviorConfig.seekBehavior, NACT_Seek)
     self.attackBehavior = NACT.ValueOrDefault(tBehaviorConfig.attackBehavior, NACT_Engage)
 
-    -- Should not need a timer
     self.timeoutHandle = Timer.SetTimeout(function()
         self:Main()
     end)

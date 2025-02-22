@@ -13,8 +13,6 @@ function NACT_Alert:Main()
     local timeElapsedSinceLastAlert = os.clock() - self.npc.territory.lastAlertRaisedAt
 
      if (timeElapsedSinceLastAlert > 5) then
-        Console.Log("Time elapsed since last alert "..timeElapsedSinceLastAlert)
-        Console.Log("NPC : "..self.npc:GetID().." alerting zone !!!")
         self.npc.territory.lastAlertRaisedAt = os.clock()
         for i, allyNpc in ipairs(territoryNpcs) do
             local nactNpc = NACT_NPC.GetFromCharacter(allyNpc)
