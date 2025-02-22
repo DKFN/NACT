@@ -175,7 +175,7 @@ function NACT_NPC:Destructor()
     end
     self.triggers = nil
     self.cFocused = nil
-    Console.Log(self:GetID().." reporting death, bye :(")
+    -- Console.Log(self:GetID().." reporting death, bye :(")
 end
 
 ---Clean-ups a character if it is currently focused by this NPC (death of disconnect for example)

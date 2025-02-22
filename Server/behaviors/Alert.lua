@@ -12,13 +12,15 @@ function NACT_Alert:Main()
     local territoryNpcs = self.npc.territory:GetAlliesInZone()
     local timeElapsedSinceLastAlert = os.clock() - self.npc.territory.lastAlertRaisedAt
 
-     if (timeElapsedSinceLastAlert > 5) then
+    -- Console.Log("Time elapsed since last alert "..timeElapsedSinceLastAlert)
+
+     if (timeElapsedSinceLastAlert > 10) then
         self.npc.territory.lastAlertRaisedAt = os.clock()
         for i, allyNpc in ipairs(territoryNpcs) do
             local nactNpc = NACT_NPC.GetFromCharacter(allyNpc)
             if (nactNpc) then
                 if (nactNpc.behavior:GetClass() ~= NACT_Combat and nactNpc.behavior:GetClass() ~= NACT_Engage and nactNpc.behavior:GetClass() ~= NACT_Alert) then
-                    Console.Log("Setting combat for : "..nactNpc.behavior:GetClassName())
+                    -- Console.Log("Setting combat for : "..nactNpc.behavior:GetClassName())
                     nactNpc:SetBehavior(NACT_Combat)
                     nactNpc:SetFocused(self.npc:GetFocused())
                 end

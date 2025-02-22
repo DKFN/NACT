@@ -116,7 +116,7 @@ end
 ---@param tZoneConfigTable table @Documented above
 ---@return NACT_Territory @The created territory
 function NACT.RegisterTerritory(sTerritoryName, tZoneConfigTable)
-    NACT.territories[sTerritoryName] = NACT_Territory(tZoneConfigTable);
+    NACT.territories[sTerritoryName] = NACT_Territory(tZoneConfigTable, sTerritoryName);
     return NACT.territories[sTerritoryName];
 end
 

@@ -60,7 +60,7 @@ function NACT.createTriggerBox(
             if (linkedClass == NACT_Territory) then
                 entity:SetValue("NACT_TERRITORY_ID", linkedTerritoryOrNpc:GetID())
                 if (not linkedTerritoryOrNpc.authorityPlayer and entity.GetPlayer and entity:GetPlayer()) then
-                    Console.Log("Player entered in territory without network authority. Switching authority")
+                    -- Console.Log("Player entered in territory without network authority. Switching authority")
                     linkedTerritoryOrNpc:SwitchNetworkAuthority()
                 end
             end
@@ -85,19 +85,13 @@ function NACT.createTriggerBox(
                 entity:SetValue("NACT_TERRITORY_ID", nil)
                 local maybePlayer = entity.GetPlayer and entity:GetPlayer()
                 if (maybePlayer and linkedTerritoryOrNpc.authorityPlayer == maybePlayer) then
-                    Console.Log("Player left territory was network authority. Switching authority")
+                    -- Console.Log("Player left territory was network authority. Switching authority")
                     linkedTerritoryOrNpc:SwitchNetworkAuthority()
                 end
             end
         end
-
-        
-        -- Console.Log("After e overlap enemies : "..(#tTriggerData.enemies))
-        -- Console.Log("After e overlap allies : "..(#tTriggerData.allies))
     end)
-
     -- Console.Log("CSST Value "..NanosTable.Dump(tTriggerData.trigger))
-    
     return tTriggerData
 end
 

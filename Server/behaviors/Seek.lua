@@ -21,7 +21,7 @@ function NACT_Seek:Constructor(NpcInstance, tBehaviorConfig)
     self.gaitSeeking = NACT.ValueOrDefault(tBehaviorConfig.gaitSeeking, DEFAULT_GAIT_SEEKING)
     self.gaitInitial = NACT.ValueOrDefault(tBehaviorConfig.gaitInitial, DEFAULT_GAIT_INITIAL)
     self.mainBehavior = NACT.ValueOrDefault(tBehaviorConfig.mainBehavior, DEFAULT_MAIN_BEHAVIOR)
-    self.alertBehavior = (tBehaviorConfig or {}).alertBehavior
+    self.alertBehavior = NACT.ValueOrDefault(tBehaviorConfig.alertBehavior, DEFAULT_ALERT_BEHAVIOR)
 
     -- TODO: Make Utility function to create them
     self.timerHandle = Timer.SetInterval(function()
@@ -41,8 +41,7 @@ function NACT_Seek:Main()
 
     -- Finish tomorrow and plug it in NACT_Combat
     if (self.npc:IsFocusedVisible()) then
-        local timeElapsedSinceLastAlert = os.clock() - self.npc.territory.lastAlertRaisedAt
-        if (timeElapsedSinceLastAlert > 5 and self.alertBehavior) then
+        if (self.alertBehavior) then
             self.npc:SetBehavior(self.alertBehavior)
         else
             self.npc:SetBehavior(self.mainBehavior)
@@ -83,9 +82,7 @@ function NACT_Seek:OnMoveComplete()
 end
 
 function NACT_Seek:OnRandomPointResult(vTargetPoint)
-    -- TODO: This creates way too much instance creation and destruction when you noclip somewhere not reachable
-    -- TODO: Should not happend in real life, but not ideal nonetheless
-    Console.Log("Random pt result : "..NanosTable.Dump(vTargetPoint))
+    -- Console.Log("Random pt result : "..NanosTable.Dump(vTargetPoint))
     if (vTargetPoint:IsZero()) then
         Console.Log("Zero result, returning to combat for decision")
         Timer.SetTimeout(function()
@@ -109,7 +106,7 @@ function NACT_Seek:OnTakeDamage(_, damage, bone, type, from_direction, instigato
 end
 
 function NACT_Seek:Destructor()
-    Console.Log("Destroying seek with "..NanosTable.Dump(self.timerHandle))
+    -- Console.Log("Destroying seek with "..NanosTable.Dump(self.timerHandle))
     self.npc.character:SetGaitMode(self.gaitInitial)
     Timer.ClearInterval(self.timerHandle)
 end

@@ -3,7 +3,7 @@
 -- PROVISORY_NACT_HEAT_TURN_TO = 50 -- Heat necessary for the NPC to turn towards the player
 
 local DEFAULT_INTERVAL_TIME = 500
-local DEFAULT_HEAT_INCREMENT = 5
+local DEFAULT_HEAT_INCREMENT = 10
 local DEFAULT_HEAT_TURN_TO = 50
 -- local DEFAULT_HEAT_INCREMENT = 0.000000001
 -- TODO: Add max distance to start spotting
@@ -85,7 +85,7 @@ function NACT_Detection:OnTakeDamage(_, damage, bone, type, from_direction, inst
     -- TODO: Check if Ally
     local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
     if (causerCharacter) then
-        Console.Log("Causer is character")
+        -- Console.Log("Causer is character")
         self.npc:TurnTo(causerCharacter:GetLocation())
         self.heat = self.heat + self.heatTurnTo
     end

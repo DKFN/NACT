@@ -16,10 +16,12 @@ local NACT_PROVISORY_PLAYER_AUTHORITY_REFRESH_TIME = 10000
 --- ````
 --- cover points and patrol routes 
 ---@param tTerritoryConfig TerritoryConfig @territory config map
-function NACT_Territory:Constructor(tTerritoryConfig)
+---@param sTerritoryName string @name of the territory
+function NACT_Territory:Constructor(tTerritoryConfig, sTerritoryName)
     self.coverPoints = {}
     self.coverPointsPositions = {}
     self.zoneBounds = tTerritoryConfig.zoneBounds
+    self.name = sTerritoryName
     self:RefreshCoverPoints()
 
     self.npcs = {}
@@ -129,7 +131,6 @@ function NACT_Territory:SwitchNetworkAuthority()
     local reachablePlayers = {}
 
     if (self.authorityPlayer and self.authorityPlayer:IsValid()) then
-        Console.Log("Calling stop cover viability")
         Events.CallRemote("NACT:TRACE:COVER_VIABILITY:STOP", self.authorityPlayer)
     end
     
@@ -150,7 +151,6 @@ function NACT_Territory:SwitchNetworkAuthority()
     else
         self.authorityPlayer = nil
     end
-    Console.Log("New authority "..NanosTable.Dump(self.authorityPlayer))
     self:UpdateCSSTAuthority()
 end
 
@@ -189,7 +189,7 @@ end
 ---@param Character @Character to cleanup
 function NACT_Territory:CleanupCharacter(character)
     for i, nactNpc in ipairs(self.npcs) do
-        Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(nactNpc.character))
+        -- Console.Log("Dead character "..NanosTable.Dump(character).." scanning "..NanosTable.Dump(nactNpc.character))
         nactNpc:CleanupCharacter(character)
         if (nactNpc.character == character) then
             self:RemoveNPC(nactNpc)
@@ -198,7 +198,7 @@ function NACT_Territory:CleanupCharacter(character)
     end
 
     if (self.authorityPlayer and self.authorityPlayer:GetControlledCharacter() == character) then
-        Console.Log("Was authority, switching ")
+        -- Console.Log("Was authority, switching ")
         self:SwitchNetworkAuthority()
     end
 end
@@ -217,3 +217,14 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:RESULT", function(player, iTe
         territoryOfResult:UpdateCoverViability(tViabilityResult)
     end
 end)
+
+--- Finds a territory by name
+---@param sTerritoryName string @Name of the territory
+---@return NACT_Territory | nil @Territory if it was found
+function NACT_Territory.FindByName(sTerritoryName)
+    for k, v in ipairs(NACT_Territory.GetAll()) do
+        if v.name == sTerritoryName then
+            return v
+        end
+    end
+end

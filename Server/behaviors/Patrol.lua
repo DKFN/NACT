@@ -31,13 +31,13 @@ end
 function NACT_Patrol:WalkToNextPoint()
     self.npc:MoveToPoint(self.patrolPoints[self.targetPatrolPointIndex])
     if (self.targetPatrolPointIndex == self.maxPatrolPointIndex) then
-        Console.Log("Patrol point index "..self.targetPatrolPointIndex)
-        Console.Log("Patrol point max "..self.maxPatrolPointIndex)
+        -- Console.Log("Patrol point index "..self.targetPatrolPointIndex)
+        -- Console.Log("Patrol point max "..self.maxPatrolPointIndex)
         -- TODO : Check if circling or not
         if (self.patrolRoute.walkMethod == "circle") then
             self.targetPatrolPointIndex = 1
         else
-            Console.Log("Circling method not implemented")
+            Console.Warn ("Circling method not implemented")
         end
     else 
         self.targetPatrolPointIndex = self.targetPatrolPointIndex + 1
@@ -54,9 +54,3 @@ end
 function NACT_Patrol:Destructor()
     self:Super().Destructor(self)
 end
-
--- function NACT_Patrol:Main()
---    Console.Log("wesh")
-    -- Comes handy if you need to call the base behavior main too in your own main
-    -- self:Super().Main(self)
--- end

@@ -1,6 +1,6 @@
 NACT_Combat = BaseClass.Inherit("NACT_Combat", false)
 
-local DEFAULT_RNG_MAX = 3
+local DEFAULT_RNG_MAX = 5
 local DEFAULT_RNG_COVER_VALUE = 2
 
 function NACT_Combat:Constructor(NpcInstance, tBehaviorConfig)
@@ -46,6 +46,5 @@ function NACT_Combat:Main()
 end
 
 function NACT_Combat:Destructor()
-    Console.Log("Destructing combat")
     Timer.ClearTimeout(self.timeoutHandle)
 end

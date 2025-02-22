@@ -6,6 +6,7 @@ function NACT_Idle:Constructor(NpcInstance, tBehaviorConfig)
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
     end, NACT.ValueOrDefault(tBehaviorConfig.intervalTime, 1000), self)
+    self.moveToCalled = false
     Timer.Bind(self.timerHandle, self.npc.character)
 end
 
@@ -14,7 +15,8 @@ function NACT_Idle:Main()
     if (#self.npc.territory:GetEnemiesInZone() > 0) then
         self.npc:GoNextBehavior()
     else
-        if (not self.preventReturnToInitialPos) then
+        if (not self.preventReturnToInitialPos and not self.moveToCalled) then
+            self.moveToCalled = true
             self.npc:MoveToPoint(self.npc.initialPosition)
         end
     end

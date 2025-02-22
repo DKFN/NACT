@@ -96,7 +96,7 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:QUERY", function(_iTerritoryI
 end)
 
 Events.SubscribeRemote("NACT:TRACE:COVER_VIABILITY:STOP", function()
-    Console.Log("Trace viability is stopping")
+    -- Console.Log("Trace viability is stopping")
     tAllFocusedEntities = {}
     if (iTerritoryID) then
        tViabilityOfCovers[iTerritoryID] = {}
