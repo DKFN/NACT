@@ -4,7 +4,6 @@ local Trace = Trace
 
 local NACT_VISION_REFRESH_RATE = 50
 -- local NACT_VISION_REFRESH_RATE = 500
--- TODO: Not just for detection, this is the whole "Vision trace" logic there
 
 --- Requests the client to start the vision towards an entity
 ---@param cNpc Character The character of the requestor NACT_NPC

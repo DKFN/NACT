@@ -43,7 +43,7 @@ function NACT_Cover:Main()
             self.doingAction = false
         end
     else 
-        if (not self.doingAction) then 
+        if (not self.doingAction) then
             if (not (self.inCover or self.movingToCover) or (self.nearestCoverPoint and not self.nearestCoverPoint.secure)) then
                 local success = self:MoveToNearestCoverPoint()
                 if (not success) then
@@ -97,7 +97,7 @@ function NACT_Cover:FindNearestCoverPoint()
     local currentNearestDistance = 99999999999
     local nearestCoverPoint = nil
 
-    local startSearch = os.clock()
+    local startSearch = NACT.GetTime()
     local charLocation = self.npc.character:GetLocation()
     local focusedLocation = self.npc:GetFocusedLocation()
     for i, coverPoint in ipairs(allTerritoryCoverPoints) do
@@ -121,7 +121,7 @@ function NACT_Cover:FindNearestCoverPoint()
         end
     end
 
-    local elapsedInSearch = math.floor((os.clock() - startSearch) * 1000)
+    local elapsedInSearch = math.floor((NACT.GetTime() - startSearch) * 1000)
     -- Console.Log("Time elapsed searching cover : "..elapsedInSearch.."ms")
     return nearestCoverPoint
 end

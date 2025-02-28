@@ -4,7 +4,7 @@
 
 local DEFAULT_INTERVAL_TIME = 500
 local DEFAULT_HEAT_INCREMENT = 10
-local DEFAULT_HEAT_TURN_TO = 50
+local DEFAULT_HEAT_TURN_TO = 80
 -- local DEFAULT_HEAT_INCREMENT = 0.000000001
 -- TODO: Add max distance to start spotting
 
@@ -20,8 +20,6 @@ function NACT_Detection:Constructor(NpcInstance, tBehaviorConfig)
     Timer.Bind(self.timerHandle, self.npc.character)
 end
 
--- TODO: Getting hit by a bullet should add 50 to heat level
--- TODO: cFocused should change to closest player in vision range
 -- If the player 
 function NACT_Detection:Main()
     -- Console.Log("Main self of parent : "..NanosTable.Dump(self:GetNpc()))
@@ -81,8 +79,6 @@ function NACT_Detection:DecrementLevel()
 end
 
 function NACT_Detection:OnTakeDamage(_, damage, bone, type, from_direction, instigator, causer)
-    -- Console.Log("Taken damange from "..NanosTable.Dump(causer))
-    -- TODO: Check if Ally
     local causerCharacter = NACT.GetCharacterFromCauserEntity(causer)
     if (causerCharacter) then
         -- Console.Log("Causer is character")

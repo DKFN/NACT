@@ -171,5 +171,10 @@ function NACT.GetMapCoverPoints()
     return NACT.mapCoverPoints
 end
 
+--- Get time in seconds
+---@return number @ The time in seconds
+function NACT.GetTime()
+    return Server.GetTime() / 1000
+end
 
 Package.Require("./core/Triggers.lua")

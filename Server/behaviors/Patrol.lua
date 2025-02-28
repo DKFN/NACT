@@ -31,9 +31,6 @@ end
 function NACT_Patrol:WalkToNextPoint()
     self.npc:MoveToPoint(self.patrolPoints[self.targetPatrolPointIndex])
     if (self.targetPatrolPointIndex == self.maxPatrolPointIndex) then
-        -- Console.Log("Patrol point index "..self.targetPatrolPointIndex)
-        -- Console.Log("Patrol point max "..self.maxPatrolPointIndex)
-        -- TODO : Check if circling or not
         if (self.patrolRoute.walkMethod == "circle") then
             self.targetPatrolPointIndex = 1
         else
@@ -42,7 +39,6 @@ function NACT_Patrol:WalkToNextPoint()
     else 
         self.targetPatrolPointIndex = self.targetPatrolPointIndex + 1
     end
-    
 end
 
 function NACT_Patrol:OnMoveComplete()

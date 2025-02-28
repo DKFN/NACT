@@ -92,7 +92,7 @@ function NACT_Seek:OnRandomPointResult(vTargetPoint)
     end
     -- Console.Log("Random point result : "..NanosTable.Dump(vTargetPoint))
     self.npc:MoveToPoint(vTargetPoint)
-    self.timeLastPointAcquired = os.clock()
+    self.timeLastPointAcquired = NACT.GetTime()
 end
 
 -- TODO: This should be default in NACT_Behavior base

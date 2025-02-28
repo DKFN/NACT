@@ -65,7 +65,7 @@ end
 --- Checks if the character in parameter is in the vision angle of the NPC
 --- This function is not enough to check if the entity is really visible. You must use vision traces for that
 ---@param cEntity Character @The character to check for vision range
----@return boolean @Ff the character is in vision angle.
+---@return boolean @If the character is in vision angle.
 function NACT_NPC:IsInVisionAngle(cEntity)
     if (cEntity == nil) then
         -- Console.Error("N.A.C.T. Called IsInVisionAngle with Nil entity")
