@@ -2,6 +2,8 @@
 
 Documentation: https://dkfn.gitbook.io/nact
 
+Demo gamemode: https://github.com/DKFN/nact-test-gm
+
 NACT is a serverside package that gives combat capabilities for NPCs.
 By default, the NPCs will be able to detect, flank, engage, cover, patrol and take actions against enemy players or NPCs to create interesting PvE combat situations.
 
