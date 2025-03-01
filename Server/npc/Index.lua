@@ -68,6 +68,7 @@ function NACT_NPC:Constructor(cNpcToHandle, sTerritoryName, tNpcConfig)
     self.tracingLaunched = false
     self.launchedScanAround = false
     self.initialPosition = cNpcToHandle:GetLocation()
+    self.initialRotation = cNpcToHandle:GetRotation()
 
 
     self.takenDamageCallback = nil

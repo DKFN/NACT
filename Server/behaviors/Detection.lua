@@ -4,7 +4,7 @@
 
 local DEFAULT_INTERVAL_TIME = 500
 local DEFAULT_HEAT_INCREMENT = 10
-local DEFAULT_HEAT_TURN_TO = 80
+local DEFAULT_HEAT_TURN_TO = 90
 -- local DEFAULT_HEAT_INCREMENT = 0.000000001
 -- TODO: Add max distance to start spotting
 
