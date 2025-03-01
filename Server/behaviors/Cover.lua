@@ -1,7 +1,7 @@
 NACT_Cover = BaseClass.Inherit("NACT_Cover")
 
+local DEFAULT_TIMER_TIME = 500
 -- Make sure your NPC has enough time to perform actions while in cover !
-local DEFAULT_TIMER_TIME = 1000
 local DEFAULT_COVER_HOLD_MIN = 2000
 local DEFAULT_COVER_HOLD_MAX = 3000
 local DEFAULT_MIN_COVER_DISTANCE = 10
