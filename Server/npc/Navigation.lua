@@ -1,9 +1,22 @@
 --- Move but also look towards point
 ---@param vPoint Vector @Point to go
 function NACT_NPC:MoveToPoint(vPoint)
-    self.character:MoveTo(vPoint, 1)
+    self:MoveTo(vPoint)
     self.character:LookAt(vPoint)
 end
+
+--- MoveTo without looking to point.
+--- Falls back to SetLocation if there is no network authority
+---@param vPoint Vector @Point to go
+function NACT_NPC:MoveTo(vPoint)
+    local authority = self.character:GetNetworkAuthority()
+    if (authority and authority:IsValid()) then
+        self.character:MoveTo(vPoint, 1)
+    else
+        self.character:SetLocation(vPoint)
+    end
+end
+
 
 --- Query the player that has the network authority on the territory for a random point to the focused location
 --- or it's last known position

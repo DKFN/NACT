@@ -25,7 +25,6 @@ function NACT_Engage:Constructor(NpcInstance, tBehaviorConfig)
     self.maxTimeEngaged = NACT.ValueOrDefault(tBehaviorConfig.maxTimeEngaged, MAX_TIME_ENGAGED_SEC_DEFAULT)
     self.innacuracy = NACT.ValueOrDefault(tBehaviorConfig.innacuracy, DEFAULT_INNACURACY)
     self.mainBehavior = NACT.ValueOrDefault(tBehaviorConfig.mainBehavior, DEFAULT_MAIN_BEHAVIOR)
-    
 end
 
 function NACT_Engage:Main()

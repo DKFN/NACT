@@ -26,22 +26,21 @@ end
 
 function NACT_Combat:Main()
     local rng = math.random(0, self.rngMax)
+    if (#self.npc.territory:GetEnemiesInZone() == 0) then
+         self.npc:SetBehavior(self.idleBehavior)
+         return
+    end
     if (self.npc:ShouldReload() or rng == self.rngCoverValue) then
         self.npc:SetBehavior(self.coverBehavior)
         return
+    end
+    if (self.npc:IsFocusedVisible() == false) then
+        self.npc:SetBehavior(self.seekBehavior)
+        return
     else
-        if (#self.npc.territory:GetEnemiesInZone() == 0) then
-             self.npc:SetBehavior(self.idleBehavior)
-             return
-        end
-        if (self.npc:IsFocusedVisible() == false) then
-            self.npc:SetBehavior(self.seekBehavior)
-            return
-        else
-            self.npc:TurnToFocused()
-            self.npc:SetBehavior(self.attackBehavior)
-            return
-        end
+        self.npc:TurnToFocused()
+        self.npc:SetBehavior(self.attackBehavior)
+        return
     end
 end
 

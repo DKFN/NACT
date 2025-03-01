@@ -17,9 +17,14 @@ function NACT_Idle:Main()
     else
         if (not self.preventReturnToInitialPos and not self.moveToCalled) then
             self.moveToCalled = true
-            self.npc:MoveToPoint(self.npc.initialPosition)
+            self.npc:MoveTo(self.npc.initialPosition)
+            self.npc.character:SetRotation(self.npc.initialRotation)
         end
     end
+end
+
+function NACT_Idle:OnMoveComplete(character, succeeded)
+    self.moveToCalled = succeeded
 end
 
 
