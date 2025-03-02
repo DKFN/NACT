@@ -27,6 +27,7 @@ function NACT_Cover:Constructor(NpcInstance, tBehaviorConfig)
     self.timerMain = Timer.SetInterval(function(self)
         self:Main()
     end, NACT.ValueOrDefault(tBehaviorConfig.timerTime, DEFAULT_TIMER_TIME), self)
+    Timer.Bind(self.timerMain, self.npc.character)
 
     self.timerHold = nil
 end
@@ -68,14 +69,13 @@ function NACT_Cover:MoveToNearestCoverPoint()
         self.npc:MoveToPoint(self.nearestCoverPoint.pos)
         return true
     end
+    Console.Warn("No cover point safe and available was found")
     return false
 end
 
 --- Callback for the "MoveComplete" event
 function NACT_Cover:OnMoveComplete(_, succeeded)
-    if (not self.nearestCoverPoint) then
-        Console.Warn("Cover points exhausted the NPC will be dumb")
-        self.npc:SetBehavior(NACT_Combat)
+    if (not self.nearestCoverPoint or not self.movingToCover) then
         return
     end
     self.movingToCover = false

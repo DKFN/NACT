@@ -1,6 +1,6 @@
 NACT_Seek = BaseClass.Inherit("NACT_Seek")
 
-local DEFAULT_INTERVAL_TIME = 500
+local DEFAULT_INTERVAL_TIME = 250
 local DEFAULT_MAX_TIME_SEEKING = 30000
 local DEFAULT_SEEK_RADIUS = 5000
 local DEFAULT_MAX_TIME_HOLD = 3000
@@ -84,7 +84,7 @@ end
 function NACT_Seek:OnRandomPointResult(vTargetPoint)
     -- Console.Log("Random pt result : "..NanosTable.Dump(vTargetPoint))
     if (vTargetPoint:IsZero()) then
-        Console.Log("Zero result, returning to combat for decision")
+        Console.Log("Unable to seek. Zero result, returning to combat for decision")
         Timer.SetTimeout(function()
             self.npc:SetBehavior(self.mainBehavior)
         end, 2000)
