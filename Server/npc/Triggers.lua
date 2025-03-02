@@ -19,7 +19,7 @@ function NACT_NPC:_registerTriggerBoxes(tNpcTriggerConfig)
     end
     
     if (tNpcTriggerConfig.melee) then
-        self.triggers.melee = self:createTriggerBox(TriggerType.Sphere, 120, Color.YELLOW, 10)
+        self.triggers.melee = self:createTriggerBox(TriggerType.Sphere, 100, Color.YELLOW, 10)
     end
     -- Console.Log("AFT : "..NanosTable.Dump(self.triggers))
 end
