@@ -4,7 +4,7 @@ local DEFAULT_TIMER_TIME = 500
 -- Make sure your NPC has enough time to perform actions while in cover !
 local DEFAULT_COVER_HOLD_MIN = 2000
 local DEFAULT_COVER_HOLD_MAX = 3000
-local DEFAULT_MIN_COVER_DISTANCE = 10
+local DEFAULT_MIN_COVER_DISTANCE = 200
 
 --- Behavior that makes the NPC go to cover. Will find the closest secure and non taken cover point to reload or chill
 ---@param NpcInstance NACT_NPC @npc that is tied to this behacior
@@ -99,7 +99,7 @@ function NACT_Cover:FindNearestCoverPoint()
     local nearestCoverPoint = nil
 
     local charLocation = self.npc.character:GetLocation()
-    local focusedLocation = self.npc:GetFocusedLocation()
+    local focusedLocation = self.npc:GetFocusedLocation() or self.npc.cFocusedLastPosition
     for i, coverPoint in ipairs(allTerritoryCoverPoints) do
         -- TODO: Also check if cover point is taker
         if (coverPoint.secure and not coverPoint.taken) then
@@ -120,6 +120,7 @@ function NACT_Cover:FindNearestCoverPoint()
             end
         end
     end
+    Console.Log("Choosed min distance"..NanosTable.Dump(currentNearestDistance))
     return nearestCoverPoint
 end
 

@@ -19,7 +19,7 @@ local NACT_PROVISORY_PLAYER_AUTHORITY_REFRESH_TIME = 10000
 ---@param sTerritoryName string @name of the territory
 function NACT_Territory:Constructor(tTerritoryConfig, sTerritoryName)
     self.coverPoints = {}
-    self.coverPointsPositions = {}
+    self.coverScanPoints = {}
     self.zoneBounds = tTerritoryConfig.zoneBounds
     self.name = sTerritoryName
     self:RefreshCoverPoints()
@@ -78,6 +78,26 @@ function NACT_Territory:Constructor(tTerritoryConfig, sTerritoryName)
     self.authorityPlayerHandleTimer = Timer.SetInterval(function()
         self:SwitchNetworkAuthority()
     end, NACT_PROVISORY_PLAYER_AUTHORITY_REFRESH_TIME)
+
+    self.debugCoverPointStatusRefresh = nil
+
+    if (NACT_DEBUG_COVERS) then
+        self.debugCoverPointStatusRefresh = Timer.SetInterval(function()
+            for k, v in ipairs(self.coverPoints) do
+                local newDebugString = "S:"..tostring(v.secure).."  ".."T:"..tostring(v.taken)
+                v.debugText:SetText(newDebugString)
+                if (v.secure and not v.taken) then
+                    v.debugText:SetMaterialColorParameter("Tint", Color.GREEN)
+                end
+                if (v.secure and v.taken) then
+                    v.debugText:SetMaterialColorParameter("Tint", Color.BLACK)
+                end
+                if (not v.secure) then
+                    v.debugText:SetMaterialColorParameter("Tint", Color.RED)
+                end
+            end
+        end, 100)
+    end
 end
 
 --- Gets the network authority of the territory or nil if not defined or valid
@@ -93,10 +113,6 @@ end
 function NACT_Territory:UpdateCoverViability(tViabilityResult)
     for iCover, bIsCoverViable in ipairs(tViabilityResult) do
         self.coverPoints[iCover].secure = bIsCoverViable
-    end
-
-    if (NACT_DEBUG_COVERS) then
-        Console.Log("Cover points viability setup : "..NanosTable.Dump(self.coverPoints))
     end
 end
 
@@ -146,7 +162,7 @@ function NACT_Territory:SwitchNetworkAuthority()
         self.authorityPlayer = reachablePlayers[reachablePlayerIndex]
         if (not self.authorityPlayerHistory[self.authorityPlayer]) then
             self.authorityPlayerHistory[self.authorityPlayer] = true
-            Events.CallRemote("NACT:TRACE:COVER:VIABILITY:POSITIONS", self.authorityPlayer, self:GetID(), self.coverPointsPositions)
+            Events.CallRemote("NACT:TRACE:COVER:VIABILITY:POSITIONS", self.authorityPlayer, self:GetID(), self.coverScanPoints)
         end
     else
         self.authorityPlayer = nil
@@ -169,20 +185,24 @@ end
 --- thart are in the zone bounds. For now this only supports sphere
 function NACT_Territory:RefreshCoverPoints()
     local selectedCoverPoints = {}
-    local coverPointsPosition = {}
+    local coverScanPoints = {}
     for i, coverPoint in ipairs(NACT.GetMapCoverPoints()) do
         -- Console.Log("Scanning cover point : "..NanosTable.Dump(coverPoint))
         local distanceFromOrigin = self.zoneBounds.pos:Distance(coverPoint.pos)
         -- Console.Log("Distance from origin : "..distanceFromOrigin)
         if (distanceFromOrigin <= self.zoneBounds.radius) then
             selectedCoverPoints[#selectedCoverPoints+1] = coverPoint
-            coverPointsPosition[#coverPointsPosition+1] = coverPoint.pos
+            coverScanPoints[#coverScanPoints+1] = coverPoint.scan
         else
             -- Console.Log("Cover point was not selected "..NanosTable.Dump(coverPoint))
         end
+
+        if (NACT_DEBUG_COVERS) then
+            coverPoint.debugText = TextRender(coverPoint.pos + Vector(0, 0, 50), Rotator(), "", Vector(0.4), Color.YELLOW, FontType.OpenSans, TextRenderAlignCamera.FaceCamera)
+        end
     end
     self.coverPoints = selectedCoverPoints
-    self.coverPointsPositions = coverPointsPosition
+    self.coverScanPoints = coverScanPoints
 end
 
 --- Cleanns up a character from the territory and it's npcs. Switches authority if charcter belonged to player that was authority

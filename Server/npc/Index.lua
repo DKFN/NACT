@@ -186,7 +186,7 @@ function NACT_NPC:CleanupCharacter(cToCleanUp)
         self.cFocused = nil
     end
 
-    if (self.tracingLaunched and self.tracingAuthority and self.tracingAuthority:GetControlledCharacter() == cToCleanUp) then
+    if (self.tracingLaunched and self.tracingAuthority and self.tracingAuthority:IsValid() and self.tracingAuthority:GetControlledCharacter() == cToCleanUp) then
         self:StopTracing()
         self:StartTracing()
     end
