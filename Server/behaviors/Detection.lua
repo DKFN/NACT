@@ -4,7 +4,7 @@
 
 local DEFAULT_INTERVAL_TIME = 500
 local DEFAULT_HEAT_INCREMENT = 10
-local DEFAULT_HEAT_TURN_TO = 90
+local DEFAULT_HEAT_TURN_TO = 70
 -- local DEFAULT_HEAT_INCREMENT = 0.000000001
 -- TODO: Add max distance to start spotting
 
@@ -52,29 +52,30 @@ function NACT_Detection:Main()
             self.npc:TurnToFocused()
         end
 
-        if (self.npc:IsInVisionAngle(self.npc.cFocused)) then
-        else
+        if (not self.npc:IsInVisionAngle(self.npc.cFocused)) then
             self.npc:LookForFocused()
         end
 
         if (self.npc:IsFocusedVisible() and bHasEnemyDetectable) then
             self:IncrementLevel()
+            Events.Call("NACT_Detection:HEAT_CHANGED", self.npc:GetID(), self.heat)
         else
             self:DecrementLevel()
             self.npc:LookForFocused()
+            Events.Call("NACT_Detection:HEAT_CHANGED", self.npc:GetID(), self.heat)
         end
     end
 end
 
 --- Raises heat level depeing of increment and distance factosr
 function NACT_Detection:IncrementLevel()
-    local nValue = self.heatIncrement + (1 / (self.npc:GetDistanceToFocused() + 1) * 2000)
+    local nValue = self.heatIncrement + (1 / (self.npc:GetDistanceToFocused() + 1) * 10000)
     self.heat = math.min(self.heat + nValue, 100)
 end
 
 --- Decrement heat level depending of distance factor and increment configured
 function NACT_Detection:DecrementLevel()
-    local nValue = self.heatIncrement + ((self.npc:GetDistanceToFocused() + 1) / 2000)
+    local nValue = self.heatIncrement + ((self.npc:GetDistanceToFocused() + 1) / 10000)
     self.heat = math.max(0, self.heat - nValue)
 end
 

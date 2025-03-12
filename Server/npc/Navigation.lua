@@ -1,6 +1,7 @@
 --- Move but also look towards point
 ---@param vPoint Vector @Point to go
-function NACT_NPC:MoveToPoint(vPoint)
+---@param nAcceptanceRadius Number @Acce
+function NACT_NPC:MoveToPoint(vPoint, nAcceptanceRadius)
     self:MoveTo(vPoint)
     self.character:LookAt(vPoint)
 end

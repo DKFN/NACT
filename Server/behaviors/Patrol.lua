@@ -15,6 +15,7 @@ function NACT_Patrol:Constructor(NpcInstance, tBehaviorConfig)
     self.patrolPath = tBehaviorConfig.patrolPath
     self.targetPatrolPointIndex = 1
     -- TODO: Make patrol point configurable
+    -- Console.Log("for "..self.patrolPath.. "Dump routes : "..NanosTable.Dump(self.npc.territory.patrolRoutes))
     self.patrolRoute = self.npc.territory.patrolRoutes[self.patrolPath]
     self.patrolPoints = self.patrolRoute.points
     self.maxPatrolPointIndex = #self.patrolRoute.points
@@ -29,7 +30,7 @@ function NACT_Patrol:Constructor(NpcInstance, tBehaviorConfig)
 end
 
 function NACT_Patrol:WalkToNextPoint()
-    self.npc:MoveToPoint(self.patrolPoints[self.targetPatrolPointIndex])
+    self.npc:MoveToPoint(self.patrolPoints[self.targetPatrolPointIndex].pos)
     if (self.targetPatrolPointIndex == self.maxPatrolPointIndex) then
         if (self.patrolRoute.walkMethod == "circle") then
             self.targetPatrolPointIndex = 1

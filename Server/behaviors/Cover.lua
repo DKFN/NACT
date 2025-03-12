@@ -17,6 +17,7 @@ function NACT_Cover:Constructor(NpcInstance, tBehaviorConfig)
     self.moveCompleteCallback = nil
     self.doingAction = false
     self.shouldExitCover = false
+    self.attempts = 0
 
     self.coverHoldMin = NACT.ValueOrDefault(tBehaviorConfig.coverHoldMin, DEFAULT_COVER_HOLD_MIN)
     self.coverHoldMax = NACT.ValueOrDefault(tBehaviorConfig.coverHoldMax, DEFAULT_COVER_HOLD_MAX)
@@ -78,6 +79,14 @@ function NACT_Cover:OnMoveComplete(_, succeeded)
     if (not self.nearestCoverPoint or not self.movingToCover) then
         return
     end
+
+    if (not succeeded) then
+        self:LeaveCover()
+        self:MoveToNearestCoverPoint()
+        return;
+    end
+
+
     self.movingToCover = false
     self.inCover = true
     local stanceOfCoverPoint = self.nearestCoverPoint.stance
@@ -120,7 +129,6 @@ function NACT_Cover:FindNearestCoverPoint()
             end
         end
     end
-    Console.Log("Choosed min distance"..NanosTable.Dump(currentNearestDistance))
     return nearestCoverPoint
 end
 
