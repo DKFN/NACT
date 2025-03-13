@@ -9,7 +9,7 @@ function NACT_ZombieMelee:Constructor(NpcInstance)
     self.tick = 1
     self.timerHandle = Timer.SetInterval(function()
         self:Main()
-    end, 100)
+    end, 25)
 
     self.alertTimerHandle = Timer.SetInterval(function()
         self:AlertAlliesInRange()
@@ -29,6 +29,7 @@ function NACT_ZombieMelee:Main()
         -- Console.Log("Focus tick "..self.tick)
         self.npc.character:SetGaitMode(GaitMode.Sprinting)
         self.npc:MoveToFocused()
+        self.npc:TurnToFocused()
         if (#self.npc:GetEnemiesInZone("melee") > 0) then
             local weapon = self.npc:GetWeapon()
             -- Console.Log("wpn"..NanosTable.Dump(weapon))

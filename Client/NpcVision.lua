@@ -2,8 +2,8 @@
 local tTraces = {}
 local Trace = Trace
 
-local NACT_VISION_REFRESH_RATE = 50
--- local NACT_VISION_REFRESH_RATE = 500
+-- local NACT_VISION_REFRESH_RATE = 50
+local NACT_VISION_REFRESH_RATE = 100
 
 --- Requests the client to start the vision towards an entity
 ---@param cNpc Character The character of the requestor NACT_NPC
@@ -55,8 +55,13 @@ end)
 ---@param tAllEnemies table Array with all the enemies that could be visible
 ---@param iNpcID NACT_NPC_ID The ID of the requestor NPC
 ---@param tTargetBones table Array of bones to scan
+
+
+local handlingNumber = 0
 Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", function(sourceNpc, tAllEnemies, iNpcID, tTargetBones)
     
+    -- Console.Log("Trace query while handing "..handlingNumber)
+    handlingNumber = handlingNumber + 1
     local tEnnemyLookupResult = {}
     local closestTargetDistance = 9999999999999
     local closestTarget = nil
@@ -71,7 +76,7 @@ Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", function(sourceNpc, t
         )
         -- Console.Log(iNpcID.."Trace result for "..NanosTable.Dump(ennemy)..NanosTable.Dump(traceResultEntity))
         if (traceResultEntity) then
-            local distanceToEntity = ennemy:GetLocation():Distance(sourceLocation)
+            local distanceToEntity = ennemy:GetLocation():DistanceSquared(sourceLocation)
             -- Console.Log(iNpcID.."Distance to entity"..distanceToEntity)
             if (distanceToEntity < closestTargetDistance) then
                 closestTargetDistance = distanceToEntity
@@ -79,6 +84,7 @@ Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:QUERY", function(sourceNpc, t
             end
         end
     end
+    -- Timer.SetTimeout(function() handlingNumber = handlingNumber - 1 end)
     -- Console.Log("Closest target : "..NanosTable.Dump(closestTarget))
     Events.CallRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", iNpcID, closestTarget)
 end)
@@ -104,8 +110,8 @@ end
 ---@param sTargetBone string Bone name
 ---@return Vector
 function GetDetailledLocationOfTarget(cTarget, sTargetBone)
-    if (cTarget.GetBoneTransform) then
-        return cTarget:GetBoneTransform(sTargetBone).Location
+    if (cTarget.GetSocketTransform) then
+        return cTarget:GetSocketTransform(sTargetBone).Location
     else
         return cTarget:GetLocation()
     end

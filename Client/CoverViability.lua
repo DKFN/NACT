@@ -18,7 +18,7 @@ local function ScanCoverPoint(coverPos, iCover, iTerritoryID)
     local coverViable = true
     for iEntity, entity in ipairs(tAllFocusedEntities) do
         local finalLoc
-        local entityPreciseLocation = entity:GetBoneTransform("head")
+        local entityPreciseLocation = entity:GetSocketTransform("head")
         if (entityPreciseLocation) then
             finalLoc = entityPreciseLocation.Location
         else
@@ -66,6 +66,7 @@ Events.SubscribeRemote("NACT:TRACE:COVER:VIABILITY:POSITIONS", function(_iTerrit
     currentTickIndex = 1
 end)
 
+-- local benchmarkCoverViabilityTime = os.clock()
 Client.Subscribe("Tick", function()
     if (not iTerritoryID or not coverPositionsByTerritoryID[iTerritoryID][currentTickIndex]) then
         return
@@ -74,7 +75,10 @@ Client.Subscribe("Tick", function()
     ScanCoverPoint(coverPositionsByTerritoryID[iTerritoryID][currentTickIndex], currentTickIndex, iTerritoryID)
     
     if (currentTickIndex >= #coverPositionsByTerritoryID[iTerritoryID]) then
+        -- local took = os.clock() - benchmarkCoverViabilityTime
+        -- Console.Log("Cover viability took"..NanosTable.Dump(took).. "s scanned "..currentTickIndex.." cover points")
         currentTickIndex = 1
+        -- benchmarkCoverViabilityTime = os.clock()
     else
         currentTickIndex = currentTickIndex + 1
     end
