@@ -2,6 +2,18 @@ local NACT_PROVISORY_VISION_LOOKUP_BONES = {
     "head", "lowerarm_l", "lowerarm_r", "foot_l", "foot_r"
 }
 
+local function _is_valid_entity(entity)
+    return entity ~= nil and entity.IsValid and entity:IsValid()
+end
+
+local function _yaw_delta(a, b)
+    local delta = math.abs((a - b) % 360)
+    if delta > 180 then
+        delta = 360 - delta
+    end
+    return delta
+end
+
 ---
 --- Tracing and Vision
 ---
@@ -21,11 +33,16 @@ end
 --- 
 --- You don't have to handle it manually if `autoTracing` is set to `true` (default) in the NPC config
 function NACT_NPC:StartTracing()
-    if (self:GetFocused() ~= nil) then
+    if (not _is_valid_entity(self.character)) then
+        return
+    end
+
+    local focused = self:GetFocused()
+    if (focused ~= nil) then
         self.tracingAuthority = self.character:GetNetworkAuthority()
 
         if (not self.tracingLaunched and self.tracingAuthority) then
-            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", self.tracingAuthority, self.character, self:GetFocused(), self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
+            Events.CallRemote("NCAT:TRACE:NPC_TO_ENTITY:START", self.tracingAuthority, self.character, focused, self:GetID(), NACT_PROVISORY_VISION_LOOKUP_BONES)
             self.tracingLaunched = true
         end
     end
@@ -36,6 +53,10 @@ end
 --- and there the enemy is in the vision range of the player.
 --- You can call this function like there is no tommorrow, it is throttled and will NOT trigger each time it is called
 function NACT_NPC:LookForFocused()
+    if (not _is_valid_entity(self.character)) then
+        return
+    end
+
     if (not self.launchedScanAround) then
         local enemiesInDetection = self:GetEnemiesInZone("detection")
         if (#enemiesInDetection > 0) then
@@ -67,15 +88,20 @@ end
 ---@param cEntity Character @The character to check for vision range
 ---@return boolean @If the character is in vision angle.
 function NACT_NPC:IsInVisionAngle(cEntity)
-    if (cEntity == nil) then
+    if (not _is_valid_entity(self.character) or not _is_valid_entity(cEntity)) then
         -- Console.Error("N.A.C.T. Called IsInVisionAngle with Nil entity")
         return false
     end
 
-    local tAnglePlayerNpc = (self.character:GetLocation() - cEntity:GetLocation()):Rotation()
-    local angleVersion =  math.abs(self.character:GetRotation().Yaw - tAnglePlayerNpc.Yaw)
+    local directionToEntity = cEntity:GetLocation() - self.character:GetLocation()
+    if (directionToEntity:IsNearlyZero()) then
+        return true
+    end
+
+    local tAnglePlayerNpc = directionToEntity:ToOrientationRotator()
+    local angleVersion = _yaw_delta(self.character:GetRotation().Yaw, tAnglePlayerNpc.Yaw)
     -- Console.Log("Angle "..NanosTable.Dump(angleVersion))
-    return angleVersion > self.visionAngle
+    return angleVersion <= self.visionAngle
 end
 
 --- Returns if the focused entity is currently visible.
@@ -101,6 +127,10 @@ end
 ---@param vLocation Vector @Location to turn towards
 ---@param nInaccuracyFactor number @Innacuracy factor fo turn to
 function NACT_NPC:TurnTo(vLocation, nInaccuracyFactor)
+    if (not _is_valid_entity(self.character) or vLocation == nil) then
+        return
+    end
+
     local vInaccurayVector
     if (nInaccuracyFactor) then
         vInaccurayVector = Vector(
@@ -111,8 +141,14 @@ function NACT_NPC:TurnTo(vLocation, nInaccuracyFactor)
     else
         vInaccurayVector = Vector(0,0,0)
     end
-    self.character:LookAt(vLocation + vInaccurayVector)
-    self.character:RotateTo(Rotator(0, (vLocation - self.character:GetLocation()):Rotation().Yaw, 0), 0.5)
+    local targetLocation = vLocation + vInaccurayVector
+    local directionToTarget = targetLocation - self.character:GetLocation()
+    if (directionToTarget:IsNearlyZero()) then
+        return
+    end
+
+    self.character:LookAt(targetLocation)
+    self.character:RotateTo(Rotator(0, directionToTarget:ToOrientationRotator().Yaw, 0), 0.5)
 end
 
 Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID, entityResult)
@@ -126,7 +162,7 @@ Events.SubscribeRemote("NCAT:TRACE:NPC_TO_ENTITY_RESULT", function(player, npcID
         end
         if not entityResult then
             Timer.SetTimeout(function(npcSubscribedToTraces)
-                if (not npcSubscribedToTraces.cFocusedTraceHit) then
+                if (npcSubscribedToTraces and npcSubscribedToTraces:IsValid() and not npcSubscribedToTraces.cFocusedTraceHit) then
                     npcSubscribedToTraces:Log("Player lost")
                     npcSubscribedToTraces:SetFocused(nil)
                 end
@@ -145,8 +181,10 @@ Events.SubscribeRemote("NACT:TRACE:NPC_LOOK_AROUND:RESULT", function(player, npc
         end
 
         Timer.SetTimeout(function(npcForResult)
-            npcForResult.launchedScanAround = false
-            npcForResult:Log("Looked around, found "..NanosTable.Dump(maybeNewCFocused).." Releasing scan")
+            if (npcForResult and npcForResult:IsValid()) then
+                npcForResult.launchedScanAround = false
+                npcForResult:Log("Looked around, found "..NanosTable.Dump(maybeNewCFocused).." Releasing scan")
+            end
         end, npcForResult.lookAroundThrottle, npcForResult)
     end
 end)
